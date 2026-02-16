@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&family=Manrope:wght@200..800&family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Prata&display=swap');
+@import "tailwindcss";
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Swiper sometimes creates tiny horizontal overflow */
+.swiper,
+.swiper-wrapper,
+.swiper-slide {
+  max-width: 100%;
+}
+
+/* Hide scrollbar but keep scroll */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
+}
