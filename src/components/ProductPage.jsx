@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { products } from "../products/Item";
 import { useParams } from "react-router-dom";
 import { ChevronDown, ChevronUp, Package, Truck } from "lucide-react";
@@ -12,8 +12,19 @@ const ProductPage = () => {
   const product = products.find((item) => item.id === Number(id));
   if (!product) return null;
 
-  const images = [product.image1, product.image2].filter(Boolean);
+  // ✅ supports 2, 3, or 4 images (or more if you add later)
+  const images = useMemo(() => {
+    return [product.image1, product.image2, product.image3, product.image4].filter(
+      Boolean
+    );
+  }, [product.image1, product.image2, product.image3, product.image4]);
+
   const [activeImage, setActiveImage] = useState(images[0]);
+
+  // ✅ keep active image valid when switching products / image counts change
+  useEffect(() => {
+    setActiveImage((prev) => (images.includes(prev) ? prev : images[0]));
+  }, [images]);
 
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
   const [isShippingOpen, setIsShippingOpen] = useState(false);
@@ -67,7 +78,7 @@ Product Page: ${window.location.href}`;
                 const active = activeImage === img;
                 return (
                   <button
-                    key={i}
+                    key={img} // ✅ better than index
                     onClick={() => setActiveImage(img)}
                     className={[
                       "shrink-0 w-16 h-16 xs:w-18 xs:h-18 sm:w-20 sm:h-20 lg:w-24 lg:h-24",
@@ -96,7 +107,7 @@ Product Page: ${window.location.href}`;
             <div className="order-1 lg:order-2 bg-gray-100 rounded-sm overflow-hidden w-full">
               <div className="h-[360px] xs:h-[420px] sm:h-[520px] lg:h-[600px] w-full">
                 <img
-                  src={activeImage}
+                  src={activeImage || images[0]} // ✅ safety
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -107,12 +118,10 @@ Product Page: ${window.location.href}`;
 
         {/* RIGHT – PRODUCT INFO */}
         <div className="flex flex-col gap-5 lg:gap-6 pr-0 lg:pr-2">
-          {/* Better hierarchy: category as eyebrow */}
           <p className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider">
             {product.category}
           </p>
 
-          {/* Title */}
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {product.name}
           </h1>
@@ -187,7 +196,6 @@ Product Page: ${window.location.href}`;
                 </p>
               </div>
 
-              {/* ✅ UX add: bulk contact is best inside this "decision card" */}
               <div className="mt-4 pt-4 border-t border-black/10">
                 <p className="text-sm text-gray-600">
                   For bulk order contact{" "}
@@ -211,7 +219,6 @@ Product Page: ${window.location.href}`;
             </div>
           </section>
 
-          {/* CTA — better UX: stick it close to pricing decision */}
           <div className="flex gap-3">
             <a
               href={whatsappUrl}
@@ -225,7 +232,6 @@ Product Page: ${window.location.href}`;
             </a>
           </div>
 
-          {/* Info row — improves trust and reduces scrolling (UX) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-sm border border-black/10 bg-white px-4 py-3 flex items-center gap-3">
               <Package className="w-5 h-5 text-gray-700" />
@@ -248,7 +254,6 @@ Product Page: ${window.location.href}`;
             </div>
           </div>
 
-          {/* DESCRIPTION — keep but make it feel part of system */}
           <div className="rounded-sm border border-black/10 bg-white">
             <button
               onClick={() => setIsDescriptionOpen((v) => !v)}
@@ -291,7 +296,6 @@ Product Page: ${window.location.href}`;
             </div>
           </div>
 
-          {/* SHIPPING — match the same card pattern */}
           <div className="rounded-sm border border-black/10 bg-white">
             <button
               onClick={() => setIsShippingOpen((v) => !v)}
