@@ -4,18 +4,144 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X, Search } from "lucide-react";
 import { products } from "@/products/Item";
 
+/* -------------------- helpers -------------------- */
+
+const toSlug = (s) =>
+  String(s || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const normalize = (s) => String(s || "").toLowerCase().trim();
+
+function useCategories(products) {
+  return useMemo(() => {
+    const map = new Map();
+    (products || []).forEach((p) => {
+      const c = (p?.category || "").trim();
+      if (!c) return;
+      map.set(c, (map.get(c) || 0) + 1);
+    });
+    return Array.from(map.entries())
+      .map(([name, count]) => ({ name, count, slug: toSlug(name) }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [products]);
+}
+
+/* -------------------- reusable menu -------------------- */
+
+function CategoryMenu({
+  categories,
+  onClose,
+  viewAllHref = "/categories",
+  limit = 8,
+  title = "Browse categories",
+}) {
+  return (
+    <div
+      className="absolute left-1/2 -translate-x-1/2 mt-4 w-[520px] bg-white border border-black/10 z-[9999]"
+      onMouseDown={(e) => e.preventDefault()}
+    >
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-black/10 flex items-center justify-between">
+        <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
+          {title}
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="text-[11px] uppercase tracking-[0.22em] text-black/45 hover:text-black transition"
+        >
+          Close
+        </button>
+      </div>
+
+      {/* Grid */}
+      <div className="p-2">
+        <ul className="p-1 grid grid-cols-1 sm:grid-cols-2 gap-1">
+          {categories.slice(0, limit).map((c) => (
+            <li key={c.name}>
+              <Link
+                to={`/shop/${c.slug}`}
+                onClick={onClose}
+                className="w-full flex items-center justify-between px-3 py-3 hover:bg-black/5 transition text-left"
+              >
+                <div className="min-w-0">
+                  <div className="text-sm text-black truncate">{c.name}</div>
+                  <div className="text-[11px] text-black/45">
+                    {c.count} {c.count === 1 ? "product" : "products"}
+                  </div>
+                </div>
+                <div className="text-xs text-black/35">→</div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Footer */}
+        <div className="px-2 pt-2 pb-3 flex items-center justify-between border-t border-black/10">
+          <Link
+            to={viewAllHref}
+            onClick={onClose}
+            className="text-xs uppercase tracking-[0.22em] text-black/70 hover:text-black transition"
+          >
+            View all
+          </Link>
+
+          <Link
+            to="/shop"
+            onClick={onClose}
+            className="text-xs uppercase tracking-[0.22em] text-black/60 hover:text-black transition"
+          >
+            Shop page
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------- Navbar -------------------- */
+
 const Navbar = () => {
-  const [open, setOpen] = useState(false); // mobile menu
-  const [searchOpen, setSearchOpen] = useState(false); // tablet search overlay
+  const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // ✅ scalable categories (single source)
+  const categories = useCategories(products);
+
+  // ✅ hover menu for Shop
+  const [shopMenuOpen, setShopMenuOpen] = useState(false);
+  const shopWrapRef = useRef(null);
+  const closeTimerRef = useRef(null);
+
+  const openShopMenu = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    setShopMenuOpen(true);
+  };
+
+  const closeShopMenu = () => {
+    closeTimerRef.current = setTimeout(() => setShopMenuOpen(false), 140);
+  };
+
+  // close shop menu on outside click
+  useEffect(() => {
+    const onDown = (e) => {
+      if (!shopWrapRef.current) return;
+      if (!shopWrapRef.current.contains(e.target)) setShopMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
 
   // lock scroll + esc to close (mobile menu)
   useEffect(() => {
     if (!open) return;
 
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-
+    const onKeyDown = (e) => e.key === "Escape" && setOpen(false);
     document.addEventListener("keydown", onKeyDown);
     document.documentElement.style.overflow = "hidden";
 
@@ -29,10 +155,7 @@ const Navbar = () => {
   useEffect(() => {
     if (!searchOpen) return;
 
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") setSearchOpen(false);
-    };
-
+    const onKeyDown = (e) => e.key === "Escape" && setSearchOpen(false);
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [searchOpen]);
@@ -58,7 +181,7 @@ const Navbar = () => {
             to="/"
             className="text-lg xs:text-xl md:text-2xl font-bold uppercase font-playfair text-black tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
           >
-            Boxix
+            Taj Box
           </Link>
 
           {/* Desktop Nav */}
@@ -68,11 +191,29 @@ const Navbar = () => {
                 Home
               </NavLink>
             </li>
-            <li>
+
+            {/* ✅ scalable Shop mega menu */}
+            <li
+              ref={shopWrapRef}
+              className="relative"
+              onMouseEnter={openShopMenu}
+              onMouseLeave={closeShopMenu}
+            >
               <NavLink to="/shop" className={linkClass}>
                 Shop
               </NavLink>
+
+              {shopMenuOpen && (
+                <CategoryMenu
+                  categories={categories}
+                  onClose={() => setShopMenuOpen(false)}
+                  viewAllHref="/categories" // ✅ your ALL categories page
+                  title="Browse categories"
+                  limit={8}
+                />
+              )}
             </li>
+
             <li>
               <NavLink to="/contact" className={linkClass}>
                 Contact
@@ -82,10 +223,14 @@ const Navbar = () => {
 
           {/* Desktop Full Search (lg only) */}
           <div className="hidden lg:block w-[460px]">
-            <PremiumSearch products={products} onNavigate={() => setOpen(false)} />
+            <PremiumSearch
+              products={products}
+              onNavigate={() => setOpen(false)}
+              categories={categories} // ✅ pass shared categories
+            />
           </div>
 
-          {/* Tablet Search Icon (md only, lg hidden) */}
+          {/* Tablet Search Icon */}
           <div className="hidden md:flex lg:hidden items-center">
             <button
               type="button"
@@ -114,7 +259,6 @@ const Navbar = () => {
       {/* Mobile Fullscreen Sheet */}
       {open && (
         <div className="md:hidden fixed inset-0 z-[60]">
-          {/* Overlay */}
           <button
             type="button"
             className="absolute inset-0 bg-black/20"
@@ -122,7 +266,6 @@ const Navbar = () => {
             onClick={() => setOpen(false)}
           />
 
-          {/* Panel */}
           <div className="absolute inset-x-0 top-0 bg-white border-b border-black/10">
             <div className="px-4 sm:px-6 h-16 flex items-center justify-between">
               <span className="text-sm uppercase tracking-widest text-black/60">
@@ -140,43 +283,31 @@ const Navbar = () => {
 
             <div className="border-t border-black/10" />
 
-            {/* Mobile Search */}
             <div className="px-4 sm:px-6 py-4 border-b border-black/10">
-              <PremiumSearch products={products} onNavigate={() => setOpen(false)} />
+              <PremiumSearch
+                products={products}
+                onNavigate={() => setOpen(false)}
+                categories={categories}
+              />
             </div>
 
             <ul className="flex flex-col">
               <li>
-                <NavLink
-                  to="/"
-                  end
-                  className={mobileLinkClass}
-                  onClick={() => setOpen(false)}
-                >
+                <NavLink to="/" end className={mobileLinkClass} onClick={() => setOpen(false)}>
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/shop"
-                  className={mobileLinkClass}
-                  onClick={() => setOpen(false)}
-                >
-                  Shop All
+                <NavLink to="/shop" className={mobileLinkClass} onClick={() => setOpen(false)}>
+                  Shop
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/contact"
-                  className={mobileLinkClass}
-                  onClick={() => setOpen(false)}
-                >
+                <NavLink to="/contact" className={mobileLinkClass} onClick={() => setOpen(false)}>
                   Contact
                 </NavLink>
               </li>
             </ul>
-
-            <div className="h-3" />
           </div>
         </div>
       )}
@@ -184,7 +315,6 @@ const Navbar = () => {
       {/* Tablet Search Overlay (md only) */}
       {searchOpen && (
         <div className="hidden md:block lg:hidden fixed inset-0 z-[80]">
-          {/* Overlay */}
           <button
             type="button"
             className="absolute inset-0 bg-black/20"
@@ -192,7 +322,6 @@ const Navbar = () => {
             onClick={() => setSearchOpen(false)}
           />
 
-          {/* Search Container */}
           <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[520px] max-w-[90%] bg-white border border-black/10">
             <div className="flex items-center justify-between px-4 h-14 border-b border-black/10">
               <span className="text-xs uppercase tracking-[0.22em] text-black/60">
@@ -211,9 +340,8 @@ const Navbar = () => {
             <div className="p-4">
               <PremiumSearch
                 products={products}
-                onNavigate={() => {
-                  setSearchOpen(false);
-                }}
+                onNavigate={() => setSearchOpen(false)}
+                categories={categories}
               />
             </div>
           </div>
@@ -225,32 +353,16 @@ const Navbar = () => {
 
 export default Navbar;
 
-/* ---------------- PREMIUM SEARCH ---------------- */
+/* -------------------- PremiumSearch (unchanged UX, but scalable) -------------------- */
 
-const normalize = (s) => String(s || "").toLowerCase().trim();
-
-function PremiumSearch({ products = [], onNavigate }) {
+function PremiumSearch({ products = [], onNavigate, categories = [] }) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(-1); // keyboard nav index
+  const [active, setActive] = useState(-1);
   const wrapRef = useRef(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
-  // build categories list + counts
-  const categories = useMemo(() => {
-    const map = new Map();
-    (products || []).forEach((p) => {
-      const c = (p?.category || "").trim();
-      if (!c) return;
-      map.set(c, (map.get(c) || 0) + 1);
-    });
-    return Array.from(map.entries())
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [products]);
-
-  // grouped results (ranking + min chars for products)
   const grouped = useMemo(() => {
     const query = normalize(q);
     if (!query) return { products: [], categories: [] };
@@ -273,7 +385,7 @@ function PremiumSearch({ products = [], onNavigate }) {
           .map((p, idx) => {
             const nameScore = scoreText(p?.name, query);
             const catScore = scoreText(p?.category, query);
-            const score = nameScore * 2 + catScore; // name priority
+            const score = nameScore * 2 + catScore;
             return { p, score, idx };
           })
           .filter((x) => x.score > 0)
@@ -292,7 +404,6 @@ function PremiumSearch({ products = [], onNavigate }) {
     return { products: prod, categories: catRes };
   }, [q, products, categories]);
 
-  // flat list for keyboard nav
   const flat = useMemo(() => {
     const list = [];
     grouped.categories.forEach((c) => list.push({ type: "category", data: c }));
@@ -300,7 +411,6 @@ function PremiumSearch({ products = [], onNavigate }) {
     return list;
   }, [grouped]);
 
-  // close on outside click
   useEffect(() => {
     const onDown = (e) => {
       if (!wrapRef.current) return;
@@ -328,9 +438,9 @@ function PremiumSearch({ products = [], onNavigate }) {
   const goCategory = (c) => {
     setOpen(false);
     setActive(-1);
-    onNavigate?.();
-    navigate(`/shop?category=${encodeURIComponent(c.name)}`);
     setQ("");
+    onNavigate?.();
+    navigate(`/shop/${c.slug || toSlug(c.name)}`);
   };
 
   const onKeyDown = (e) => {
@@ -368,15 +478,12 @@ function PremiumSearch({ products = [], onNavigate }) {
 
   return (
     <div ref={wrapRef} className="relative">
-      {/* Search input */}
       <div
-        className={`relative border border-black/10 bg-white transition ${
-          open ? "border-black/30" : "hover:border-black/20"
+        className={`relative flex items-center gap-2 border bg-white px-3 h-11 transition ${
+          open ? "border-black/30" : "border-black/10 hover:border-black/20"
         }`}
       >
-        <div className="absolute left-3 top-1/2 -translate-y-1/2">
-          <Search className="w-4 h-4 text-black/50" />
-        </div>
+        <Search className="w-4 h-4 text-black/45 shrink-0" />
 
         <input
           ref={inputRef}
@@ -389,97 +496,121 @@ function PremiumSearch({ products = [], onNavigate }) {
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           type="search"
-          placeholder="Search by name or category…"
-          className="w-full h-11 pl-9 pr-24 text-sm bg-transparent outline-none"
+          placeholder="Search products or categories…"
+          className="w-full bg-transparent outline-none text-sm placeholder:text-black/40"
         />
 
-        {/* Right actions */}
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-          {q ? (
-            <button
-              type="button"
-              onClick={clear}
-              className="h-8 w-8 grid place-items-center border border-black/10 hover:bg-black/5 transition"
-              aria-label="Clear search"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          ) : null}
-
-          <div className="hidden lg:block text-[10px] uppercase tracking-[0.22em] text-black/40 pr-1">
-            Enter
+        {q ? (
+          <button
+            type="button"
+            onClick={clear}
+            className="h-8 w-8 grid place-items-center border border-black/10 hover:bg-black/5 transition"
+            aria-label="Clear search"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        ) : (
+          <div className="hidden lg:flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-black/35">
+            <span>Enter</span>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Dropdown */}
       {open && (
-        <div className="absolute left-0 right-0 mt-2 bg-white border border-black/10 z-[70]">
-          {/* Top meta row */}
+        <div
+          className="absolute left-0 right-0 mt-2 bg-white border border-black/10 z-[9999]"
+          onMouseDown={(e) => e.preventDefault()}
+        >
           <div className="px-4 py-3 border-b border-black/10 flex items-center justify-between">
-            <div className="text-[10px] uppercase tracking-[0.22em] text-black/50">
-              Search results
+            <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
+              {q.trim() ? "Results" : "Quick categories"}
             </div>
-            <div className="text-[10px] uppercase tracking-[0.22em] text-black/40">
-              ↑ ↓ to navigate • Enter to open
-            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                setActive(-1);
+                inputRef.current?.blur();
+              }}
+              className="text-[11px] uppercase tracking-[0.22em] text-black/45 hover:text-black transition"
+            >
+              Close
+            </button>
           </div>
 
           {!q.trim() ? (
-            <div className="px-4 py-6">
-              <div className="text-sm text-black/70">
-                Try searching “MDF” or “BOX”.
-              </div>
-              <div className="mt-2 text-xs text-black/50">
-                You can search by{" "}
-                <span className="text-black/70">product name</span> or{" "}
-                <span className="text-black/70">category</span>.
-              </div>
-            </div>
-          ) : q.trim().length === 1 ? (
-            <div className="px-4 py-6">
-              <div className="text-sm text-black/70">Keep typing…</div>
-              <div className="mt-2 text-xs text-black/50">
-                Minimum <span className="text-black/70">2 letters</span> for
-                product results.
+            <div className="p-2">
+              <div className="px-2 py-2 text-xs text-black/60">Browse categories</div>
+
+              <ul className="p-1 grid grid-cols-1 sm:grid-cols-2 gap-1">
+                {categories.slice(0, 8).map((c) => (
+                  <li key={c.name}>
+                    <button
+                      type="button"
+                      onClick={() => goCategory(c)}
+                      className="w-full flex items-center justify-between px-3 py-3 hover:bg-black/5 transition text-left"
+                    >
+                      <div className="min-w-0">
+                        <div className="text-sm text-black truncate">{c.name}</div>
+                        <div className="text-[11px] text-black/45">
+                          {c.count} {c.count === 1 ? "product" : "products"}
+                        </div>
+                      </div>
+                      <div className="text-xs text-black/35">→</div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="p-2">
+                <Link
+                  to="/shop"
+                  onClick={() => {
+                    setOpen(false);
+                    onNavigate?.();
+                  }}
+                  className="block text-center border border-black/10 py-3 text-xs uppercase tracking-[0.22em] text-black/70 hover:bg-black/5 transition"
+                >
+                  View all products
+                </Link>
               </div>
             </div>
           ) : !hasAny ? (
             <div className="px-4 py-6">
-              <div className="text-sm text-black/70">
-                No results for “{q}”
-              </div>
+              <div className="text-sm text-black/70">No results for “{q}”</div>
               <div className="mt-2 text-xs text-black/50">
                 Try a different name or category.
               </div>
             </div>
           ) : (
-            <div className="py-1">
-              {/* Categories */}
+            <div className="max-h-[380px] overflow-auto">
               {grouped.categories.length > 0 && (
-                <div className="px-1">
-                  <div className="px-3 pt-3 pb-2 text-[10px] uppercase tracking-[0.22em] text-black/50">
+                <div className="p-2">
+                  <div className="px-2 pt-2 pb-1 text-[11px] uppercase tracking-[0.22em] text-black/45">
                     Categories
                   </div>
-                  <ul className="px-1">
+                  <ul className="p-1 space-y-1">
                     {grouped.categories.map((c, idx) => {
-                      const flatIndex = idx;
-                      const isActive = active === flatIndex;
+                      const isActive = active === idx;
                       return (
                         <li key={c.name}>
                           <button
                             type="button"
-                            onMouseEnter={() => setActive(flatIndex)}
+                            onMouseEnter={() => setActive(idx)}
                             onClick={() => goCategory(c)}
-                            className={`w-full text-left px-3 py-3 transition ${
+                            className={`w-full px-3 py-3 transition text-left ${
                               isActive ? "bg-black/5" : "hover:bg-black/5"
                             }`}
                           >
-                            <div className="flex items-center justify-between">
-                              <div className="text-sm text-black">{c.name}</div>
-                              <div className="text-xs text-black/50">
-                                {c.count}
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="min-w-0">
+                                <div className="text-sm text-black truncate">{c.name}</div>
+                                <div className="text-[11px] text-black/45">
+                                  {c.count} {c.count === 1 ? "product" : "products"}
+                                </div>
                               </div>
+                              <div className="text-xs text-black/35">→</div>
                             </div>
                           </button>
                         </li>
@@ -489,30 +620,27 @@ function PremiumSearch({ products = [], onNavigate }) {
                 </div>
               )}
 
-              {/* Products */}
               {grouped.products.length > 0 && (
-                <div className="px-1">
-                  <div className="px-3 pt-3 pb-2 text-[10px] uppercase tracking-[0.22em] text-black/50">
+                <div className="p-2 border-t border-black/10">
+                  <div className="px-2 pt-2 pb-1 text-[11px] uppercase tracking-[0.22em] text-black/45">
                     Products
                   </div>
-
-                  <ul className="px-1">
+                  <ul className="p-1 space-y-1">
                     {grouped.products.map((p, idx) => {
                       const flatIndex = grouped.categories.length + idx;
                       const isActive = active === flatIndex;
-
                       return (
                         <li key={p.id}>
                           <button
                             type="button"
                             onMouseEnter={() => setActive(flatIndex)}
                             onClick={() => goProduct(p)}
-                            className={`w-full text-left px-3 py-3 transition ${
+                            className={`w-full px-3 py-3 transition text-left ${
                               isActive ? "bg-black/5" : "hover:bg-black/5"
                             }`}
                           >
-                            <div className="flex items-start gap-3">
-                              <div className="h-10 w-10 border border-black/10 overflow-hidden flex-shrink-0 bg-white">
+                            <div className="flex items-center gap-3">
+                              <div className="h-10 w-10 border border-black/10 overflow-hidden bg-white shrink-0">
                                 <img
                                   src={p.image1}
                                   alt={p.name}
@@ -521,14 +649,14 @@ function PremiumSearch({ products = [], onNavigate }) {
                                 />
                               </div>
 
-                              <div className="min-w-0">
-                                <div className="text-sm text-black truncate">
-                                  {p.name}
-                                </div>
-                                <div className="mt-0.5 text-[10px] uppercase tracking-[0.22em] text-black/50">
-                                  {p.category || "Category"}
+                              <div className="min-w-0 flex-1">
+                                <div className="text-sm text-black truncate">{p.name}</div>
+                                <div className="mt-0.5 text-[11px] text-black/45 truncate">
+                                  {p.category}
                                 </div>
                               </div>
+
+                              <div className="text-xs text-black/35">↵</div>
                             </div>
                           </button>
                         </li>
@@ -537,22 +665,21 @@ function PremiumSearch({ products = [], onNavigate }) {
                   </ul>
                 </div>
               )}
+
+              <div className="p-2 border-t border-black/10">
+                <Link
+                  to="/shop"
+                  onClick={() => {
+                    setOpen(false);
+                    onNavigate?.();
+                  }}
+                  className="block text-center border border-black/10 py-3 text-xs uppercase tracking-[0.22em] text-black/70 hover:bg-black/5 transition"
+                >
+                  View all products
+                </Link>
+              </div>
             </div>
           )}
-
-          {/* Footer action */}
-          <div className="border-t border-black/10">
-            <Link
-              to="/shop"
-              onClick={() => {
-                setOpen(false);
-                onNavigate?.();
-              }}
-              className="block px-4 py-3 text-xs uppercase tracking-[0.22em] text-black/70 hover:text-black hover:bg-black/5 transition"
-            >
-              View all products
-            </Link>
-          </div>
         </div>
       )}
     </div>

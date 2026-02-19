@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Navbar from "./navbar/Navbar";
 import Footer from "./components/Footer";
 import Preloader from "./util/Preloader";
 import Oneko from "./lib/Oneko";
@@ -39,7 +39,7 @@ const App = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar/>
 
       {loading && <Preloader onFinish={() => setLoading(false)} />}
 

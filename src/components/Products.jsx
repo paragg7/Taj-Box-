@@ -72,20 +72,16 @@ const Products = ({
       {/* Product Info */}
       <div className="space-y-2">
         <div className="flex justify-between items-start gap-3">
-          <h3 className="text-xs xs:text-sm font-normal text-gray-900 flex-1 leading-snug line-clamp-2">
+          <h3 className="text-xs xs:text-sm font-normal uppercase text-gray-900 flex-1 leading-snug line-clamp-2">
             {name}
           </h3>
 
           <div className="text-right whitespace-nowrap">
             <span className="text-xs xs:text-sm font-bold text-gray-900">
-              ₹{price}
+              <p>From ₹{price}</p>
             </span>
 
-            {oldPrice && (
-              <span className="text-xs xs:text-sm text-gray-400 line-through ml-2">
-                ₹{oldPrice}
-              </span>
-            )}
+            
           </div>
         </div>
 

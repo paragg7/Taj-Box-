@@ -4,7 +4,11 @@ import { useParams } from "react-router-dom";
 import { ChevronDown, ChevronUp, Package, Truck } from "lucide-react";
 
 const parseMoney = (value) =>
-  Number(String(value ?? "").replace(/,/g, "").trim()) || 0;
+  Number(
+    String(value ?? "")
+      .replace(/,/g, "")
+      .trim(),
+  ) || 0;
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -14,9 +18,12 @@ const ProductPage = () => {
 
   // ✅ supports 2, 3, or 4 images (or more if you add later)
   const images = useMemo(() => {
-    return [product.image1, product.image2, product.image3, product.image4].filter(
-      Boolean
-    );
+    return [
+      product.image1,
+      product.image2,
+      product.image3,
+      product.image4,
+    ].filter(Boolean);
   }, [product.image1, product.image2, product.image3, product.image4]);
 
   const [activeImage, setActiveImage] = useState(images[0]);
@@ -32,10 +39,29 @@ const ProductPage = () => {
   const PACKS = [25, 50, 100];
   const [selectedPack, setSelectedPack] = useState(25);
 
-  const unitPrice = useMemo(() => parseMoney(product.price), [product.price]);
+  // ✅ FIXED: reads pricing per pack (25/50/100) from Item.jsx
+  const unitPrice = useMemo(() => {
+    const p = product.pricing;
+
+    // direct match
+    const packPrice = p?.[selectedPack];
+    if (packPrice !== undefined && packPrice !== null) {
+      return parseMoney(packPrice);
+    }
+
+    // fallback to 25 pack as base
+    const basePrice = p?.[25];
+    if (basePrice !== undefined && basePrice !== null) {
+      return parseMoney(basePrice);
+    }
+
+    // last fallback (old field)
+    return parseMoney(product.price);
+  }, [product, selectedPack]);
+
   const totalPrice = useMemo(
     () => selectedPack * unitPrice,
-    [selectedPack, unitPrice]
+    [selectedPack, unitPrice],
   );
 
   const phoneNumber = "919468480991";
@@ -105,7 +131,7 @@ Product Page: ${window.location.href}`;
 
             {/* Main Image */}
             <div className="order-1 lg:order-2 bg-gray-100 rounded-sm overflow-hidden w-full">
-              <div className="h-[360px] xs:h-[420px] sm:h-[520px] lg:h-[600px] w-full">
+              <div className="h-[360px] xs:h-[420px]  sm:h-[520px] lg:h-[600px] w-full">
                 <img
                   src={activeImage || images[0]} // ✅ safety
                   alt={product.name}
@@ -134,7 +160,7 @@ Product Page: ${window.location.href}`;
                 Price
               </p>
               <p className="mt-1 text-3xl font-bold tracking-tight text-gray-900">
-                ₹{product.price}
+                From ₹{product.price}
               </p>
             </div>
 
@@ -273,25 +299,16 @@ Product Page: ${window.location.href}`;
               }`}
             >
               <div className="px-5 py-5 space-y-4 text-sm text-gray-700 leading-relaxed">
-                <p>
-                  Loose-fit sweatshirt crafted from a premium medium-weight
-                  cotton blend, designed for everyday comfort with a clean,
-                  modern silhouette.
-                </p>
+                <p>{product.description || "Description coming soon."}</p>
 
-                <p>
-                  The brushed interior delivers a soft hand-feel while
-                  maintaining breathability, making it ideal for all-day wear
-                  across seasons.
-                </p>
-
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Relaxed, loose-fit silhouette</li>
-                  <li>Medium-weight cotton blend fabric</li>
-                  <li>Soft brushed interior for added comfort</li>
-                  <li>Durable construction with a premium finish</li>
-                  <li>Suitable for casual and everyday styling</li>
-                </ul>
+                {Array.isArray(product.features) &&
+                  product.features.length > 0 && (
+                    <ul className="list-disc pl-5 space-y-2">
+                      {product.features.map((f) => (
+                        <li key={f}>{f}</li>
+                      ))}
+                    </ul>
+                  )}
               </div>
             </div>
           </div>

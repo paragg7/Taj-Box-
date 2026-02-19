@@ -15,7 +15,7 @@ const Category = () => {
       id: 1,
       image:
         "https://images.unsplash.com/photo-1579027989536-b7b1f875659b?w=600&auto=format&fit=crop&q=60",
-      name: "MDF Boxes",
+      name: "MDF BOX",
       link: "/shop/mdf-box",
       desc: "Rigid luxury boxes with premium finishing options.",
     },
@@ -23,7 +23,7 @@ const Category = () => {
       id: 2,
       image:
         "https://images.unsplash.com/photo-1728034261578-afe827e282a2?w=600&auto=format&fit=crop&q=60",
-      name: "File Boxes",
+      name: "FILE BOX",
       link: "/shop/file-box",
       desc: "Structured packaging designed for elegance and order.",
     },
@@ -31,8 +31,36 @@ const Category = () => {
       id: 3,
       image:
         "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
-      name: "Dhollu",
+      name: "DHOLLU",
       link: "/shop/dhollu",
+      desc: "Classic styles with traditional wedding presentation.",
+    },{
+      id: 4,
+      image:
+        "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
+      name: "CAKE BOX",
+       link: "/shop/cake-box",
+      desc: "Classic styles with traditional wedding presentation.",
+    },{
+      id: 5,
+      image:
+        "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
+      name: "PLATTER BOX",
+      link: "/shop/platter-box",
+      desc: "Classic styles with traditional wedding presentation.",
+    },{
+      id: 6,
+      image:
+        "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
+      name: "SWEETS BOX",
+      link: "/shop/sweets-box",
+      desc: "Classic styles with traditional wedding presentation.",
+    },{
+      id: 7,
+      image:
+        "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
+      name: "HAMPER BOX",
+      link: "/shop/hamper-box",
       desc: "Classic styles with traditional wedding presentation.",
     },
   ];
