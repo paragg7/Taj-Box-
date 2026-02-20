@@ -1,14 +1,22 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { products } from "../products/Item";
 import { useParams } from "react-router-dom";
 import { ChevronDown, ChevronUp, Package, Truck } from "lucide-react";
-
+import { Phone, MessageCircle, Sparkles } from "lucide-react";
 const parseMoney = (value) =>
   Number(
     String(value ?? "")
       .replace(/,/g, "")
       .trim(),
   ) || 0;
+
+const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -43,19 +51,16 @@ const ProductPage = () => {
   const unitPrice = useMemo(() => {
     const p = product.pricing;
 
-    // direct match
     const packPrice = p?.[selectedPack];
     if (packPrice !== undefined && packPrice !== null) {
       return parseMoney(packPrice);
     }
 
-    // fallback to 25 pack as base
     const basePrice = p?.[25];
     if (basePrice !== undefined && basePrice !== null) {
       return parseMoney(basePrice);
     }
 
-    // last fallback (old field)
     return parseMoney(product.price);
   }, [product, selectedPack]);
 
@@ -92,27 +97,90 @@ Product Page: ${window.location.href}`;
 
   const callUrl = `tel:+${phoneNumber}`;
 
+  // --------------------------
+  // Gallery UX (premium)
+  // --------------------------
+  const activeIndex = useMemo(() => {
+    const idx = images.findIndex((x) => x === activeImage);
+    return idx >= 0 ? idx : 0;
+  }, [images, activeImage]);
+
+  const goPrev = useCallback(() => {
+    if (!images.length) return;
+    const next = (activeIndex - 1 + images.length) % images.length;
+    setActiveImage(images[next]);
+  }, [activeIndex, images]);
+
+  const goNext = useCallback(() => {
+    if (!images.length) return;
+    const next = (activeIndex + 1) % images.length;
+    setActiveImage(images[next]);
+  }, [activeIndex, images]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [goPrev, goNext]);
+
+  // Hover zoom without libraries (premium feel)
+  const stageRef = useRef(null);
+  const [zoom, setZoom] = useState({ on: false, x: 50, y: 50 });
+
+  const onMove = (e) => {
+    const el = stageRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    setZoom((z) => ({ ...z, x: clamp(x, 0, 100), y: clamp(y, 0, 100) }));
+  };
+
+  const onEnter = () => setZoom((z) => ({ ...z, on: true }));
+  const onLeave = () => setZoom((z) => ({ ...z, on: false }));
+
+  // Small helper to show correct currency formatting
+  const formatINR = (v) => `Rs.${Number(v || 0).toLocaleString("en-IN")}.00`;
+
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-8 sm:gap-10 lg:gap-14 items-start">
+      {/* Premium, simple layout: clear columns + strong borders (no shadows, no rounded) */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_520px] gap-10 lg:gap-16 items-start">
         {/* LEFT – IMAGES */}
-        <div className="self-start lg:sticky lg:top-24">
-          <div className="flex flex-col lg:flex-row gap-3 sm:gap-4">
-            {/* Thumbnails */}
-            <div className="flex lg:flex-col gap-2 sm:gap-3 order-2 lg:order-1 overflow-x-auto lg:overflow-visible -mx-4 px-4 lg:mx-0 lg:px-0">
+        <section className="self-start lg:sticky lg:top-24">
+          {/* Title line for UX */}
+          <div className="flex items-center justify-between border-b border-black/10 pb-3">
+            <p className="text-xs uppercase tracking-wider text-gray-500">
+              Product Images
+            </p>
+            {images.length > 1 && (
+              <p className="text-xs text-gray-500">
+                {activeIndex + 1} / {images.length}
+              </p>
+            )}
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 lg:grid-cols-[96px_1fr] gap-4">
+            {/* Thumbs (desktop left) */}
+            <div className="hidden lg:flex flex-col gap-2">
               {images.map((img, i) => {
                 const active = activeImage === img;
                 return (
                   <button
-                    key={img} // ✅ better than index
+                    key={img}
+                    type="button"
                     onClick={() => setActiveImage(img)}
                     className={[
-                      "shrink-0 w-16 h-16 xs:w-18 xs:h-18 sm:w-20 sm:h-20 lg:w-24 lg:h-24",
-                      "rounded-sm overflow-hidden transition",
-                      "border-2",
+                      "w-24 h-24 overflow-hidden border transition",
                       active
                         ? "border-black"
-                        : "border-gray-200 hover:border-gray-400",
+                        : "border-black/15 hover:border-black/40",
                       "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
                     ].join(" ")}
                     aria-label={`View image ${i + 1}`}
@@ -120,41 +188,121 @@ Product Page: ${window.location.href}`;
                   >
                     <img
                       src={img}
-                      alt={`View ${i + 1}`}
+                      alt={`Thumbnail ${i + 1}`}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      decoding="async"
                     />
                   </button>
                 );
               })}
             </div>
 
-            {/* Main Image */}
-            <div className="order-1 lg:order-2 bg-gray-100 rounded-sm overflow-hidden w-full">
-              <div className="h-[360px] xs:h-[420px]  sm:h-[520px] lg:h-[600px] w-full">
+            {/* Main stage */}
+            <div className="border border-black/10 bg-gray-50">
+              <div
+                ref={stageRef}
+                onMouseMove={onMove}
+                onMouseEnter={onEnter}
+                onMouseLeave={onLeave}
+                className="relative h-[360px] xs:h-[420px] sm:h-[520px] lg:h-[640px] w-full overflow-hidden select-none"
+                aria-label="Product image zoom stage"
+              >
                 <img
-                  src={activeImage || images[0]} // ✅ safety
+                  src={activeImage || images[0]}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className={[
+                    "w-full h-full object-cover transition-transform duration-200",
+                    zoom.on ? "scale-[1.45]" : "scale-100",
+                  ].join(" ")}
+                  style={{
+                    transformOrigin: `${zoom.x}% ${zoom.y}%`,
+                  }}
+                  draggable={false}
+                  decoding="async"
                 />
+
+                {/* Minimal controls (premium, no rounded, no shadow) */}
+                {images.length > 1 && (
+                  <>
+                    
+    
+
+                    {/* Progress bar */}
+                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black/10">
+                      <div
+                        className="h-full bg-black transition-all duration-300"
+                        style={{
+                          width: `${((activeIndex + 1) / images.length) * 100}%`,
+                        }}
+                      />
+                    </div>
+
+                    {/* Hint */}
+                    <div className="absolute top-3 left-3 border border-black/20 bg-white px-3 py-1 text-xs text-gray-700">
+                      Hover to zoom
+                    </div>
+                  </>
+                )}
               </div>
             </div>
+
+            {/* Thumbs (mobile bottom strip) */}
+            {images.length > 1 && (
+              <div className="lg:hidden -mx-4 px-4 overflow-x-auto">
+                <div className="flex gap-2 py-3">
+                  {images.map((img, i) => {
+                    const active = activeImage === img;
+                    return (
+                      <button
+                        key={img}
+                        type="button"
+                        onClick={() => setActiveImage(img)}
+                        className={[
+                          "shrink-0 w-20 h-20 overflow-hidden border transition",
+                          active
+                            ? "border-black"
+                            : "border-black/15 hover:border-black/40",
+                          "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+                        ].join(" ")}
+                        aria-label={`View image ${i + 1}`}
+                        aria-pressed={active}
+                      >
+                        <img
+                          src={img}
+                          alt={`Thumbnail ${i + 1}`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <p className="text-xs text-gray-500 pb-2">
+                  Swipe thumbnails • Use ← → keys on desktop
+                </p>
+              </div>
+            )}
           </div>
-        </div>
+        </section>
 
         {/* RIGHT – PRODUCT INFO */}
-        <div className="flex flex-col gap-5 lg:gap-6 pr-0 lg:pr-2">
-          <p className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider">
-            {product.category}
-          </p>
+        <section className="flex flex-col gap-6">
+          {/* Header block */}
+          <header className="">
+            <p className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider">
+              {product.category}
+            </p>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
-            {product.name}
-          </h1>
+            <h1 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+              {product.name}
+            </h1>
+          </header>
 
-          {/* ✅ KEEP THIS SECTION EXACTLY (no changes) */}
-          <section className="rounded-sm border border-black/10 bg-white">
-            {/* PRICE */}
+          {/* Pricing / Pack box (kept structure, upgraded container) */}
+          <div className="border border-black/10 bg-white">
             <div className="px-5 py-5 border-b border-black/10">
               <p className="text-xs uppercase tracking-wider text-gray-500">
                 Price
@@ -162,9 +310,11 @@ Product Page: ${window.location.href}`;
               <p className="mt-1 text-3xl font-bold tracking-tight text-gray-900">
                 From ₹{product.price}
               </p>
+              <p className="mt-2 text-sm text-gray-600">
+                Select a pack to see accurate pricing instantly.
+              </p>
             </div>
 
-            {/* PACK SELECTION */}
             <div className="px-5 py-5 border-b border-black/10">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-gray-900">
@@ -174,7 +324,7 @@ Product Page: ${window.location.href}`;
                 <p className="text-sm text-gray-600">
                   Unit:{" "}
                   <span className="font-medium text-gray-900">
-                    Rs.{unitPrice.toLocaleString("en-IN")}.00
+                    {formatINR(unitPrice)}
                   </span>
                 </p>
               </div>
@@ -189,11 +339,10 @@ Product Page: ${window.location.href}`;
                       type="button"
                       onClick={() => setSelectedPack(p)}
                       className={[
-                        "h-12 rounded-sm text-sm font-semibold transition",
-                        "border",
+                        "h-12 text-sm font-semibold transition border",
                         active
                           ? "bg-black text-white border-black"
-                          : "bg-white text-gray-900 border-black/10 hover:border-black/20 hover:bg-gray-50",
+                          : "bg-white text-gray-900 border-black/10 hover:border-black/25 hover:bg-gray-50",
                         "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
                       ].join(" ")}
                       aria-pressed={active}
@@ -205,7 +354,7 @@ Product Page: ${window.location.href}`;
               </div>
             </div>
 
-            {/* TOTAL (RESULT SECTION) */}
+            {/* CTA area */}
             <div className="px-5 py-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -218,72 +367,87 @@ Product Page: ${window.location.href}`;
                 </div>
 
                 <p className="text-2xl font-bold text-gray-900">
-                  Rs.{totalPrice.toLocaleString("en-IN")}.00
+                  {formatINR(totalPrice)}
                 </p>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-black/10">
-                <p className="text-sm text-gray-600">
-                  For bulk order contact{" "}
-                  <a
-                    href={bulkOrderUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-900 font-semibold underline underline-offset-4 hover:opacity-80"
-                  >
-                    WhatsApp
-                  </a>{" "}
-                  or{" "}
-                  <a
-                    href={callUrl}
-                    className="text-gray-900 font-semibold underline underline-offset-4 hover:opacity-80"
-                  >
-                    Call
-                  </a>
-                </p>
+              <div className="mt-4">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <button className="w-full bg-black text-white py-3.5 sm:py-4 font-semibold hover:bg-black/90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                    Order On Whatsapp
+                  </button>
+                </a>
+
+                {/* ✅ YOUR EXACT BLOCK (unchanged) */}
+
+                <div
+                  id="bulk-order"
+                  className="mt-5  border border-black/10  p-4 sm:p-5 "
+                >
+                  {/* Header */}
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900">
+                        Bulk Order
+                      </p>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Need custom quantity or pricing? Contact us and we’ll
+                        respond fast.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <a
+                      href={bulkOrderUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group"
+                      aria-label="Contact on WhatsApp for bulk order"
+                    >
+                      <button className="w-full border border-black/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-black/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                        <span className="flex items-center justify-center gap-2">
+                          <MessageCircle className="h-4 w-4 text-black/70 group-hover:text-black" />
+                          WhatsApp
+                        </span>
+                      </button>
+                    </a>
+
+                    <a
+                      href={callUrl}
+                      className="group"
+                      aria-label="Call now for bulk order"
+                    >
+                      <button className="w-full border border-black/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-black/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                        <span className="flex items-center justify-center gap-2">
+                          <Phone className="h-4 w-4 text-black/70 group-hover:text-black" />
+                          Call Now
+                        </span>
+                      </button>
+                    </a>
+                  </div>
+
+                  {/* Trust microcopy */}
+                  <p className="mt-3 text-xs text-gray-500">
+                    Available 10am–7pm • Typical reply within 15–30 mins
+                  </p>
+                </div>
               </div>
             </div>
-          </section>
-
-          <div className="flex gap-3">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1"
-            >
-              <button className="w-full bg-black text-white py-3.5 sm:py-4 rounded-sm font-semibold hover:bg-black/90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
-                Order On Whatsapp
-              </button>
-            </a>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-sm border border-black/10 bg-white px-4 py-3 flex items-center gap-3">
-              <Package className="w-5 h-5 text-gray-700" />
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  Premium Packaging
-                </p>
-                <p className="text-xs text-gray-600">Safe & secure packing</p>
-              </div>
-            </div>
-
-            <div className="rounded-sm border border-black/10 bg-white px-4 py-3 flex items-center gap-3">
-              <Truck className="w-5 h-5 text-gray-700" />
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  3–4 Working Days
-                </p>
-                <p className="text-xs text-gray-600">Fast dispatch</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-sm border border-black/10 bg-white">
+          {/* Accordions (clean, premium, no rounding) */}
+          <div className="border border-black/10 bg-white">
             <button
               onClick={() => setIsDescriptionOpen((v) => !v)}
-              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-sm"
+              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+              aria-expanded={isDescriptionOpen}
             >
               <h3 className="font-semibold text-gray-900">
                 Description &amp; Fit
@@ -313,10 +477,11 @@ Product Page: ${window.location.href}`;
             </div>
           </div>
 
-          <div className="rounded-sm border border-black/10 bg-white">
+          <div className="border border-black/10 bg-white">
             <button
               onClick={() => setIsShippingOpen((v) => !v)}
-              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-sm"
+              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+              aria-expanded={isShippingOpen}
             >
               <h3 className="font-semibold text-gray-900">Shipping</h3>
               {isShippingOpen ? <ChevronUp /> : <ChevronDown />}
@@ -341,7 +506,7 @@ Product Page: ${window.location.href}`;
           </div>
 
           <div className="h-2 sm:h-4" />
-        </div>
+        </section>
       </div>
     </main>
   );

@@ -40,6 +40,26 @@ const Home = () => {
           products={filterByCategory("dhollu")}
           link="/shop/dhollu"
         />
+         <ProductsSection
+          title="hamper boxes"
+          products={filterByCategory("hamper box")}
+          link="/shop/hamper-box"
+        />
+        <ProductsSection
+          title="cake boxes"
+          products={filterByCategory("cake box")}
+          link="/shop/cake-box" 
+        />
+        <ProductsSection
+          title="platter boxes"
+          products={filterByCategory("platter box")}
+          link="/shop/platter-box" 
+        />
+         <ProductsSection
+          title="sweets boxes"
+          products={filterByCategory("sweets box")}
+          link="/shop/sweets-box" 
+        />
       </div>
     </div>
   );

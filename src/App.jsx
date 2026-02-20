@@ -14,6 +14,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ShopByCategory from "./Pages/ShopByCategory";
 import AllCategoriesPage from "./Pages/AllCategoriesPage";
 
+
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -44,6 +45,7 @@ const App = () => {
       {loading && <Preloader onFinish={() => setLoading(false)} />}
 
       {isDesktop && <Oneko />}
+      
 
       <div className={loading ? "pointer-events-none" : ""}>
         <ScrollToTop />

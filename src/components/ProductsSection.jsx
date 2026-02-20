@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 const ProductsSection = ({ products, title, link }) => {
   return (
-    <section className="py-12 md:py-8">
+    <section className="py-6 sm:py-8">
 
       {/* Pass link to Title */}
       <Title heading={title} link={link} />
