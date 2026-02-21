@@ -1,129 +1,274 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const GRID = 25;
-const CELL = 25;
+/**
+ * VISUAL STYLE TARGET (matches your screenshot)
+ * - Thick black walls + thick outer frame
+ * - White canvas / lots of whitespace
+ * - Square line caps (not rounded)
+ * - Minimal tiny UI marks (3 dots top-left, finish checker bottom-right)
+ */
 
-const START_STEP_MS = 160; // start slow
-const MIN_STEP_MS = 55; // max speed cap
-const SPEED_UP_BY = 7; // speed up every point
+const GRID = 17; // density similar to screenshot (try 17/19/21)
+const CELL = 34; // corridor size (visual scale)
+const STROKE = 10; // wall thickness (this is the "look")
+const PAD = 42; // big whitespace around board (like image)
+const TOP_UI_H = 18; // space for the 3 dots above frame
+const FINISH_MARK_W = 34;
+const FINISH_MARK_H = 10;
 
 const DIRS = {
-  ArrowUp: { x: 0, y: -1 },
-  ArrowDown: { x: 0, y: 1 },
-  ArrowLeft: { x: -1, y: 0 },
-  ArrowRight: { x: 1, y: 0 },
-  w: { x: 0, y: -1 },
-  s: { x: 0, y: 1 },
-  a: { x: -1, y: 0 },
-  d: { x: 1, y: 0 },
+  ArrowUp: { x: 0, y: -1, k: "N" },
+  ArrowDown: { x: 0, y: 1, k: "S" },
+  ArrowLeft: { x: -1, y: 0, k: "W" },
+  ArrowRight: { x: 1, y: 0, k: "E" },
+  w: { x: 0, y: -1, k: "N" },
+  s: { x: 0, y: 1, k: "S" },
+  a: { x: -1, y: 0, k: "W" },
+  d: { x: 1, y: 0, k: "E" },
 };
+const OPP = { N: "S", S: "N", E: "W", W: "E" };
 
-const same = (a, b) => a.x === b.x && a.y === b.y;
-
-function randFood(snake) {
-  while (true) {
-    const f = {
-      x: Math.floor(Math.random() * GRID),
-      y: Math.floor(Math.random() * GRID),
-    };
-    if (!snake.some((p) => same(p, f))) return f;
+function generateMaze(size) {
+  const cells = [];
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      cells.push({
+        x,
+        y,
+        visited: false,
+        walls: { N: true, E: true, S: true, W: true },
+      });
+    }
   }
+
+  const idx = (x, y) => y * size + x;
+  const inb = (x, y) => x >= 0 && y >= 0 && x < size && y < size;
+
+  const stack = [];
+  const start = cells[idx(0, 0)];
+  start.visited = true;
+  stack.push(start);
+
+  const unvisited = (c) => {
+    const { x, y } = c;
+    const list = [];
+    if (inb(x, y - 1)) list.push({ dir: "N", cell: cells[idx(x, y - 1)] });
+    if (inb(x + 1, y)) list.push({ dir: "E", cell: cells[idx(x + 1, y)] });
+    if (inb(x, y + 1)) list.push({ dir: "S", cell: cells[idx(x, y + 1)] });
+    if (inb(x - 1, y)) list.push({ dir: "W", cell: cells[idx(x - 1, y)] });
+    return list.filter((n) => !n.cell.visited);
+  };
+
+  while (stack.length) {
+    const cur = stack[stack.length - 1];
+    const ns = unvisited(cur);
+
+    if (!ns.length) {
+      stack.pop();
+      continue;
+    }
+
+    const pick = ns[(Math.random() * ns.length) | 0];
+    const next = pick.cell;
+
+    cur.walls[pick.dir] = false;
+    next.walls[OPP[pick.dir]] = false;
+
+    next.visited = true;
+    stack.push(next);
+  }
+
+  for (const c of cells) c.visited = false;
+  return { size, cells };
 }
 
-export default function SnakeGameModal({ open, onClose }) {
-  const [score, setScore] = useState(0);
-  const scoreRef = useRef(0);
+function canMove(maze, x, y, dirKey) {
+  const size = maze.size;
+  const idx = (xx, yy) => yy * size + xx;
+  if (x < 0 || y < 0 || x >= size || y >= size) return false;
 
-  const [best, setBest] = useState(() => {
-    const v = Number(localStorage.getItem("snake_best") || 0);
+  const cur = maze.cells[idx(x, y)];
+  if (cur.walls[dirKey]) return false;
+
+  const d =
+    dirKey === "N"
+      ? { x: 0, y: -1 }
+      : dirKey === "S"
+      ? { x: 0, y: 1 }
+      : dirKey === "E"
+      ? { x: 1, y: 0 }
+      : { x: -1, y: 0 };
+
+  const nx = x + d.x;
+  const ny = y + d.y;
+  return nx >= 0 && ny >= 0 && nx < size && ny < size;
+}
+
+function fmtMs(ms) {
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return m > 0 ? `${m}:${String(r).padStart(2, "0")}` : `${r}s`;
+}
+
+export default function MazeGameModal({ open, onClose }) {
+  const [maze, setMaze] = useState(() => generateMaze(GRID));
+
+  const [running, setRunning] = useState(false);
+  const [won, setWon] = useState(false);
+
+  const [moves, setMoves] = useState(0);
+  const movesRef = useRef(0);
+
+  const [elapsed, setElapsed] = useState(0);
+  const startTsRef = useRef(0);
+  const rafRef = useRef(null);
+
+  const [bestMs, setBestMs] = useState(() => {
+    const v = Number(localStorage.getItem("maze_best_ms") || 0);
     return Number.isFinite(v) ? v : 0;
   });
 
-  // step for smooth motion duration + loop
-  const [stepMs, setStepMs] = useState(START_STEP_MS);
-  const stepMsRef = useRef(START_STEP_MS);
+  const playerRef = useRef({ x: 0, y: 0 });
+  const [player, setPlayer] = useState({ x: 0, y: 0 });
 
-  // loop refs
-  const runningRef = useRef(false);
-  const pausedRef = useRef(false);
+  const [hintVisible, setHintVisible] = useState(true);
 
-  const dirRef = useRef({ x: 1, y: 0 });
-  const queuedDirRef = useRef(null);
+  // subtle "blocked" shake (still minimal, same style)
+  const [shake, setShake] = useState(false);
+  const shakeTimer = useRef(null);
 
-  const snakeRef = useRef([]);
-  const foodRef = useRef({ x: 0, y: 0 });
+  // responsive scale
+  const [vp, setVp] = useState({ w: 1200, h: 800 });
 
-  // render state
-  const [snake, setSnake] = useState([]);
-  const [food, setFood] = useState({ x: 0, y: 0 });
+  // swipe (one move per swipe)
+  const swipeRef = useRef({ active: false, x0: 0, y0: 0 });
 
-  // raf loop
-  const rafRef = useRef(null);
-  const lastRef = useRef(0);
-  const accRef = useRef(0);
+  const goal = useMemo(() => ({ x: maze.size - 1, y: maze.size - 1 }), [maze]);
+
+  const boardPx = useMemo(() => maze.size * CELL, [maze]);
+  const canvasW = useMemo(() => PAD * 2 + boardPx, [boardPx]);
+  const canvasH = useMemo(() => PAD * 2 + boardPx + TOP_UI_H, [boardPx]);
+
+  const scale = useMemo(() => {
+    const maxW = vp.w * 0.88;
+    const maxH = vp.h * 0.82;
+    const cap = 620; // feels like screenshot sizing on desktop
+    const target = Math.min(maxW, maxH, cap);
+    return Math.min(1, target / (canvasW || 1));
+  }, [vp, canvasW]);
 
   const reset = () => {
-    const mid = Math.floor(GRID / 2);
-    const s = [
-      { x: mid, y: mid },
-      { x: mid - 1, y: mid },
-      { x: mid - 2, y: mid },
-    ];
+    setRunning(false);
+    setWon(false);
+    setElapsed(0);
+    startTsRef.current = 0;
 
-    snakeRef.current = s;
-    dirRef.current = { x: 1, y: 0 };
-    queuedDirRef.current = null;
+    movesRef.current = 0;
+    setMoves(0);
 
-    foodRef.current = randFood(s);
+    playerRef.current = { x: 0, y: 0 };
+    setPlayer({ x: 0, y: 0 });
 
-    runningRef.current = false;
-    pausedRef.current = false;
-
-    stepMsRef.current = START_STEP_MS;
-    setStepMs(START_STEP_MS);
-
-    lastRef.current = 0;
-    accRef.current = 0;
-
-    scoreRef.current = 0;
-    setScore(0);
-
-    setSnake(s);
-    setFood(foodRef.current);
+    setHintVisible(true);
   };
 
-  const gameOver = () => {
-    runningRef.current = false;
-    pausedRef.current = false;
+  const regenerate = () => {
+    setMaze(generateMaze(GRID));
+  };
 
-    const finalScore = scoreRef.current;
-    setBest((b) => {
-      const nb = Math.max(b, finalScore);
-      localStorage.setItem("snake_best", String(nb));
+  const nudge = () => {
+    setShake(true);
+    if (shakeTimer.current) clearTimeout(shakeTimer.current);
+    shakeTimer.current = setTimeout(() => setShake(false), 140);
+  };
+
+  const win = (finalMs) => {
+    setRunning(false);
+    setWon(true);
+    setBestMs((b) => {
+      const nb = b === 0 ? finalMs : Math.min(b, finalMs);
+      localStorage.setItem("maze_best_ms", String(nb));
       return nb;
     });
   };
 
-  const start = () => {
-    if (runningRef.current) return;
-    runningRef.current = true;
-    pausedRef.current = false;
-    lastRef.current = 0;
-    accRef.current = 0;
+  const moveOnce = (dirKey) => {
+    if (won) return;
+
+    if (!running) {
+      setRunning(true);
+      startTsRef.current = 0;
+    }
+
+    const { x, y } = playerRef.current;
+    if (!canMove(maze, x, y, dirKey)) {
+      nudge();
+      return;
+    }
+
+    const d =
+      dirKey === "N"
+        ? { x: 0, y: -1 }
+        : dirKey === "S"
+        ? { x: 0, y: 1 }
+        : dirKey === "E"
+        ? { x: 1, y: 0 }
+        : { x: -1, y: 0 };
+
+    const nx = x + d.x;
+    const ny = y + d.y;
+
+    playerRef.current = { x: nx, y: ny };
+    setPlayer({ x: nx, y: ny });
+
+    movesRef.current += 1;
+    setMoves(movesRef.current);
+
+    if (hintVisible) setHintVisible(false);
+
+    if (nx === goal.x && ny === goal.y) {
+      const finalMs =
+        startTsRef.current === 0 ? 0 : performance.now() - startTsRef.current;
+      win(finalMs);
+    }
   };
 
-  const togglePause = () => {
-    if (!runningRef.current) return;
-    pausedRef.current = !pausedRef.current;
-  };
+  // timer
+  useEffect(() => {
+    if (!open) return;
 
-  const setDirectionSafe = (next) => {
-    if (!next) return;
-    const cur = dirRef.current;
-    if (next.x === -cur.x && next.y === -cur.y) return; // no reverse
-    queuedDirRef.current = next; // buffer for next tick
-  };
+    const tick = () => {
+      rafRef.current = requestAnimationFrame(tick);
+      if (!running || won) return;
+      const now = performance.now();
+      if (!startTsRef.current) startTsRef.current = now;
+      setElapsed(now - startTsRef.current);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    };
+  }, [open, running, won]);
+
+  // viewport resize
+  useEffect(() => {
+    if (!open) return;
+    const onResize = () => setVp({ w: window.innerWidth, h: window.innerHeight });
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [open]);
+
+  // open reset
+  useEffect(() => {
+    if (!open) return;
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, maze]);
 
   // keyboard
   useEffect(() => {
@@ -134,8 +279,8 @@ export default function SnakeGameModal({ open, onClose }) {
 
       if (e.key === " " || e.code === "Space") {
         e.preventDefault();
-        if (!runningRef.current) start();
-        else togglePause();
+        if (won) return;
+        setRunning((r) => !r);
         return;
       }
 
@@ -144,111 +289,100 @@ export default function SnakeGameModal({ open, onClose }) {
         return;
       }
 
+      if (e.key.toLowerCase() === "g") {
+        regenerate();
+        return;
+      }
+
       const d = DIRS[e.key] || DIRS[e.key.toLowerCase()];
-      if (d) setDirectionSafe(d);
+      if (d) moveOnce(d.k);
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, onClose]);
+  }, [open, maze, won, hintVisible]);
 
-  // main loop (depends only on open)
-  useEffect(() => {
-    if (!open) return;
+  // swipe (one move per swipe)
+  const onPointerDown = (e) => {
+    swipeRef.current.active = true;
+    swipeRef.current.x0 = e.clientX;
+    swipeRef.current.y0 = e.clientY;
+  };
+  const onPointerUp = (e) => {
+    if (!swipeRef.current.active) return;
+    swipeRef.current.active = false;
 
-    reset();
+    const dx = e.clientX - swipeRef.current.x0;
+    const dy = e.clientY - swipeRef.current.y0;
+    const TH = 22;
 
-    const loop = () => {
-      rafRef.current = requestAnimationFrame(loop);
+    if (Math.abs(dx) < TH && Math.abs(dy) < TH) return;
 
-      if (!runningRef.current || pausedRef.current) return;
+    if (Math.abs(dx) > Math.abs(dy)) moveOnce(dx > 0 ? "E" : "W");
+    else moveOnce(dy > 0 ? "S" : "N");
+  };
 
-      const now = performance.now();
-      if (!lastRef.current) lastRef.current = now;
+  // Build thick wall segments (skip boundary walls because frame draws it)
+  const wallLines = useMemo(() => {
+    const size = maze.size;
+    const set = new Set();
+    const lines = [];
 
-      const dt = now - lastRef.current;
-      lastRef.current = now;
+    const px = (n) => PAD + n * CELL;
+    const yOffset = TOP_UI_H; // shift board down a bit (for top-left dots)
 
-      accRef.current += Math.min(dt, 120);
+    const add = (x1, y1, x2, y2) => {
+      const a = `${x1},${y1}`;
+      const b = `${x2},${y2}`;
+      const key = a < b ? `${a}|${b}` : `${b}|${a}`;
+      if (set.has(key)) return;
+      set.add(key);
+      lines.push({ x1, y1, x2, y2, key });
+    };
 
-      while (accRef.current >= stepMsRef.current) {
-        accRef.current -= stepMsRef.current;
+    const idx = (x, y) => y * size + x;
 
-        // apply buffered direction
-        if (queuedDirRef.current) {
-          const next = queuedDirRef.current;
-          const cur = dirRef.current;
-          if (!(next.x === -cur.x && next.y === -cur.y)) dirRef.current = next;
-          queuedDirRef.current = null;
-        }
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const c = maze.cells[idx(x, y)];
+        const left = px(x);
+        const top = yOffset + px(y);
+        const right = px(x + 1);
+        const bottom = yOffset + px(y + 1);
 
-        const s = snakeRef.current;
-        const head = s[0];
-        const d = dirRef.current;
-
-        const newHead = { x: head.x + d.x, y: head.y + d.y };
-
-        // walls
-        if (
-          newHead.x < 0 ||
-          newHead.y < 0 ||
-          newHead.x >= GRID ||
-          newHead.y >= GRID
-        ) {
-          gameOver();
-          return;
-        }
-
-        // self collision
-        if (s.some((p) => same(p, newHead))) {
-          gameOver();
-          return;
-        }
-
-        const ate = same(newHead, foodRef.current);
-
-        const nextSnake = [newHead, ...s];
-        if (!ate) nextSnake.pop();
-
-        snakeRef.current = nextSnake;
-        setSnake(nextSnake);
-
-        if (ate) {
-          // score
-          scoreRef.current += 1;
-          setScore(scoreRef.current);
-
-          // speed up every point
-          const nextStep = Math.max(MIN_STEP_MS, stepMsRef.current - SPEED_UP_BY);
-          stepMsRef.current = nextStep;
-          setStepMs(nextStep);
-
-          // new food
-          foodRef.current = randFood(nextSnake);
-          setFood(foodRef.current);
-        }
+        // internal walls only (no boundary duplication)
+        if (c.walls.N && y !== 0) add(left, top, right, top);
+        if (c.walls.S && y !== size - 1) add(left, bottom, right, bottom);
+        if (c.walls.W && x !== 0) add(left, top, left, bottom);
+        if (c.walls.E && x !== size - 1) add(right, top, right, bottom);
       }
-    };
+    }
 
-    rafRef.current = requestAnimationFrame(loop);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+    return lines;
+  }, [maze]);
 
-  const boardStyle = useMemo(
-    () => ({ width: GRID * CELL, height: GRID * CELL }),
-    []
-  );
+  const playerDot = useMemo(() => {
+    const cx = PAD + player.x * CELL + CELL / 2;
+    const cy = TOP_UI_H + PAD + player.y * CELL + CELL / 2;
+    return { cx, cy };
+  }, [player]);
 
-  // smooth slide transition (duration follows speed)
-  const moveTransition = useMemo(
-    () => ({ type: "tween", ease: "linear", duration: stepMs / 1000 }),
-    [stepMs]
-  );
+  const goalDot = useMemo(() => {
+    const cx = PAD + goal.x * CELL + CELL / 2;
+    const cy = TOP_UI_H + PAD + goal.y * CELL + CELL / 2;
+    return { cx, cy };
+  }, [goal]);
+
+  const frame = useMemo(() => {
+    const x = PAD;
+    const y = TOP_UI_H + PAD;
+    const w = boardPx;
+    const h = boardPx;
+    return { x, y, w, h };
+  }, [boardPx]);
+
+  const status = won ? "Solved" : running ? "Running" : "Paused";
 
   return (
     <AnimatePresence>
@@ -269,90 +403,201 @@ export default function SnakeGameModal({ open, onClose }) {
             transition={{ type: "spring", stiffness: 260, damping: 24 }}
             className="select-none"
           >
-            {/* Minimal top info */}
-            <div className="mb-4 flex items-center justify-between text-black text-sm font-mono">
-              <div className="flex items-center gap-6">
-                <span>Score: {score}</span>
-                <span>Best: {best}</span>
+            {/* tiny top info (kept minimal like screenshot, not a big UI) */}
+            <div className="mb-4 flex items-center justify-between font-mono text-xs text-black/70">
+              <div className="flex items-center gap-4">
+                <span>Status: {status}</span>
+                <span>Moves: {moves}</span>
+                <span>Time: {fmtMs(elapsed)}</span>
+                <span>Best: {bestMs ? fmtMs(bestMs) : "--"}</span>
               </div>
-              <div className="hidden sm:block text-black/50">
-                Space start/pause • R reset • Esc close
+
+              <div className="hidden sm:flex items-center gap-2">
+                <button
+                  onClick={() => setRunning((r) => !r)}
+                  className="h-8 px-3 border border-black text-black active:bg-black/10"
+                >
+                  {won ? "Solved" : running ? "Pause" : "Start"}
+                </button>
+                <button
+                  onClick={reset}
+                  className="h-8 px-3 border border-black text-black active:bg-black/10"
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={regenerate}
+                  className="h-8 px-3 border border-black text-black active:bg-black/10"
+                >
+                  New
+                </button>
               </div>
             </div>
 
-            {/* Play Area (sharp edges, white bg, black snake) */}
-            <div
-              className="relative border border-black overflow-hidden"
-              style={boardStyle}
+            {/* exact-looking canvas */}
+            <motion.div
+              className="bg-white"
+              animate={shake ? { x: [-1, 1, -1, 1, 0] } : { x: 0 }}
+              transition={{ duration: 0.14 }}
+              style={{
+                width: canvasW,
+                height: canvasH,
+                transform: `scale(${scale})`,
+                transformOrigin: "top left",
+              }}
             >
-              {/* Food */}
-              <motion.div
-                className="absolute bg-black"
-                animate={{ x: food.x * CELL, y: food.y * CELL }}
-                transition={moveTransition}
-                style={{ width: CELL, height: CELL }}
-              />
+              <svg
+                width={canvasW}
+                height={canvasH}
+                viewBox={`0 0 ${canvasW} ${canvasH}`}
+                shapeRendering="crispEdges"
+              >
+                {/* Mac-like 3 dots in top-left */}
+                <g transform={`translate(${PAD - 18}, ${6})`}>
+                  <circle cx="6" cy="6" r="2.2" fill="#ef4444" />
+                  <circle cx="14" cy="6" r="2.2" fill="#f59e0b" />
+                  <circle cx="22" cy="6" r="2.2" fill="#22c55e" />
+                </g>
 
-              {/* Snake */}
-              {snake.map((p, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute bg-black"
-                  animate={{ x: p.x * CELL, y: p.y * CELL }}
-                  transition={moveTransition}
-                  style={{ width: CELL, height: CELL }}
+                {/* outer thick frame */}
+                <rect
+                  x={frame.x}
+                  y={frame.y}
+                  width={frame.w}
+                  height={frame.h}
+                  fill="none"
+                  stroke="black"
+                  strokeWidth={STROKE}
+                  strokeLinejoin="miter"
                 />
-              ))}
 
-              {/* Overlay */}
-              {(!runningRef.current || pausedRef.current) && (
-                <div className="absolute inset-0 grid place-items-center">
-                  <div className="text-center text-black font-mono">
-                    {!runningRef.current ? (
-                      <>
-                        <div className="text-xl mb-2">SNAKE</div>
-                        <div className="text-black/60">
-                          Press <span className="text-black">Space</span> to
-                          start
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-black/60">
-                        Paused — press <span className="text-black">Space</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+                {/* maze walls (thick, square ends) */}
+                <g stroke="black" strokeWidth={STROKE} strokeLinecap="square">
+                  {wallLines.map((l) => (
+                    <line
+                      key={l.key}
+                      x1={l.x1}
+                      y1={l.y1}
+                      x2={l.x2}
+                      y2={l.y2}
+                    />
+                  ))}
+                </g>
 
-            {/* Mobile Controls */}
-            <div className="mt-5 flex items-center justify-center gap-3 sm:hidden">
+                {/* start + goal markers (same minimal red) */}
+                <circle
+                  cx={PAD + CELL / 2}
+                  cy={TOP_UI_H + PAD + CELL / 2}
+                  r="3.2"
+                  fill="#b91c1c"
+                />
+                <circle cx={goalDot.cx} cy={goalDot.cy} r="3.2" fill="#b91c1c" />
+
+                {/* player dot (black) */}
+                <motion.circle
+                  r="4.2"
+                  fill="black"
+                  animate={{ cx: playerDot.cx, cy: playerDot.cy }}
+                  initial={false}
+                  transition={{ type: "tween", ease: "linear", duration: 0.06 }}
+                />
+
+                {/* finish checkered mark (bottom-right, outside frame) */}
+                <g
+                  transform={`translate(${frame.x + frame.w - FINISH_MARK_W}, ${
+                    frame.y + frame.h + 10
+                  })`}
+                >
+                  {Array.from({ length: 16 }).map((_, i) => {
+                    const cols = 8;
+                    const x = (i % cols) * (FINISH_MARK_W / cols);
+                    const y = Math.floor(i / cols) * (FINISH_MARK_H / 2);
+                    const on = (i + Math.floor(i / cols)) % 2 === 0;
+                    return (
+                      <rect
+                        key={i}
+                        x={x}
+                        y={y}
+                        width={FINISH_MARK_W / cols}
+                        height={FINISH_MARK_H / 2}
+                        fill={on ? "black" : "white"}
+                        stroke="black"
+                        strokeWidth="0.4"
+                      />
+                    );
+                  })}
+                </g>
+
+                {/* tiny bottom-right micro text (optional, same vibe) */}
+                <text
+                  x={frame.x + frame.w - 2}
+                  y={frame.y + frame.h + 28}
+                  textAnchor="end"
+                  fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+                  fontSize="7"
+                  fill="black"
+                  opacity="0.55"
+                >
+                  FINISH
+                </text>
+
+                {/* hint text (fades out after first move) */}
+                <AnimatePresence>
+                  {hintVisible && !won && (
+                    <motion.g
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <text
+                        x={frame.x + 10}
+                        y={frame.y - 14}
+                        fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+                        fontSize="11"
+                        fill="black"
+                        opacity="0.55"
+                      >
+                        Arrows/WASD • Swipe
+                      </text>
+                    </motion.g>
+                  )}
+                </AnimatePresence>
+              </svg>
+
+              {/* invisible input layer for swipe */}
+              <div
+                className="absolute"
+                style={{
+                  left: PAD,
+                  top: TOP_UI_H + PAD,
+                  width: boardPx,
+                  height: boardPx,
+                }}
+                onPointerDown={onPointerDown}
+                onPointerUp={onPointerUp}
+                onPointerCancel={() => (swipeRef.current.active = false)}
+              />
+            </motion.div>
+
+            {/* mobile buttons (minimal, same style) */}
+            <div className="mt-4 flex items-center justify-center gap-2 sm:hidden font-mono">
               <button
-                onClick={() => setDirectionSafe(DIRS.ArrowLeft)}
-                className="w-12 h-12 border border-black text-black active:bg-black/10"
+                onClick={() => setRunning((r) => !r)}
+                className="h-9 px-3 border border-black text-black active:bg-black/10"
               >
-                ←
+                {won ? "Solved" : running ? "Pause" : "Start"}
               </button>
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={() => setDirectionSafe(DIRS.ArrowUp)}
-                  className="w-12 h-12 border border-black text-black active:bg-black/10"
-                >
-                  ↑
-                </button>
-                <button
-                  onClick={() => setDirectionSafe(DIRS.ArrowDown)}
-                  className="w-12 h-12 border border-black text-black active:bg-black/10"
-                >
-                  ↓
-                </button>
-              </div>
               <button
-                onClick={() => setDirectionSafe(DIRS.ArrowRight)}
-                className="w-12 h-12 border border-black text-black active:bg-black/10"
+                onClick={reset}
+                className="h-9 px-3 border border-black text-black active:bg-black/10"
               >
-                →
+                Reset
+              </button>
+              <button
+                onClick={regenerate}
+                className="h-9 px-3 border border-black text-black active:bg-black/10"
+              >
+                New
               </button>
             </div>
           </motion.div>

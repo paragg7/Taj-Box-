@@ -8,6 +8,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import SnakeGameModal from "@/util/SnakeGameModal"; // adjust path if needed
+import ViewCounter from "./ViewCounter";
 
 const Footer = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -178,6 +179,8 @@ const Footer = () => {
                 Parag
               </button>
             </p>
+            <ViewCounter pageKey="home" />
+            
           </div>
         </div>
       </footer>

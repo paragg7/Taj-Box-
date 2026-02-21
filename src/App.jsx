@@ -15,6 +15,8 @@ import ShopByCategory from "./Pages/ShopByCategory";
 import AllCategoriesPage from "./Pages/AllCategoriesPage";
 
 
+
+
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -41,6 +43,8 @@ const App = () => {
   return (
     <>
       <Navbar/>
+      
+      
 
       {loading && <Preloader onFinish={() => setLoading(false)} />}
 

@@ -222,28 +222,8 @@ Product Page: ${window.location.href}`;
                   decoding="async"
                 />
 
-                {/* Minimal controls (premium, no rounded, no shadow) */}
-                {images.length > 1 && (
-                  <>
-                    
-    
-
-                    {/* Progress bar */}
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black/10">
-                      <div
-                        className="h-full bg-black transition-all duration-300"
-                        style={{
-                          width: `${((activeIndex + 1) / images.length) * 100}%`,
-                        }}
-                      />
-                    </div>
-
-                    {/* Hint */}
-                    <div className="absolute top-3 left-3 border border-black/20 bg-white px-3 py-1 text-xs text-gray-700">
-                      Hover to zoom
-                    </div>
-                  </>
-                )}
+                
+                
               </div>
             </div>
 
