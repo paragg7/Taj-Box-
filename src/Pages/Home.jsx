@@ -3,17 +3,19 @@ import Hero from "@/components/Hero";
 import Category from "@/components/Category";
 import ProductsSection from "@/components/ProductsSection";
 import { products } from "@/products/Item";
+import Reviews from "@/components/Reviews";
 
 const Home = () => {
   const filterByCategory = (category) =>
     products.filter(
-      (p) => p.category?.toLowerCase() === category.toLowerCase()
+      (p) => p.category?.toLowerCase() === category.toLowerCase(),
     );
 
   return (
     <div className="w-full">
       <div className="space-y-8 md:space-y-12 lg:space-y-14">
         <Hero />
+        
 
         <ProductsSection
           title="Best Sellers"
@@ -28,7 +30,7 @@ const Home = () => {
           products={filterByCategory("mdf box")}
           link="/shop/mdf-box"
         />
-
+        <Reviews />
         <ProductsSection
           title="File Boxes"
           products={filterByCategory("file box")}
@@ -40,7 +42,7 @@ const Home = () => {
           products={filterByCategory("dhollu")}
           link="/shop/dhollu"
         />
-         <ProductsSection
+        <ProductsSection
           title="hamper boxes"
           products={filterByCategory("hamper box")}
           link="/shop/hamper-box"
@@ -48,17 +50,17 @@ const Home = () => {
         <ProductsSection
           title="cake boxes"
           products={filterByCategory("cake box")}
-          link="/shop/cake-box" 
+          link="/shop/cake-box"
         />
         <ProductsSection
           title="platter boxes"
           products={filterByCategory("platter box")}
-          link="/shop/platter-box" 
+          link="/shop/platter-box"
         />
-         <ProductsSection
+        <ProductsSection
           title="sweets boxes"
           products={filterByCategory("sweets box")}
-          link="/shop/sweets-box" 
+          link="/shop/sweets-box"
         />
       </div>
     </div>
