@@ -1,25 +1,9 @@
-<<<<<<< HEAD
-import { useEffect, useState } from "react";
-import { bumpView } from "../lib/views";
-=======
 import { useEffect, useRef, useState } from "react";
 import { getCount, incrementAndGet } from "../lib/views";
->>>>>>> a3faa29 (Add maze game modal UI)
 
 export default function useViewCount(pageKey) {
   const [count, setCount] = useState(null);
 
-<<<<<<< HEAD
-  useEffect(() => {
-    let ignore = false;
-
-    async function run() {
-      const latest = await bumpView(pageKey);
-      if (!ignore) setCount(latest);
-    }
-
-    if (pageKey) run();
-=======
   // ✅ StrictMode/dev double-effect guard (in-memory)
   const ranRef = useRef(false);
 
@@ -35,7 +19,6 @@ export default function useViewCount(pageKey) {
     async function run() {
       try {
         const storageKey = `viewed:${pageKey}`;
-
         const alreadyViewed = localStorage.getItem(storageKey);
 
         if (!alreadyViewed) {
@@ -55,7 +38,6 @@ export default function useViewCount(pageKey) {
     }
 
     run();
->>>>>>> a3faa29 (Add maze game modal UI)
 
     return () => {
       ignore = true;
