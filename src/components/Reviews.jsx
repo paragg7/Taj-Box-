@@ -67,26 +67,6 @@ const Reviews = () => {
         weekKey: "2025-W01",
         uid: "seed",
       },
-      {
-        id: "seed-3",
-        quote:
-          "We needed premium packaging for a family function and Taj Boxes delivered beyond expectations. The detailing, neat edges, and finishing were flawless—exactly the luxury look we wanted.",
-        name: "Karan Malhotra",
-        city: "Ambala",
-        createdAt: new Date("2025-01-01").toISOString(),
-        weekKey: "2025-W01",
-        uid: "seed",
-      },
-      {
-        id: "seed-4",
-        quote:
-          "From consultation to final delivery, the entire experience felt professional and premium. They understood our theme instantly and executed it beautifully. It looked elegant, traditional, and modern—at the same time.",
-        name: "Simran Kaur",
-        city: "Chandigarh",
-        createdAt: new Date("2025-01-01").toISOString(),
-        weekKey: "2025-W01",
-        uid: "seed",
-      },
     ],
     [],
   );
@@ -108,19 +88,16 @@ const Reviews = () => {
   const weekKey = getWeekKey(new Date());
 
   const usedThisWeek = useMemo(() => {
-  if (!uid) return 0;
-  return reviews.filter(
-    (r) => r.uid === uid && r.weekKey === getWeekKey(new Date()),
-  ).length;
-}, [reviews, uid]);
+    if (!uid) return 0;
+    return reviews.filter(
+      (r) => r.uid === uid && r.weekKey === getWeekKey(new Date()),
+    ).length;
+  }, [reviews, uid]);
 
   const remaining = Math.max(0, 2 - usedThisWeek);
 
   const total = reviews.length;
   const active = reviews[currentIndex];
-
-  const canScrollPrev = currentIndex > 0;
-  const canScrollNext = currentIndex < total - 1;
 
   const handlePrev = () =>
     setCurrentIndex((p) => (p === 0 ? total - 1 : p - 1));
@@ -149,6 +126,19 @@ const Reviews = () => {
 
     return () => unsub();
   }, []);
+
+// ✅ AUTOPLAY
+useEffect(() => {
+  if (reviews.length <= 1) return;
+
+  const interval = setInterval(() => {
+    setCurrentIndex((prev) =>
+      prev === reviews.length - 1 ? 0 : prev + 1
+    );
+  }, 4000); // 4 seconds
+
+  return () => clearInterval(interval);
+}, [reviews.length]);
 
   // ✅ Realtime listener (shows for everyone)
   useEffect(() => {
@@ -184,7 +174,7 @@ const Reviews = () => {
 
   const goTo = (idx) => setCurrentIndex(Math.max(0, Math.min(idx, total - 1)));
 
-  // ✅ Submit review to Firestore (limit is UI for now; real enforcement in Step 3 functions)
+  // ✅ Submit review to Firestore (limit is UI for now; real enforcement later)
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
@@ -245,7 +235,7 @@ const Reviews = () => {
               TESTIMONIALS
             </p>
 
-            <h2 className="mt-3 text-4xl sm:text-5xl font-semibold text-black leading-[1.05]">
+            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold text-black leading-[1.05]">
               What Our Clients Are Saying
             </h2>
 
@@ -277,7 +267,7 @@ const Reviews = () => {
 
           {/* RIGHT */}
           <div className="min-w-0">
-            <div className="border border-black/10 p-6 sm:p-7 h-[420px] flex flex-col">
+            <div className="border border-black/10 p-6 sm:p-7 h-[420px] sm:h-[420px] xs:h-[460px] min-[360px]:h-[440px] min-[420px]:h-[420px] flex flex-col">
               <div className="flex items-center justify-between gap-6">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 border border-black/10 flex items-center justify-center">
@@ -288,14 +278,15 @@ const Reviews = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                {/* ✅ responsive-only: prevent overflow without changing layout */}
+                <div className="flex items-center gap-2 max-w-[45%] overflow-x-auto no-scrollbar">
                   {reviews.map((t, idx) => {
                     const isActive = idx === currentIndex;
                     return (
                       <button
                         key={t.id}
                         onClick={() => goTo(idx)}
-                        className={`h-2 w-2 border transition ${
+                        className={`h-2 w-2 border transition shrink-0 ${
                           isActive
                             ? "bg-black border-black"
                             : "bg-white border-black/25 hover:border-black/60"
@@ -306,25 +297,25 @@ const Reviews = () => {
                 </div>
               </div>
 
-              <div className="flex-1 mt-6">
-                <p className="text-[20px] sm:text-[24px] leading-9 text-black">
+              <div className="flex-1 mt-6 min-w-0">
+                <p className="text-[18px] xs:text-[20px] sm:text-[24px] leading-8 sm:leading-9 text-black break-words">
                   &ldquo;{active?.quote}&rdquo;
                 </p>
               </div>
 
               <div className="h-px w-full bg-black/10 my-6" />
 
-              <div className="flex items-end justify-between gap-6">
-                <div>
-                  <p className="text-sm font-semibold text-black">
+              <div className="flex items-end justify-between gap-6 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-black truncate">
                     {active?.name}
                   </p>
-                  <p className="mt-1 text-xs text-black/60">
+                  <p className="mt-1 text-xs text-black/60 truncate">
                     {active?.position ?? active?.city}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   {isAdmin && active?.id && (
                     <Button
                       type="button"
@@ -349,7 +340,6 @@ const Reviews = () => {
                       "h-10 w-10 rounded-none border-black/15 shadow-none hover:shadow-none focus:shadow-none",
                       "hover:bg-black/[0.02] transition",
                     )}
-                    disabled={!canScrollPrev}
                     onClick={handlePrev}
                   >
                     <ArrowLeft className="h-4 w-4" />
@@ -363,7 +353,6 @@ const Reviews = () => {
                       "h-10 w-10 rounded-none border-black/15 shadow-none hover:shadow-none focus:shadow-none",
                       "hover:bg-black/[0.02] transition",
                     )}
-                    disabled={!canScrollNext}
                     onClick={handleNext}
                   >
                     <ArrowRight className="h-4 w-4" />
@@ -502,6 +491,12 @@ const Reviews = () => {
           </form>
         </div>
       </div>
+
+      {/* ✅ helper for dots overflow on tiny screens */}
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar{display:none}
+        .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+      `}</style>
     </section>
   );
 };
