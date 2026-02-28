@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 
-const ProductsSection = ({ products, title, link }) => {
+const ProductsSection = ({ products, title, link, sectionRef  }) => {
   return (
-    <section className="py-6 sm:py-8">
+    <section ref={sectionRef} className="">
 
       {/* Pass link to Title */}
       <Title heading={title} link={link} />

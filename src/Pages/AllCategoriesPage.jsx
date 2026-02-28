@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -76,6 +77,7 @@ const AllCategoriesPage = () => {
 
       {/* Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
+     
         {items.map((item) => (
           <Link key={item.id} to={item.link} className="block group">
             <div className="relative w-full overflow-hidden border border-black/10 h-[240px] sm:h-[280px] lg:h-[300px]">

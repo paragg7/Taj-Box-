@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, A11y } from "swiper/modules";
 import { Link } from "react-router-dom";
 import "swiper/css";
+import Loop from "./ui/loop";
 
 const Hero = () => {
   const images = useMemo(
@@ -51,7 +52,7 @@ const Hero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* LEFT PANEL: only desktop */}
           <div className="hidden lg:block relative overflow-hidden bg-white border border-black/10">
-            <div className="relative h-[420px] sm:h-[520px] lg:h-[680px]">
+            <div className="relative h-[420px] sm:h-[500px] lg:h-[600px]">
               <img
                 src={left.src}
                 alt={left.alt}
@@ -93,7 +94,7 @@ const Hero = () => {
             onMouseLeave={startAuto}
           >
             {/* ✅ Height increased ONLY on mobile + tablet */}
-            <div className="relative h-[520px] sm:h-[640px] lg:h-[680px]">
+            <div className="relative h-[520px] sm:h-[600px] lg:h-[600px]">
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -172,6 +173,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <Loop/>
     </section>
   );
 };

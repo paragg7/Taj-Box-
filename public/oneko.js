@@ -122,7 +122,7 @@
 
     // defaults
     let speedMul = 1;
-    let autoSleepRadius = 50;
+    let autoSleepRadius = 100;
 
     if (path.startsWith("/shop")) {
       speedMul = 1.25; // faster on shop

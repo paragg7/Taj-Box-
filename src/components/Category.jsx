@@ -66,7 +66,7 @@ const Category = () => {
   ];
 
   return (
-    <section className="py-12 md:py-8">
+    <section className="">
       <Title heading="Browse by categories" link="/categories" />
 
       {/* keep your spacing */}

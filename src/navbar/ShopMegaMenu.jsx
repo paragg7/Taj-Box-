@@ -57,15 +57,7 @@ const ShopMegaMenu = ({
           ))}
         </ul>
 
-        <div className="p-2">
-          <Link
-            to={viewAllHref}
-            onClick={() => onClose?.()}
-            className="block text-center border border-black/10 py-3 text-xs uppercase tracking-[0.22em] text-black/70 hover:bg-black/5 transition"
-          >
-            View all products
-          </Link>
-        </div>
+        
       </div>
     </div>
   );

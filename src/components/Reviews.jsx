@@ -226,7 +226,7 @@ useEffect(() => {
   const charCount = form.message.length;
 
   return (
-    <section className="bg-white px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section className="bg-white px-4 pt-12 sm:px-6 sm:pt-14 lg:px-8 lg:pt-16">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
           {/* LEFT */}

@@ -189,7 +189,7 @@ Product Page: ${window.location.href}`;
                     <img
                       src={img}
                       alt={`Thumbnail ${i + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full "
                       loading="lazy"
                       decoding="async"
                     />
@@ -205,15 +205,15 @@ Product Page: ${window.location.href}`;
                 onMouseMove={onMove}
                 onMouseEnter={onEnter}
                 onMouseLeave={onLeave}
-                className="relative h-[360px] xs:h-[420px] sm:h-[520px] lg:h-[640px] w-full overflow-hidden select-none"
+                className="relative h-[520px] xs:h-[420px] sm:h-[520px] lg:h-[640px] w-full overflow-hidden select-none"
                 aria-label="Product image zoom stage"
               >
                 <img
                   src={activeImage || images[0]}
                   alt={product.name}
                   className={[
-                    "w-full h-full object-cover transition-transform duration-200",
-                    zoom.on ? "scale-[1.45]" : "scale-100",
+                    "w-full h-full  transition-transform duration-200",
+                    zoom.on ? "scale-[1]" : "scale-100",
                   ].join(" ")}
                   style={{
                     transformOrigin: `${zoom.x}% ${zoom.y}%`,
@@ -239,7 +239,7 @@ Product Page: ${window.location.href}`;
                         type="button"
                         onClick={() => setActiveImage(img)}
                         className={[
-                          "shrink-0 w-20 h-20 overflow-hidden border transition",
+                          "shrink-0 w-25 h-28 overflow-hidden border transition",
                           active
                             ? "border-black"
                             : "border-black/15 hover:border-black/40",
@@ -251,7 +251,7 @@ Product Page: ${window.location.href}`;
                         <img
                           src={img}
                           alt={`Thumbnail ${i + 1}`}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-fill "
                           loading="lazy"
                           decoding="async"
                         />
@@ -260,9 +260,7 @@ Product Page: ${window.location.href}`;
                   })}
                 </div>
 
-                <p className="text-xs text-gray-500 pb-2">
-                  Swipe thumbnails • Use ← → keys on desktop
-                </p>
+               
               </div>
             )}
           </div>

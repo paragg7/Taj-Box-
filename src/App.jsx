@@ -13,6 +13,7 @@ import Shipping from "./Pages/Shipping";
 import ScrollToTop from "./components/ScrollToTop";
 import ShopByCategory from "./Pages/ShopByCategory";
 import AllCategoriesPage from "./Pages/AllCategoriesPage";
+import { StickyBanner } from "./components/ui/sticky-banner";
 
 
 
@@ -42,6 +43,7 @@ const App = () => {
 
   return (
     <>
+    <StickyBanner >Planning a bulk order? Call or WhatsApp us at +91 94684 80991</StickyBanner>
       <Navbar/>
       
       

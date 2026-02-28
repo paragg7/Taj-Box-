@@ -10,27 +10,23 @@ const Home = () => {
     products.filter(
       (p) => p.category?.toLowerCase() === category.toLowerCase(),
     );
-
   return (
     <div className="w-full">
       <div className="space-y-8 md:space-y-12 lg:space-y-14">
         <Hero />
-        
-
+        <Category />
         <ProductsSection
           title="Best Sellers"
           products={products.filter((p) => p.isBestSeller)}
           link="/shop/best-sellers"
         />
 
-        <Category />
-
         <ProductsSection
           title="MDF Boxes"
           products={filterByCategory("mdf box")}
           link="/shop/mdf-box"
         />
-        <Reviews />
+
         <ProductsSection
           title="File Boxes"
           products={filterByCategory("file box")}
@@ -62,6 +58,8 @@ const Home = () => {
           products={filterByCategory("sweets box")}
           link="/shop/sweets-box"
         />
+
+        <Reviews />
       </div>
     </div>
   );
