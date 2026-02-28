@@ -43,7 +43,7 @@ const App = () => {
 
   return (
     <>
-    <StickyBanner >Planning a bulk order? Call or WhatsApp us at +91 94684 80991</StickyBanner>
+     <StickyBanner/>
       <Navbar/>
       
       
