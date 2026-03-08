@@ -128,7 +128,11 @@ export const products = [
       "Perfect for wedding gifting",
     ],
     oldPrice: "20,000",
+<<<<<<< HEAD
     category: "CAKE BOX",
+=======
+    category: "HAMPER BOX",
+>>>>>>> 8fa65e4 (Updated Taj Box project)
     isBestSeller: true,
     isNew: false,
     discount: null,
@@ -959,5 +963,148 @@ export const products = [
     discount: 25,
     colors: [],
   },
+<<<<<<< HEAD
+=======
+   {
+    id: 36,
+    image1: "/36.png",
+    image2: "/36.1.png",
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
+  },
+   {
+    id: 37,
+    image1: "/37.png",
+    image2: "/37.1.png",
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
+  },
+   {
+    id: 38,
+    image1: "/38.png",
+    image2: "/38.1.png",
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
+  },
+   {
+    id: 39,
+    image1: "/39.png",
+    
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
+  },
+   {
+    id: 40,
+    image1: "/40.png",
+    
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
+  },
+>>>>>>> 8fa65e4 (Updated Taj Box project)
 
 ];

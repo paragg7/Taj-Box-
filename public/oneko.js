@@ -210,7 +210,11 @@
     setColor(currentColor);
 
     document.body.appendChild(nekoEl);
+<<<<<<< HEAD
     showHint();
+=======
+    // showHint();
+>>>>>>> 8fa65e4 (Updated Taj Box project)
 
     const onMove = (x, y) => {
       mousePosX = x;

@@ -11,12 +11,21 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
+<<<<<<< HEAD
     "@tailwindcss/vite": "^4.1.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
     "firebase": "^12.9.0",
     "framer-motion": "^12.31.0",
+=======
+    "@tailwindcss/vite": "^4.2.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.6.0",
+    "firebase": "^12.10.0",
+    "framer-motion": "^12.34.4",
+>>>>>>> 8fa65e4 (Updated Taj Box project)
     "lucide-react": "^0.563.0",
     "motion": "^12.34.3",
     "react": "^19.2.0",
@@ -24,7 +33,11 @@
     "react-router-dom": "^7.13.0",
     "swiper": "^12.1.0",
     "tailwind-merge": "^3.4.0",
+<<<<<<< HEAD
     "tailwindcss": "^4.1.18",
+=======
+    "tailwindcss": "^4.2.1",
+>>>>>>> 8fa65e4 (Updated Taj Box project)
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
@@ -36,6 +49,10 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+<<<<<<< HEAD
     "vite": "^7.2.4"
+=======
+    "vite": "^7.3.1"
+>>>>>>> 8fa65e4 (Updated Taj Box project)
   }
 }

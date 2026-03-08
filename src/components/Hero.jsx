@@ -11,6 +11,7 @@ const Hero = () => {
   const images = useMemo(
     () => [
       {
+<<<<<<< HEAD
         src: "https://images.unsplash.com/photo-1704118548916-1370403fb1e5?w=1600&auto=format&fit=crop&q=70",
         alt: "Hero 1",
       },
@@ -36,6 +37,33 @@ const Hero = () => {
       },
     ],
     []
+=======
+        src: "/44.png",
+        alt: "Hero 1",
+      },
+      {
+        src: "/42.jpg",
+        alt: "Hero 2",
+      },
+      {
+        src: "/43.png",
+        alt: "Hero 3",
+      },
+      {
+        src: "/41.jpg",
+        alt: "Hero 4",
+      },
+      {
+        src: "/45.jpg",
+        alt: "Hero 5",
+      },
+      {
+        src: "/46.png",
+        alt: "Hero 6",
+      },
+    ],
+    [],
+>>>>>>> 8fa65e4 (Updated Taj Box project)
   );
 
   const left = images[0];
@@ -64,6 +92,7 @@ const Hero = () => {
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-transparent" />
 
+<<<<<<< HEAD
               <div className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 max-w-[520px]">
                 <h2 className="text-white leading-[1.05] drop-shadow-[0_10px_25px_rgba(0,0,0,0.35)]">
                   <span className="block text-[34px] sm:text-5xl lg:text-[56px] font-light">
@@ -71,6 +100,12 @@ const Hero = () => {
                   </span>
                   <span className="block text-[34px] sm:text-5xl lg:text-[56px] font-light italic">
                     with Nature&apos;s Touch
+=======
+              <div className="absolute left-4 sm:left-8 top-1/3 -translate-y-1/2 max-w-[520px]">
+                <h2 className="text-white leading-[1.05]">
+                  <span className="block text-[34px] sm:text-5xl lg:text-[56px] font-bold">
+                    Packaging That Feels Like Royalty.
+>>>>>>> 8fa65e4 (Updated Taj Box project)
                   </span>
                 </h2>
               </div>
@@ -78,9 +113,13 @@ const Hero = () => {
               <div className="absolute left-4 right-4 sm:left-8 sm:right-10 bottom-4 sm:bottom-6">
                 <div className="bg-black/35 border border-white/20 backdrop-blur-[2px] px-4 py-4 sm:px-6 sm:py-5">
                   <p className="text-white/85 text-[11px] sm:text-xs leading-relaxed">
+<<<<<<< HEAD
                     Creating radiant skin with 100% natural, sustainably sourced
                     ingredients, while protecting the planet; we believe beauty
                     should be kind to both you and the earth.
+=======
+                    Luxury packaging designed to make every moment unforgettable.
+>>>>>>> 8fa65e4 (Updated Taj Box project)
                   </p>
                 </div>
               </div>
@@ -134,6 +173,7 @@ const Hero = () => {
               <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:left-6 sm:translate-x-0 sm:top-6 z-20 w-[92%] max-w-[440px]">
                 <div className="bg-black/35 border border-white/20 backdrop-blur-[2px] p-4 sm:p-6 text-center sm:text-left">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/70">
+<<<<<<< HEAD
                     New Arrival
                   </div>
 
@@ -145,6 +185,17 @@ const Hero = () => {
                     Gently cleanses and hydrates, leaving your skin soft,
                     refreshed, and balanced with every wash. Perfect for daily
                     use on all skin types.
+=======
+                    New Collection
+                  </div>
+
+                 
+
+                  <p className="mt-3 text-white/85 text-[12px] sm:text-sm leading-relaxed">
+                    Elegant invitation boxes designed to impress your guests
+                    from the very first moment. Crafted with premium materials
+                    and timeless detailing.
+>>>>>>> 8fa65e4 (Updated Taj Box project)
                   </p>
 
                   <Link
@@ -173,7 +224,11 @@ const Hero = () => {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <Loop/>
+=======
+      <Loop />
+>>>>>>> 8fa65e4 (Updated Taj Box project)
     </section>
   );
 };

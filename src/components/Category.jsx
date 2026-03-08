@@ -13,22 +13,31 @@ const Category = () => {
   const items = [
     {
       id: 1,
+<<<<<<< HEAD
       image:
         "https://images.unsplash.com/photo-1579027989536-b7b1f875659b?w=600&auto=format&fit=crop&q=60",
+=======
+      image: "/25.png",
+>>>>>>> 8fa65e4 (Updated Taj Box project)
       name: "MDF BOX",
       link: "/shop/mdf-box",
       desc: "Rigid luxury boxes with premium finishing options.",
     },
     {
       id: 2,
+<<<<<<< HEAD
       image:
         "https://images.unsplash.com/photo-1728034261578-afe827e282a2?w=600&auto=format&fit=crop&q=60",
+=======
+      image: "/37.png",
+>>>>>>> 8fa65e4 (Updated Taj Box project)
       name: "FILE BOX",
       link: "/shop/file-box",
       desc: "Structured packaging designed for elegance and order.",
     },
     {
       id: 3,
+<<<<<<< HEAD
       image:
         "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
       name: "DHOLLU",
@@ -59,6 +68,30 @@ const Category = () => {
       id: 7,
       image:
         "https://images.unsplash.com/photo-1700107650924-d42d35552841?w=600&auto=format&fit=crop&q=60",
+=======
+      image: "/28.1.png",
+      name: "DHOLLU",
+      link: "/shop/dhollu",
+      desc: "Classic styles with traditional wedding presentation.",
+    },
+    {
+      id: 4,
+      image: "/23.png",
+      name: "PLATTER BOX",
+      link: "/shop/platter-box",
+      desc: "Classic styles with traditional wedding presentation.",
+    },
+    {
+      id: 5,
+      image: "/36.png",
+      name: "SWEETS BOX",
+      link: "/shop/sweets-box",
+      desc: "Classic styles with traditional wedding presentation.",
+    },
+    {
+      id: 6,
+      image: "/20.png",
+>>>>>>> 8fa65e4 (Updated Taj Box project)
       name: "HAMPER BOX",
       link: "/shop/hamper-box",
       desc: "Classic styles with traditional wedding presentation.",
@@ -103,6 +136,7 @@ const Category = () => {
                     {/* ✅ Fixed-height premium card */}
                     <div
                       className="
+<<<<<<< HEAD
                         group h-[360px] sm:h-[380px]
                         border border-black/10 bg-white
                         hover:border-black/25
@@ -112,6 +146,17 @@ const Category = () => {
                     >
                       {/* Image */}
                       <div className="relative h-[55%] overflow-hidden border-b border-black/10">
+=======
+    group h-[360px] sm:h-[380px]
+    border border-black/10 bg-white
+    hover:border-black/25
+    transition-colors duration-300
+    flex flex-col
+  "
+                    >
+                      {/* Image */}
+                      <div className="relative h-[65%] overflow-hidden border-b border-black/10">
+>>>>>>> 8fa65e4 (Updated Taj Box project)
                         <img
                           src={item.image}
                           alt={item.name}
@@ -123,6 +168,7 @@ const Category = () => {
                       {/* Content */}
                       <div className="flex flex-col justify-between flex-1 px-5 py-5">
                         <div>
+<<<<<<< HEAD
                           <div className="text-[10px] uppercase tracking-[0.22em] text-black/40">
                             Category
                           </div>
@@ -141,6 +187,20 @@ const Category = () => {
                         <div className="mt-4 text-[10px] uppercase tracking-[0.22em] text-black/50">
                           Explore collection →
                         </div>
+=======
+                          <span className="text-[10px] uppercase tracking-[0.22em] text-black/40">
+                            Category
+                          </span>
+
+                          <h3 className="mt-1 text-sm sm:text-[15px] font-semibold text-black leading-snug">
+                            {item.name}
+                          </h3>
+                        </div>
+
+                        <span className="text-[10px] uppercase tracking-[0.22em] text-black/50">
+                          Explore collection →
+                        </span>
+>>>>>>> 8fa65e4 (Updated Taj Box project)
                       </div>
                     </div>
                   </Link>
@@ -149,12 +209,18 @@ const Category = () => {
             </CarouselContent>
 
             {/* keep your old buttons placement exactly */}
+<<<<<<< HEAD
             <div className="hidden md:flex absolute -bottom-4 right-0 gap-3 translate-y-full">
               <CarouselPrevious className="static translate-y-0 translate-x-0" />
               <CarouselNext className="static translate-y-0 translate-x-0" />
             </div>
 
             <div className="md:hidden flex justify-end gap-3 mt-4">
+=======
+            
+
+            <div className="2xl:hidden flex justify-end gap-3 mt-4">
+>>>>>>> 8fa65e4 (Updated Taj Box project)
               <CarouselPrevious className="static translate-y-0 translate-x-0" />
               <CarouselNext className="static translate-y-0 translate-x-0" />
             </div>
@@ -165,4 +231,8 @@ const Category = () => {
   );
 };
 
+<<<<<<< HEAD
 export default Category;
+=======
+export default Category;
+>>>>>>> 8fa65e4 (Updated Taj Box project)

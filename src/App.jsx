@@ -42,7 +42,11 @@ const App = () => {
   }, []);
 
   return (
+<<<<<<< HEAD
     <>
+=======
+    <div className="">
+>>>>>>> 8fa65e4 (Updated Taj Box project)
      <StickyBanner/>
       <Navbar/>
       
@@ -69,7 +73,11 @@ const App = () => {
 
         <Footer />
       </div>
+<<<<<<< HEAD
     </>
+=======
+    </div>
+>>>>>>> 8fa65e4 (Updated Taj Box project)
   );
 };
 

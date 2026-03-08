@@ -15,50 +15,86 @@ const ShopMegaMenu = ({
   const items = useMemo(() => categories.slice(0, limit), [categories, limit]);
 
   const goCategory = (c) => {
-    // ✅ must have slug from useCategories
     const slug = c?.slug;
     if (!slug) return;
-
-    onClose?.(); // close menu
-    navigate(`/shop/${slug}`); // go to category page
+    onClose?.();
+    navigate(`/shop/${slug}`);
   };
 
   if (!open) return null;
 
   return (
     <div
-      className="absolute left-1/2 -translate-x-1/2 mt-4 w-[640px] bg-white border border-black/10 z-[9999]"
+      className="absolute left-1/2 top-full -translate-x-1/2 mt-4 w-[92vw] max-w-[760px] border border-black/10 bg-white z-[9999]"
       onMouseDown={(e) => e.preventDefault()}
       onMouseLeave={() => setHovered(-1)}
+      role="menu"
+      aria-label="Shop categories"
     >
-      <div className="p-2">
-        <div className="px-2 py-2 text-xs text-black/60">Browse categories</div>
+      <div className="px-5 py-4 border-b border-black/10 flex items-center justify-between gap-4">
+        <div>
+          
+          <h3 className="mt-1 text-sm  sm:text-[15px]  text-black">
+            Browse categories
+          </h3>
+        </div>
 
-        <ul className="p-1 grid grid-cols-1 sm:grid-cols-2 gap-1">
-          {items.map((c, idx) => (
-            <li key={c.name}>
-              <button
-                type="button"
-                onMouseEnter={() => setHovered(idx)}
-                onClick={() => goCategory(c)}
-                className={`w-full flex items-center justify-between px-3 py-3 transition text-left ${
-                  hovered === idx ? "bg-black/5" : "hover:bg-black/5"
-                }`}
-              >
+        <Link
+          to={viewAllHref}
+          onClick={() => onClose?.()}
+           className="
+              group
+              relative
+              text-xs xs:text-sm
+              uppercase
+              tracking-widest
+              text-black
+              transition
+              focus:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-black/30
+            "
+        >
+          View all
+           <span className="block h-px bg-black scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 mt-1" />
+        </Link>
+      </div>
+
+      <ul className="grid grid-cols-1 md:grid-cols-2" role="none">
+        {items.map((c, idx) => (
+          <li
+            key={c.slug || c.name}
+            className="border-b border-black/10 md:[&:nth-last-child(-n+2)]:border-b-0 md:border-r-0 odd:md:border-r odd:md:border-black/10"
+            role="none"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onMouseEnter={() => setHovered(idx)}
+              onFocus={() => setHovered(idx)}
+              onClick={() => goCategory(c)}
+              className={`group w-full px-5 py-4 text-left transition-colors duration-200 focus:outline-none focus:bg-black/[0.04] ${
+                hovered === idx ? "bg-black/[0.04]" : "hover:bg-black/[0.04]"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <div className="text-sm font-normal truncate">{c.name}</div>
-                  <div className="text-[11px] text-black/45 font-normal ">
+                  <div className="text-sm sm:text-[15px]  text-black truncate">
+                    {c.name}
+                  </div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-black/40">
                     {c.count} {c.count === 1 ? "product" : "products"}
                   </div>
                 </div>
-                <div className="text-xs text-black/35">→</div>
-              </button>
-            </li>
-          ))}
-        </ul>
 
-        
-      </div>
+                
+              </div>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+     
     </div>
   );
 };
