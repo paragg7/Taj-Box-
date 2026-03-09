@@ -61,7 +61,7 @@ const Hero = () => {
                 className="absolute inset-0 h-full w-full object-cover"
                 draggable={false}
                 loading="eager"
-                fetchpriority="high"
+                fetchPriority="high"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-transparent" />
