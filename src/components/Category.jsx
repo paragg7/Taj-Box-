@@ -8,53 +8,9 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import categories from "@/products/cate";
 
 const Category = () => {
-  const items = [
-    {
-      id: 1,
-      image: "/25.png",
-      name: "MDF BOX",
-      link: "/shop/mdf-box",
-      desc: "Rigid luxury boxes with premium finishing options.",
-    },
-    {
-      id: 2,
-      image: "/37.png",
-      name: "FILE BOX",
-      link: "/shop/file-box",
-      desc: "Structured packaging designed for elegance and order.",
-    },
-    {
-      id: 3,
-      image: "/28.1.png",
-      name: "DHOLLU",
-      link: "/shop/dhollu",
-      desc: "Classic styles with traditional wedding presentation.",
-    },
-    {
-      id: 4,
-      image: "/23.png",
-      name: "PLATTER BOX",
-      link: "/shop/platter-box",
-      desc: "Classic styles with traditional wedding presentation.",
-    },
-    {
-      id: 5,
-      image: "/36.png",
-      name: "SWEETS BOX",
-      link: "/shop/sweets-box",
-      desc: "Classic styles with traditional wedding presentation.",
-    },
-    {
-      id: 6,
-      image: "/20.png",
-      name: "HAMPER BOX",
-      link: "/shop/hamper-box",
-      desc: "Classic styles with traditional wedding presentation.",
-    },
-  ];
-
   return (
     <section>
       <Title heading="Browse by categories" link="/categories" />
@@ -71,7 +27,7 @@ const Category = () => {
             className="w-full"
           >
             <CarouselContent className="-ml-3 sm:-ml-4 lg:-ml-5">
-              {items.map((item) => (
+              {categories.map((item) => (
                 <CarouselItem
                   key={item.id}
                   className="
@@ -98,7 +54,6 @@ const Category = () => {
                         flex flex-col
                       "
                     >
-                      {/* Image */}
                       <div className="relative h-[65%] overflow-hidden border-b border-black/10">
                         <img
                           src={item.image}
@@ -108,7 +63,6 @@ const Category = () => {
                         />
                       </div>
 
-                      {/* Content */}
                       <div className="flex flex-col justify-between flex-1 px-5 py-5">
                         <div>
                           <span className="text-[10px] uppercase tracking-[0.22em] text-black/40">

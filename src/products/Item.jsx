@@ -1100,6 +1100,60 @@ export const products = [
     isNew: true,
     discount: 25,
     colors: [],
+  },{
+    id: 41,
+    image1: "/47.png",
+    image2: "/47.1.png",
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
+  },{
+    id: 42,
+    image1: "/48.png",
+    image2: "/48.1.png",
+    
+    name: "ON RUNNING CLOUDTILT IVORY ALMOND (W)",
+    price: "1000",
+    pricing: {
+      25: 1000,
+      50: 900,
+      100: 800,
+    },
+    description:
+      "Premium MDF wedding box with gold-foil detailing, designed for 2 jars with elegant leaf styling and a 4-line inside layout.",
+    features: [
+      "Strong MDF build",
+      "Gold-foil premium finish",
+      "2-jar compartment",
+      "Inside 4-line layout",
+      "Perfect for wedding gifting",
+    ],
+    oldPrice: "20,000",
+    category: "MDF BOX",
+    isBestSeller: true,
+    isNew: true,
+    discount: 25,
+    colors: [],
   },
 
 

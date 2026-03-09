@@ -1,26 +1,17 @@
 // ShopFilters.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { ChevronDown, ChevronUp, X } from "lucide-react";
+import { X } from "lucide-react";
 import { products } from "../products/Item";
 
 const EMPTY = { categories: [] };
 
 const ShopFilters = ({ onFilterChange, value }) => {
-  const [openSections, setOpenSections] = useState({
-    categories: true,
-  });
-
-  // ✅ local (draft) filters for checkboxes
   const [selectedFilters, setSelectedFilters] = useState(value ?? EMPTY);
-
-  // ✅ search within categories
-  const [categoryQuery, setCategoryQuery] = useState("");
 
   useEffect(() => {
     setSelectedFilters(value ?? EMPTY);
   }, [value]);
 
-  // ✅ build categories + exact counts from products
   const categories = useMemo(() => {
     const map = new Map();
 
@@ -31,160 +22,113 @@ const ShopFilters = ({ onFilterChange, value }) => {
     });
 
     return Array.from(map.entries())
-      .map(([name, count]) => ({ name, count }))
+      .map(([name]) => ({ name }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, []);
 
-  const filteredCategories = useMemo(() => {
-    const q = categoryQuery.trim().toLowerCase();
-    if (!q) return categories;
-    return categories.filter((c) => c.name.toLowerCase().includes(q));
-  }, [categories, categoryQuery]);
-
-  const toggleSection = (section) => {
-    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  const updateFilters = (nextFilters) => {
+    setSelectedFilters(nextFilters);
+    onFilterChange?.(nextFilters);
   };
 
   const handleFilterSelect = (filterName) => {
-    setSelectedFilters((prev) => {
-      const current = prev.categories || [];
-      const isSelected = current.includes(filterName);
+    const current = selectedFilters.categories || [];
+    const isSelected = current.includes(filterName);
 
-      return {
-        categories: isSelected
-          ? current.filter((f) => f !== filterName)
-          : [...current, filterName],
-      };
-    });
-  };
+    const nextFilters = {
+      categories: isSelected
+        ? current.filter((f) => f !== filterName)
+        : [...current, filterName],
+    };
 
-  const applyFilters = () => {
-    onFilterChange?.(selectedFilters);
+    updateFilters(nextFilters);
   };
 
   const clearAllFilters = () => {
-    setSelectedFilters(EMPTY);
-    setCategoryQuery("");
-    onFilterChange?.(EMPTY);
+    updateFilters(EMPTY);
   };
 
   const totalFiltersCount = (selectedFilters.categories || []).length;
 
   return (
-    <aside className="w-full">
+    <aside className="w-full text-black">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-normal text-gray-900">Filters</h2>
-      </div>
+      <div className="mb-10 flex items-baseline justify-between">
+        <h2 className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] text-black">
+          Filters
+        </h2>
 
-      {/* Done + Clear */}
-      <div className="flex gap-3 mb-6">
-        <button
-          onClick={applyFilters}
-          className="flex-1 bg-black text-white py-3 rounded-sm text-sm font-semibold hover:bg-black/90 transition"
-        >
-          Done
-        </button>
-
-        <button
-          onClick={clearAllFilters}
-          disabled={totalFiltersCount === 0}
-          className={`flex-1 border py-3 rounded-sm text-sm font-semibold transition ${
-            totalFiltersCount === 0
-              ? "border-gray-300 text-gray-400 opacity-40 cursor-not-allowed"
-              : "border-gray-300 text-gray-900 hover:bg-gray-100"
-          }`}
-        >
-          Clear
-        </button>
-      </div>
-
-      {/* Active Filters (chips) */}
-      {totalFiltersCount > 0 && (
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            {selectedFilters.categories.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => handleFilterSelect(filter)}
-                className="inline-flex items-center gap-2 bg-black text-white text-xs px-3 py-1.5 hover:bg-gray-800 transition-colors"
-              >
-                {filter}
-                <X className="w-3 h-3" />
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="border-t border-gray-200 mb-6" />
-
-      {/* Categories */}
-      <div className="mb-6">
-        <button
-          onClick={() => toggleSection("categories")}
-          className="w-full flex justify-between items-center mb-4 group"
-        >
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
-              Categories
-            </h3>
-            {totalFiltersCount > 0 && (
-              <span className="text-xs text-gray-500">
-                ({totalFiltersCount})
-              </span>
-            )}
-          </div>
-
-          {openSections.categories ? (
-            <ChevronUp className="w-4 h-4 text-gray-600" />
-          ) : (
-            <ChevronDown className="w-4 h-4 text-gray-600" />
-          )}
-        </button>
-
-        {openSections.categories && (
-          <>
-            {/* Search */}
-            <div className="mb-4">
-              <input
-                value={categoryQuery}
-                onChange={(e) => setCategoryQuery(e.target.value)}
-                placeholder="Search categories..."
-                className="w-full h-11 border border-gray-300 px-3 text-sm outline-none focus:border-gray-900"
-              />
-            </div>
-
-            {/* Scrollable list (better UX when many categories) */}
-            <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
-              {filteredCategories.map((category) => (
-                <label
-                  key={category.name}
-                  className="flex items-center cursor-pointer group"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedFilters.categories.includes(category.name)}
-                    onChange={() => handleFilterSelect(category.name)}
-                    className="w-4 h-4 border-2 border-gray-300 rounded-sm text-black focus:ring-0 cursor-pointer"
-                  />
-                  <span className="ml-3 text-sm text-gray-900 group-hover:text-black">
-                    {category.name}
-                    <span className="text-gray-500 ml-1">
-                      ({category.count})
-                    </span>
-                  </span>
-                </label>
-              ))}
-
-              {filteredCategories.length === 0 && (
-                <div className="text-sm text-gray-500 py-2">
-                  No categories match “{categoryQuery}”.
-                </div>
-              )}
-            </div>
-          </>
+        {totalFiltersCount > 0 && (
+          <button
+            onClick={clearAllFilters}
+            className="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-black/40 transition-colors duration-200 hover:text-black"
+          >
+            Clear
+          </button>
         )}
+      </div>
+
+      {/* Section Heading */}
+      <div className="mb-5 flex items-center justify-between">
+        <h3 className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.22em] text-black/45">
+          Categories
+        </h3>
+
+        {totalFiltersCount > 0 && (
+          <span className="text-[10px] text-black/28">{totalFiltersCount}</span>
+        )}
+      </div>
+
+      {/* Category List */}
+      <div className="space-y-1">
+        {categories.map((category) => {
+          const checked = selectedFilters.categories.includes(category.name);
+
+          return (
+            <button
+              key={category.name}
+              type="button"
+              onClick={() => handleFilterSelect(category.name)}
+              className="group w-full flex items-center justify-between py-[11px] text-left"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span
+                  className={`relative block h-[13px] w-[13px] border transition-all duration-200 ${
+                    checked
+                      ? "border-black"
+                      : "border-black/15 group-hover:border-black/35"
+                  }`}
+                >
+                  <span
+                    className={`absolute left-1/2 top-1/2 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 transition-all duration-200 ${
+                      checked ? "bg-black scale-100" : "bg-black scale-0"
+                    }`}
+                  />
+                </span>
+
+                <span
+                  className={`truncate text-[12px] sm:text-[13px] uppercase tracking-[0.09em] transition-all duration-200 ${
+                    checked
+                      ? "text-black"
+                      : "text-black/60 group-hover:text-black/82"
+                  }`}
+                >
+                  {category.name}
+                </span>
+              </div>
+
+              <span
+                className={`ml-4 shrink-0 transition-all duration-200 ${
+                  checked
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-1"
+                }`}
+              >
+                <X className="h-[12px] w-[12px] text-black/55" />
+              </span>
+            </button>
+          );
+        })}
       </div>
     </aside>
   );

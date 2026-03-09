@@ -20,7 +20,9 @@ const ShopAll = () => {
 
     if (!categories || categories.length === 0) return products;
 
-    return products.filter((p) => categories.includes((p.category || "").trim()));
+    return products.filter((p) =>
+      categories.includes((p.category || "").trim()),
+    );
   }, [appliedFilters]);
 
   const handleApplyFilters = useCallback((filters) => {
@@ -71,21 +73,29 @@ const ShopAll = () => {
         {/* Sidebar Filters - Desktop */}
         <aside className="hidden lg:block">
           <div className="sticky top-24">
-            <ShopFilters value={appliedFilters} onFilterChange={handleApplyFilters} />
+            <ShopFilters
+              value={appliedFilters}
+              onFilterChange={handleApplyFilters}
+            />
           </div>
         </aside>
 
         {/* Products Section */}
         <section>
-          {/* Product Count */}
-          <div className="mb-6 text-sm text-gray-600">
-            Showing{" "}
-            <span className="font-medium text-gray-900">
-              {filteredProducts.length}
-            </span>{" "}
-            of{" "}
-            <span className="font-medium text-gray-900">{totalCount}</span>{" "}
-            products
+         
+          <div className="flex items-end justify-between mb-5">
+            <div className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.12em] text-black">
+              All Products
+            </div>
+
+            <div className="text-[11px] uppercase tracking-[0.18em] text-black/60">
+              Showing{" "}
+              <span className="text-black font-medium">
+                {filteredProducts.length}
+              </span>{" "}
+              of <span className="text-black font-medium">{totalCount}</span>{" "}
+              products
+            </div>
           </div>
 
           {/* Products Grid */}
@@ -151,7 +161,10 @@ const ShopAll = () => {
 
             {/* Content */}
             <div className="px-5 py-6 overflow-y-auto h-[calc(92vh-72px)]">
-              <ShopFilters value={appliedFilters} onFilterChange={handleApplyFilters} />
+              <ShopFilters
+                value={appliedFilters}
+                onFilterChange={handleApplyFilters}
+              />
             </div>
           </div>
         </div>

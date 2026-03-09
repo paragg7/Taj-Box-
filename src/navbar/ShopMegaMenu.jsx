@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ShopMegaMenu = ({
   open,
-  categories = [], // expects: [{ name, count, slug }]
+  categories = [],
   onClose,
   viewAllHref = "/categories",
   limit = 8,
@@ -25,46 +25,45 @@ const ShopMegaMenu = ({
 
   return (
     <div
-      className="absolute left-1/2 top-full -translate-x-1/2 mt-4 w-[92vw] max-w-[760px] border border-black/10 bg-white z-[9999]"
+      className="
+        absolute left-1/2 top-full -translate-x-1/2 mt-3
+        w-[84vw] max-w-[500px]
+        border border-black/[0.07]
+        bg-white
+        z-[9999]
+      "
       onMouseDown={(e) => e.preventDefault()}
       onMouseLeave={() => setHovered(-1)}
       role="menu"
       aria-label="Shop categories"
     >
-      <div className="px-5 py-4 border-b border-black/10 flex items-center justify-between gap-4">
-        <div>
-          
-          <h3 className="mt-1 text-sm  sm:text-[15px]  text-black">
-            Browse categories
-          </h3>
-        </div>
+      <div className="flex items-center justify-between px-7 py-4 border-b border-black/[0.07]">
+        <h3 className="text-[11px] tracking-[0.03em] text-black/65">
+          Browse categories
+        </h3>
 
         <Link
           to={viewAllHref}
           onClick={() => onClose?.()}
-           className="
-              group
-              relative
-              text-xs xs:text-sm
-              uppercase
-              tracking-widest
-              text-black
-              transition
-              focus:outline-none
-              focus-visible:ring-2
-              focus-visible:ring-black/30
-            "
+          className="
+            text-[10px]
+            uppercase
+            tracking-[0.16em]
+            text-black/45
+            transition-colors duration-200
+            hover:text-black/75
+            focus:outline-none
+          "
         >
           View all
-           <span className="block h-px bg-black scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 mt-1" />
         </Link>
       </div>
 
-      <ul className="grid grid-cols-1 md:grid-cols-2" role="none">
+      <ul className="grid grid-cols-1" role="none">
         {items.map((c, idx) => (
           <li
             key={c.slug || c.name}
-            className="border-b border-black/10 md:[&:nth-last-child(-n+2)]:border-b-0 md:border-r-0 odd:md:border-r odd:md:border-black/10"
+            className="border-b border-black/[0.07] last:border-b-0"
             role="none"
           >
             <button
@@ -73,28 +72,26 @@ const ShopMegaMenu = ({
               onMouseEnter={() => setHovered(idx)}
               onFocus={() => setHovered(idx)}
               onClick={() => goCategory(c)}
-              className={`group w-full px-5 py-4 text-left transition-colors duration-200 focus:outline-none focus:bg-black/[0.04] ${
-                hovered === idx ? "bg-black/[0.04]" : "hover:bg-black/[0.04]"
-              }`}
+              className={`
+                w-full text-left px-7 py-[18px]
+                transition-colors duration-200
+                focus:outline-none
+                ${hovered === idx ? "bg-black/[0.012]" : "hover:bg-black/[0.012]"}
+              `}
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="text-sm sm:text-[15px]  text-black truncate">
-                    {c.name}
-                  </div>
-                  <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-black/40">
-                    {c.count} {c.count === 1 ? "product" : "products"}
-                  </div>
-                </div>
+              <div className="flex items-center justify-between gap-5">
+                <span className="truncate text-[13px] tracking-[0.015em] text-black/92">
+                  {c.name}
+                </span>
 
-                
+                <span className="shrink-0 text-[9px] uppercase tracking-[0.19em] text-black/24">
+                  {c.count} {c.count === 1 ? "product" : "products"}
+                </span>
               </div>
             </button>
           </li>
         ))}
       </ul>
-
-     
     </div>
   );
 };
