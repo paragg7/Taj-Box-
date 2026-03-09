@@ -82,7 +82,7 @@ const Navbar = () => {
             to="/"
             className="text-lg xs:text-xl md:text-2xl font-bold uppercase font-playfair text-black tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
           >
-            Taj Box
+            Taj Boxes
           </Link>
 
           <ul className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center font-semibold gap-8 text-xs lg:text-sm uppercase">

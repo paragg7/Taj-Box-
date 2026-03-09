@@ -7,27 +7,16 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { ChevronRight, ArrowLeft, ArrowRight, Quote } from "lucide-react";
 
-import {
-  ChevronRight,
-  ArrowLeft,
-  ArrowRight,
-  Quote,
-  Trash2,
-} from "lucide-react";
+import { db, auth } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-
-// ✅ 2 / week key (ISO week)
 const getWeekKey = (date = new Date()) => {
   const d = new Date(date);
   d.setHours(0, 0, 0, 0);
-
-  // Thursday-based ISO week calculation
   d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
 
   const week1 = new Date(d.getFullYear(), 0, 4);
@@ -43,80 +32,72 @@ const getWeekKey = (date = new Date()) => {
   return `${d.getFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
 };
 
+const seedReviews = [
+  {
+    id: "seed-1",
+    quote:
+      "Taj Boxes made our wedding feel truly royal. Every detail—from the texture to the finishing—looked premium and thoughtful. Guests couldn't stop talking about the invitations and the gift boxes.",
+    name: "Aarav & Meera",
+    city: "Delhi",
+    createdAt: new Date("2025-01-01").toISOString(),
+    weekKey: "2025-W01",
+    uid: "seed",
+  },
+  {
+    id: "seed-2",
+    quote:
+      "The craftsmanship is outstanding. The box structure is strong, the fit is perfect, and the design looks even better in real life. Communication was smooth and the delivery was exactly on time.",
+    name: "Riya Sharma",
+    city: "Karnal",
+    createdAt: new Date("2025-01-01").toISOString(),
+    weekKey: "2025-W01",
+    uid: "seed",
+  },
+];
+
 const Reviews = () => {
-  // ✅ seed testimonials (static)
-  const seed = useMemo(
-    () => [
-      {
-        id: "seed-1",
-        quote:
-          "Taj Boxes made our wedding feel truly royal. Every detail—from the texture to the finishing—looked premium and thoughtful. Guests couldn't stop talking about the invitations and the gift boxes.",
-        name: "Aarav & Meera",
-        city: "Delhi",
-        createdAt: new Date("2025-01-01").toISOString(),
-        weekKey: "2025-W01",
-        uid: "seed",
-      },
-      {
-        id: "seed-2",
-        quote:
-          "The craftsmanship is outstanding. The box structure is strong, the fit is perfect, and the design looks even better in real life. Communication was smooth and the delivery was exactly on time.",
-        name: "Riya Sharma",
-        city: "Karnal",
-        createdAt: new Date("2025-01-01").toISOString(),
-        weekKey: "2025-W01",
-        uid: "seed",
-      },
-    ],
-    [],
-  );
-
-  const [reviews, setReviews] = useState(seed);
+  const [reviews, setReviews] = useState(seedReviews);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [uid, setUid] = useState(null);
 
-  const [form, setForm] = useState({ name: "", city: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    city: "",
+    message: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ Firebase anonymous user id
-  const [uid, setUid] = useState(null);
-
-  // ✅ Owner (UI-only for now)
-  const isAdmin = false;
-
-  // ✅ Week key for limit check
-  const weekKey = getWeekKey(new Date());
+  const total = reviews.length;
+  const active = reviews[currentIndex];
+  const maxChars = 500;
+  const charCount = form.message.length;
 
   const usedThisWeek = useMemo(() => {
     if (!uid) return 0;
+    const currentWeekKey = getWeekKey(new Date());
+
     return reviews.filter(
-      (r) => r.uid === uid && r.weekKey === getWeekKey(new Date()),
+      (review) => review.uid === uid && review.weekKey === currentWeekKey,
     ).length;
   }, [reviews, uid]);
 
   const remaining = Math.max(0, 2 - usedThisWeek);
 
-  const total = reviews.length;
-  const active = reviews[currentIndex];
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? total - 1 : prev - 1));
+  };
 
-  const handlePrev = () =>
-    setCurrentIndex((p) => (p === 0 ? total - 1 : p - 1));
-  const handleNext = () =>
-    setCurrentIndex((p) => (p === total - 1 ? 0 : p + 1));
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev === total - 1 ? 0 : prev + 1));
+  };
+
+  const goTo = (index) => {
+    setCurrentIndex(Math.max(0, Math.min(index, total - 1)));
+  };
 
   useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.key === "ArrowLeft") handlePrev();
-      if (e.key === "ArrowRight") handleNext();
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [total]);
-
-  // ✅ Silent anonymous sign-in
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
         await signInAnonymously(auth);
         return;
@@ -124,35 +105,25 @@ const Reviews = () => {
       setUid(user.uid);
     });
 
-    return () => unsub();
+    return unsubscribe;
   }, []);
 
-// ✅ AUTOPLAY
-useEffect(() => {
-  if (reviews.length <= 1) return;
-
-  const interval = setInterval(() => {
-    setCurrentIndex((prev) =>
-      prev === reviews.length - 1 ? 0 : prev + 1
-    );
-  }, 4000); // 4 seconds
-
-  return () => clearInterval(interval);
-}, [reviews.length]);
-
-  // ✅ Realtime listener (shows for everyone)
   useEffect(() => {
-    const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"));
+    const reviewsQuery = query(
+      collection(db, "reviews"),
+      orderBy("createdAt", "desc"),
+    );
 
-    const unsub = onSnapshot(q, (snap) => {
-      const live = snap.docs.map((d) => {
-        const data = d.data();
+    const unsubscribe = onSnapshot(reviewsQuery, (snapshot) => {
+      const liveReviews = snapshot.docs.map((doc) => {
+        const data = doc.data();
+
         return {
-          id: d.id,
+          id: doc.id,
           uid: data.uid || "",
           quote: data.message || "",
           name: data.name || "",
-          position: data.city || "",
+          city: data.city || "",
           createdAt: data.createdAt?.toDate?.()
             ? data.createdAt.toDate().toISOString()
             : "",
@@ -160,21 +131,33 @@ useEffect(() => {
         };
       });
 
-      // ✅ Keep seed + add live reviews after seed
-      setReviews((prev) => {
-        const seedOnly = prev.filter((r) => String(r.id).startsWith("seed-"));
-        return [...seedOnly, ...live];
-      });
-
+      setReviews([...seedReviews, ...liveReviews]);
       setCurrentIndex(0);
     });
 
-    return () => unsub();
+    return unsubscribe;
   }, []);
 
-  const goTo = (idx) => setCurrentIndex(Math.max(0, Math.min(idx, total - 1)));
+  useEffect(() => {
+    if (reviews.length <= 1) return;
 
-  // ✅ Submit review to Firestore (limit is UI for now; real enforcement later)
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [reviews.length]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [total]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
@@ -207,138 +190,92 @@ useEffect(() => {
 
       setForm({ name: "", city: "", message: "" });
       setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 2500);
-    } catch (err) {
-      console.error(err);
+      setTimeout(() => setSubmitted(false), 2200);
+    } catch (error) {
+      console.error(error);
       setErrorMsg("Something went wrong. Please try again.");
     }
   };
 
-  // UI-only delete (real admin delete later via Cloud Functions)
-  const onAdminDelete = (reviewId) => {
-    if (!isAdmin) return;
-    setReviews((prev) => prev.filter((r) => r.id !== reviewId));
-    setCurrentIndex((idx) => Math.max(0, Math.min(idx, total - 2)));
-  };
-
-  // ✅ Character counter for message
-  const maxChars = 500;
-  const charCount = form.message.length;
-
   return (
-    <section className="bg-white px-4 pt-12 sm:px-6 sm:pt-14 lg:px-8 lg:pt-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* LEFT */}
-          <div>
-            <p className="text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase text-black/50">
-              TESTIMONIALS
+    <section className="bg-white px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8 lg:pt-14">
+      <div className="mx-auto max-w-8xl">
+        <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-[0.9fr_1.1fr] sm:gap-6 md:gap-8 lg:grid-cols-2 lg:gap-12">
+          <div className="max-w-[420px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-xl">
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-black/45">
+              Testimonials
             </p>
 
-            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold text-black leading-[1.05]">
+            <h2 className="mt-3 text-[28px] font-semibold leading-[1.04] text-black sm:text-[30px] md:text-[30px] lg:text-[38px]">
               What Our Clients Are Saying
             </h2>
 
-            <p className="mt-5 text-sm sm:text-base text-black/70 max-w-md leading-relaxed">
-              We take pride in delivering exceptional solutions that deliver
-              great results. But don&apos;t just take our word for it.
+            <p className="mt-4 max-w-md text-sm leading-7 text-black/62 sm:text-[14px] md:text-[14px] md:leading-7 lg:text-[15px]">
+              We take pride in delivering refined craftsmanship, elegant
+              presentation, and memorable gifting experiences for every
+              celebration.
             </p>
 
-            <button
-              type="button"
-              className="
-                mt-7
-                group
-                relative
-                text-xs xs:text-sm
-                uppercase
-                tracking-widest
-                text-black
-                transition
-                focus:outline-none
-                focus-visible:ring-2
-                focus-visible:ring-black/30
-              "
-            >
-              View all testimonials
-              <span className="block h-px bg-black scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 mt-2" />
-            </button>
+            
           </div>
 
-          {/* RIGHT */}
           <div className="min-w-0">
-            <div className="border border-black/10 p-6 sm:p-7 h-[420px] sm:h-[420px] xs:h-[460px] min-[360px]:h-[440px] min-[420px]:h-[420px] flex flex-col">
-              <div className="flex items-center justify-between gap-6">
+            <div className="flex min-h-[320px] flex-col border border-black/10 p-4 sm:min-h-[340px] sm:p-5 md:min-h-[330px] md:p-5 lg:min-h-[390px] lg:p-6">
+              <div className="flex items-center justify-between gap-5">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 border border-black/10 flex items-center justify-center">
-                    <Quote className="h-4 w-4 text-black/60" />
+                  <div className="flex h-8 w-8 items-center justify-center border border-black/10">
+                    <Quote className="h-4 w-4 text-black/55" />
                   </div>
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
-                    Client Words
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-black/45">
+                    Client words
                   </div>
                 </div>
 
-                {/* ✅ responsive-only: prevent overflow without changing layout */}
-                <div className="flex items-center gap-2 max-w-[45%] overflow-x-auto no-scrollbar">
-                  {reviews.map((t, idx) => {
-                    const isActive = idx === currentIndex;
+                <div className="no-scrollbar flex max-w-[45%] items-center gap-2 overflow-x-auto">
+                  {reviews.map((review, index) => {
+                    const isActive = index === currentIndex;
+
                     return (
                       <button
-                        key={t.id}
-                        onClick={() => goTo(idx)}
-                        className={`h-2 w-2 border transition shrink-0 ${
+                        key={review.id}
+                        onClick={() => goTo(index)}
+                        className={cn(
+                          "h-2 w-2 shrink-0 border transition",
                           isActive
-                            ? "bg-black border-black"
-                            : "bg-white border-black/25 hover:border-black/60"
-                        }`}
+                            ? "border-black bg-black"
+                            : "border-black/20 bg-white hover:border-black/55",
+                        )}
+                        aria-label={`Go to review ${index + 1}`}
                       />
                     );
                   })}
                 </div>
               </div>
 
-              <div className="flex-1 mt-6 min-w-0">
-                <p className="text-[18px] xs:text-[20px] sm:text-[24px] leading-8 sm:leading-9 text-black break-words">
+              <div className="mt-5 flex-1">
+                <p className="text-[17px] leading-8 text-black sm:text-[20px] sm:leading-8 md:text-[18px] md:leading-8 lg:text-[22px] lg:leading-9">
                   &ldquo;{active?.quote}&rdquo;
                 </p>
               </div>
 
-              <div className="h-px w-full bg-black/10 my-6" />
+              <div className="my-5 h-px w-full bg-black/10" />
 
-              <div className="flex items-end justify-between gap-6 min-w-0">
+              <div className="flex items-end justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-black truncate">
+                  <p className="truncate text-sm font-medium text-black">
                     {active?.name}
                   </p>
-                  <p className="mt-1 text-xs text-black/60 truncate">
-                    {active?.position ?? active?.city}
+                  <p className="mt-1 truncate text-[12px] uppercase tracking-[0.12em] text-black/45">
+                    {active?.city}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  {isAdmin && active?.id && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className={cn(
-                        "h-10 w-10 rounded-none border-black/15 shadow-none hover:shadow-none focus:shadow-none",
-                        "hover:bg-black/[0.02] transition",
-                      )}
-                      onClick={() => onAdminDelete(active.id)}
-                      title="Delete review"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      <span className="sr-only">Delete</span>
-                    </Button>
-                  )}
-
+                <div className="flex shrink-0 items-center gap-2">
                   <Button
                     variant="outline"
                     size="icon"
                     className={cn(
-                      "h-10 w-10 rounded-none border-black/15 shadow-none hover:shadow-none focus:shadow-none",
-                      "hover:bg-black/[0.02] transition",
+                      "h-9 w-9 rounded-none border-black/12 shadow-none transition hover:bg-black/[0.02]",
                     )}
                     onClick={handlePrev}
                   >
@@ -350,8 +287,7 @@ useEffect(() => {
                     variant="outline"
                     size="icon"
                     className={cn(
-                      "h-10 w-10 rounded-none border-black/15 shadow-none hover:shadow-none focus:shadow-none",
-                      "hover:bg-black/[0.02] transition",
+                      "h-9 w-9 rounded-none border-black/12 shadow-none transition hover:bg-black/[0.02]",
                     )}
                     onClick={handleNext}
                   >
@@ -364,138 +300,138 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Add Review Form */}
-        <div className="mt-10 border border-black/10 p-6 sm:p-7">
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.22em] text-black/50">
+        <div className="mt-8 border border-black/10 p-5 sm:mt-10 sm:p-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-black/45">
                 Share your experience
               </p>
-              <h3 className="mt-2 text-lg sm:text-xl font-semibold text-black">
+
+              <h3 className="mt-2 text-lg font-semibold text-black sm:text-[21px]">
                 Submit a Review
               </h3>
-              <p className="mt-2 text-sm sm:text-base text-black/70 max-w-2xl leading-relaxed">
-                Your feedback helps others understand the quality and
-                craftsmanship of Taj Boxes.
+
+              <p className="mt-2 text-sm leading-7 text-black/62">
+                Your feedback helps others understand the quality, detailing,
+                and craftsmanship of Taj Boxes.
               </p>
 
-              <p className="mt-3 text-xs text-black/60">
+              <p className="mt-3 text-[12px] text-black/52">
                 {remaining > 0 ? (
                   <>
                     <span className="font-medium text-black">{remaining}</span>{" "}
                     submissions left this week.
                   </>
                 ) : (
-                  <>You've reached the limit (2 reviews/week).</>
+                  <>You&apos;ve reached the limit (2 reviews/week).</>
                 )}
               </p>
 
               {!uid && (
-                <p className="mt-2 text-xs text-black/50">
+                <p className="mt-2 text-[12px] text-black/45">
                   Loading secure guest session…
                 </p>
               )}
             </div>
 
             {submitted && (
-              <div className="text-xs uppercase tracking-[0.22em] text-black/60">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-black/55">
                 Thank you — submitted
               </div>
             )}
           </div>
 
-          <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 gap-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {/* Name */}
+          <form onSubmit={onSubmit} className="mt-5 grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-[11px] font-semibold tracking-[0.22em] text-black/60 uppercase mb-2">
+                <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.22em] text-black/50">
                   Name
                 </label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) =>
-                    setForm((p) => ({ ...p, name: e.target.value }))
+                    setForm((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder="Your name"
-                  className="w-full h-12 px-4 border border-black/15 bg-white outline-none focus:border-black transition text-sm text-black placeholder:text-black/40"
+                  className="h-11 w-full border border-black/12 bg-white px-4 text-sm text-black outline-none transition placeholder:text-black/35 focus:border-black"
                 />
               </div>
 
-              {/* City */}
               <div>
-                <label className="block text-[11px] font-semibold tracking-[0.22em] text-black/60 uppercase mb-2">
+                <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.22em] text-black/50">
                   City
                 </label>
                 <input
                   type="text"
                   value={form.city}
                   onChange={(e) =>
-                    setForm((p) => ({ ...p, city: e.target.value }))
+                    setForm((prev) => ({ ...prev, city: e.target.value }))
                   }
                   placeholder="Your city"
-                  className="w-full h-12 px-4 border border-black/15 bg-white outline-none focus:border-black transition text-sm text-black placeholder:text-black/40"
+                  className="h-11 w-full border border-black/12 bg-white px-4 text-sm text-black outline-none transition placeholder:text-black/35 focus:border-black"
                 />
               </div>
             </div>
 
-            {/* Message with counter */}
             <div>
-              <div className="flex items-end justify-between mb-2">
-                <label className="block text-[11px] font-semibold tracking-[0.22em] text-black/60 uppercase">
+              <div className="mb-2 flex items-end justify-between">
+                <label className="block text-[10px] font-medium uppercase tracking-[0.22em] text-black/50">
                   Message
                 </label>
-                <div className="text-[11px] text-black/50">
+                <div className="text-[10px] text-black/45">
                   {charCount}/{maxChars}
                 </div>
               </div>
+
               <textarea
                 value={form.message}
                 onChange={(e) =>
-                  setForm((p) => ({ ...p, message: e.target.value }))
+                  setForm((prev) => ({ ...prev, message: e.target.value }))
                 }
                 maxLength={maxChars}
                 placeholder="Write your review..."
                 rows={5}
-                className="w-full px-4 py-3 border border-black/15 bg-white outline-none focus:border-black transition resize-none text-sm text-black placeholder:text-black/40"
+                className="w-full resize-none border border-black/12 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-black/35 focus:border-black"
               />
             </div>
 
-            {/* Submit */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <p className="text-xs text-black/50">
+            <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-[12px] text-black/45">
                 Please keep it respectful and genuine.
               </p>
 
-              {errorMsg && <p className="text-xs text-red-600">{errorMsg}</p>}
-
-              <Button
-                type="submit"
-                variant="outline"
-                className={cn(
-                  "h-12 px-5 border-black/15 shadow-none hover:shadow-none focus:shadow-none",
-                  "hover:bg-black/[0.02] transition rounded-none text-xs uppercase tracking-[0.22em]",
+              <div className="flex flex-col items-start gap-2 sm:items-end">
+                {errorMsg && (
+                  <p className="text-[12px] text-red-600">{errorMsg}</p>
                 )}
-                disabled={
-                  !uid ||
-                  !form.name.trim() ||
-                  !form.city.trim() ||
-                  !form.message.trim() ||
-                  remaining <= 0
-                }
-              >
-                Submit Review
-                <ChevronRight className="ml-2 h-4 w-4 text-black/60" />
-              </Button>
+
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className={cn(
+                    "h-11 rounded-none border-black/12 px-5 text-[10px] uppercase tracking-[0.22em] shadow-none transition hover:bg-black/[0.02]",
+                  )}
+                  disabled={
+                    !uid ||
+                    !form.name.trim() ||
+                    !form.city.trim() ||
+                    !form.message.trim() ||
+                    remaining <= 0
+                  }
+                >
+                  Submit Review
+                  <ChevronRight className="ml-2 h-4 w-4 text-black/60" />
+                </Button>
+              </div>
             </div>
           </form>
         </div>
       </div>
 
-      {/* ✅ helper for dots overflow on tiny screens */}
       <style>{`
-        .no-scrollbar::-webkit-scrollbar{display:none}
-        .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </section>
   );

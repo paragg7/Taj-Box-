@@ -15,11 +15,11 @@ const Home = () => {
       <div className="space-y-8 md:space-y-12 lg:space-y-14">
         <Hero />
         <Category />
-        <ProductsSection
+        {/* <ProductsSection
           title="Best Sellers"
           products={products.filter((p) => p.isBestSeller)}
           link="/shop/best-sellers"
-        />
+        /> */}
 
         <ProductsSection
           title="MDF Boxes"
@@ -43,11 +43,7 @@ const Home = () => {
           products={filterByCategory("hamper box")}
           link="/shop/hamper-box"
         />
-        <ProductsSection
-          title="cake boxes"
-          products={filterByCategory("cake box")}
-          link="/shop/cake-box"
-        />
+        
         <ProductsSection
           title="platter boxes"
           products={filterByCategory("platter box")}
