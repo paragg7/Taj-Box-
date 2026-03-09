@@ -128,11 +128,8 @@ export const products = [
       "Perfect for wedding gifting",
     ],
     oldPrice: "20,000",
-<<<<<<< HEAD
-    category: "CAKE BOX",
-=======
     category: "HAMPER BOX",
->>>>>>> 8fa65e4 (Updated Taj Box project)
+
     isBestSeller: true,
     isNew: false,
     discount: null,
@@ -963,8 +960,7 @@ export const products = [
     discount: 25,
     colors: [],
   },
-<<<<<<< HEAD
-=======
+
    {
     id: 36,
     image1: "/36.png",
@@ -1105,6 +1101,6 @@ export const products = [
     discount: 25,
     colors: [],
   },
->>>>>>> 8fa65e4 (Updated Taj Box project)
+
 
 ];
