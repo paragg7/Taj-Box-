@@ -64,28 +64,28 @@ const Navbar = () => {
 
   const linkClass = ({ isActive }) =>
     `relative transition-colors ${
-      isActive ? "text-black" : "text-black/80 hover:text-black"
-    } after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full ${
+      isActive ? "text-[#EAE8E2]" : "text-[#EAE8E2]/80  hover:text-[#EAE8E2] "
+    } after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#EAE8E2] after:transition-all after:duration-300 hover:after:w-full ${
       isActive ? "after:w-full" : ""
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
-    `block px-4 py-4 border-b border-black/10 text-sm uppercase tracking-wider transition ${
-      isActive ? "text-black" : "text-black/80 hover:text-black"
+    `block px-4 py-4 border-b border-[#1E2220]/10 text-sm uppercase tracking-wider transition ${
+      isActive ? "text-[#1E2220]" : "text-[#1E2220]/70 hover:text-[#1E2220]"
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-black/10 bg-white">
+    <nav className="sticky top-0 z-50 border-b border-[#1E2220]/10 bg-[#1E2220]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+        <div className="flex items-center justify-between h-20 gap-4">
           <Link
             to="/"
-            className="text-lg xs:text-xl md:text-2xl font-bold uppercase font-playfair text-black tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+            className="text-lg xs:text-xl md:text-2xl font-bold uppercase font-playfair text-[#EAE8E2] tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
           >
             Taj Boxes
           </Link>
 
-          <ul className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center font-semibold gap-8 text-xs lg:text-sm uppercase">
+          <ul className="hidden  md:flex absolute left-1/2 -translate-x-1/2 items-center font-semibold gap-8 text-xs lg:text-sm uppercase">
             <li>
               <NavLink to="/" className={linkClass} end>
                 Home
@@ -132,11 +132,11 @@ const Navbar = () => {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="h-11 w-11 border border-black/10 flex items-center justify-center hover:bg-black/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+              className="h-11 w-11 border border-[#1E2220]/10 flex items-center justify-center hover:bg-[#1E2220]/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
               aria-label="Open search"
               aria-expanded={searchOpen}
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-5 h-5 text-[#EAE8E2]" />
             </button>
           </div>
 
@@ -144,7 +144,7 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="md:hidden inline-flex items-center justify-center h-11 w-11 border border-black/10 text-black hover:bg-black/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+            className="md:hidden inline-flex items-center justify-center h-11 w-11 border border-[#EAE8E2]/10 text-[#EAE8E2] hover:bg-[#EAE8E2/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EAE8E2/30"
             aria-label="Open menu"
             aria-expanded={open}
           >
@@ -158,29 +158,29 @@ const Navbar = () => {
         <div className="md:hidden fixed inset-0 z-[60]">
           <button
             type="button"
-            className="absolute inset-0 bg-black/20"
+            className="absolute inset-0 bg-[#1E2220]/20"
             aria-label="Close menu overlay"
             onClick={() => setOpen(false)}
           />
 
-          <div className="absolute inset-x-0 top-0 bg-white border-b border-black/10">
+          <div className="absolute inset-x-0 top-0 bg-[#EAE8E2] border-b border-[#1E2220]/10">
             <div className="px-4 sm:px-6 h-16 flex items-center justify-between">
-              <span className="text-sm uppercase tracking-widest text-black/60">
+              <span className="text-sm uppercase tracking-widest text-[#1E2220]/60">
                 Menu
               </span>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="h-11 w-11 border border-black/10 text-black hover:bg-black/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+                className="h-11 w-11 border border-[#1E2220]/10 text-[#1E2220] hover:bg-[#1E2220]/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5 mx-auto" />
               </button>
             </div>
 
-            <div className="border-t border-black/10" />
+            <div className="border-t border-[#1E2220]/10" />
 
-            <div className="px-4 sm:px-6 py-4 border-b border-black/10">
+            <div className="px-4 sm:px-6 py-4 border-b border-[#1E2220]/10">
               <PremiumSearch
                 products={products}
                 categories={categories}
@@ -190,7 +190,7 @@ const Navbar = () => {
 
             <ul className="flex flex-col">
               <li>
-                <NavLink to="/" end className={mobileLinkClass} onClick={() => setOpen(false)}>
+                <NavLink  to="/" end className={mobileLinkClass} onClick={() => setOpen(false)}>
                   Home
                 </NavLink>
               </li>
@@ -214,20 +214,20 @@ const Navbar = () => {
         <div className="hidden md:block lg:hidden fixed inset-0 z-[80]">
           <button
             type="button"
-            className="absolute inset-0 bg-black/20"
+            className="absolute inset-0 bg-[#1E2220]/20"
             aria-label="Close search overlay"
             onClick={() => setSearchOpen(false)}
           />
 
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[520px] max-w-[90%] bg-white border border-black/10">
-            <div className="flex items-center justify-between px-4 h-14 border-b border-black/10">
-              <span className="text-xs uppercase tracking-[0.22em] text-black/60">
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[520px] max-w-[90%] bg-[#EAE8E2] border border-[#1E2220]/10">
+            <div className="flex items-center justify-between px-4 h-14 border-b border-[#1E2220]/10">
+              <span className="text-xs uppercase tracking-[0.22em] text-[#1E2220]/60">
                 Search
               </span>
               <button
                 type="button"
                 onClick={() => setSearchOpen(false)}
-                className="h-9 w-9 border border-black/10 flex items-center justify-center hover:bg-black/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+                className="h-9 w-9 border border-[#1E2220]/10 flex items-center justify-center hover:bg-[#1E2220]/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
                 aria-label="Close search"
               >
                 <X className="w-4 h-4" />

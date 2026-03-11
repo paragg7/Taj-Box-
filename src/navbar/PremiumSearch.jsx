@@ -158,11 +158,11 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
     <div ref={wrapRef} className="relative">
       {/* Input */}
       <div
-        className={`relative flex items-center gap-2 border bg-white px-3 h-11 transition ${
-          open ? "border-black/30" : "border-black/10 hover:border-black/20"
+        className={`relative flex items-center gap-2 border bg-[#EAE8E2] px-3 h-11 transition ${
+          open ? "border-[#1E2220]/30" : "border-[#1E2220]/10 hover:border-[#1E2220]/20"
         }`}
       >
-        <Search className="w-4 h-4 text-black/45 shrink-0" />
+        <Search className="w-4 h-4 text-[#1E2220]/80 shrink-0" />
 
         <input
           ref={inputRef}
@@ -174,19 +174,19 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
             setActive(-1);
           }}
           onKeyDown={onKeyDown}
-          type="search"
+          type="text"
           placeholder="Search products or categories…"
-          className="w-full bg-transparent outline-none text-sm placeholder:text-black/40"
+          className="w-full bg-transparent outline-none text-sm placeholder:text-[#1E2220]/40"
         />
 
         {q && (
           <button
             type="button"
             onClick={clear}
-            className="h-8 w-8 grid place-items-center border border-black/10 hover:bg-black/5 transition"
+            className="h-8 w-8 grid place-items-center border border-[#1E2220]/10 hover:bg-[#1E2220]/5 transition"
             aria-label="Clear search"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 text-[#1E2220]" />
           </button>
         )}
       </div>
@@ -194,44 +194,29 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
       {/* Dropdown (uses debounced results) */}
       {open && isTyping && (
         <div
-          className="absolute left-0 right-0 mt-2 bg-white border border-black/10 z-[9999]"
+          className="absolute left-0 right-0 mt-2 bg-[#EAE8E2] border border-[#1E2220]/10 z-[9999]"
           onMouseDown={(e) => e.preventDefault()}
         >
-          <div className="px-4 py-3 border-b border-black/10 flex items-center justify-between">
-            <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
-              Results {isDebouncing ? "…" : ""}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false);
-                setActive(-1);
-              }}
-              className="text-[11px] uppercase tracking-[0.22em] text-black/45 hover:text-black transition"
-            >
-              Close
-            </button>
-          </div>
+          
 
           <div className="max-h-[380px] overflow-auto">
             {!hasAny && !isDebouncing ? (
               <div className="p-6 text-center">
-                <div className="text-sm text-black">No results found</div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-black/45">
+                <div className="text-sm text-[#1E2220]">No results found</div>
+                <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#1E2220]/80">
                   Try a different keyword
                 </div>
               </div>
             ) : !hasAny && isDebouncing ? (
               <div className="p-6 text-center">
-                <div className="text-sm text-black/70">Searching…</div>
+                <div className="text-sm text-[#1E2220]">Searching…</div>
               </div>
             ) : (
               <>
                 {/* Categories */}
                 {grouped.categories.length > 0 && (
                   <div className="p-2">
-                    <div className="px-2 pt-2 pb-1 text-[11px] uppercase tracking-[0.22em] text-black/45">
+                    <div className="px-2 pt-2 pb-1 text-[11px] uppercase tracking-[0.22em] text-[#1E2220]">
                       Categories
                     </div>
 
@@ -245,14 +230,14 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
                               onMouseEnter={() => setActive(idx)}
                               onClick={() => goCategory(c)}
                               className={`w-full px-3 py-3 transition text-left ${
-                                isActive ? "bg-black/5" : "hover:bg-black/5"
+                                isActive ? "bg-[#1E2220]/5" : "hover:bg-[#1E2220]/5"
                               }`}
                             >
                               <div className="flex items-center justify-between">
-                                <div className="text-sm text-black truncate">
+                                <div className="text-sm text-[#1E2220] truncate">
                                   {c.name}
                                 </div>
-                                <div className="text-xs text-black/35">→</div>
+                                <div className="text-xs text-[#1E2220]/35">↵</div>
                               </div>
                             </button>
                           </li>
@@ -264,8 +249,8 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
 
                 {/* Products */}
                 {grouped.products.length > 0 && (
-                  <div className="p-2 border-t border-black/10">
-                    <div className="px-2 pt-2 pb-1 text-[11px] uppercase tracking-[0.22em] text-black/45">
+                  <div className="p-2 border-t border-[#1E2220]/10">
+                    <div className="px-2 pt-2 pb-1 text-[11px] uppercase tracking-[0.22em] text-[#1E2220]">
                       Products
                     </div>
 
@@ -281,11 +266,11 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
                               onMouseEnter={() => setActive(flatIndex)}
                               onClick={() => goProduct(p)}
                               className={`w-full px-3 py-3 transition text-left ${
-                                isActive ? "bg-black/5" : "hover:bg-black/5"
+                                isActive ? "bg-[#1E2220]/5" : "hover:bg-[#1E2220]/5"
                               }`}
                             >
                               <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 border border-black/10 overflow-hidden bg-white shrink-0">
+                                <div className="h-10 w-10 border border-[#1E2220]/10 overflow-hidden bg-[#1E2220]/5 shrink-0">
                                   <img
                                     src={p.image1}
                                     alt={p.name}
@@ -295,15 +280,15 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
                                 </div>
 
                                 <div className="min-w-0 flex-1">
-                                  <div className="text-sm text-black truncate">
+                                  <div className="text-sm text-[#1E2220]truncate">
                                     {p.name}
                                   </div>
-                                  <div className="text-[11px] text-black/45 truncate">
+                                  <div className="text-[11px] text-[#1E2220] truncate">
                                     {p.category}
                                   </div>
                                 </div>
 
-                                <div className="text-xs text-black/35">↵</div>
+                                <div className="text-xs text-[#1E2220]/35">↵</div>
                               </div>
                             </button>
                           </li>
@@ -313,15 +298,7 @@ const PremiumSearch = ({ products = [], categories = [], onNavigate }) => {
                   </div>
                 )}
 
-                <div className="p-2 border-t border-black/10">
-                  <Link
-                    to="/shop"
-                    onClick={() => setOpen(false)}
-                    className="block text-center border border-black/10 py-3 text-xs uppercase tracking-[0.22em] text-black/70 hover:bg-black/5 transition"
-                  >
-                    View all products
-                  </Link>
-                </div>
+                
               </>
             )}
           </div>

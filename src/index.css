@@ -52,3 +52,4 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .marquee { animation: none; }
 }
+

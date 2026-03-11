@@ -9,8 +9,8 @@ const Title = ({ heading, link = "/shop" }) => {
           
           {/* Left Title */}
           <div>
-            <div className="h-[2px] w-10 bg-black mb-3" />
-            <h2 className="text-xl xs:text-2xl md:text-3xl lg:text-4xl uppercase font-semibold tracking-wide">
+            <div className=" w-10  mb-3" />
+            <h2 className="text-xl text-[#1E2220] xs:text-2xl md:text-3xl lg:text-4xl uppercase font-semibold tracking-wide">
               {heading}
             </h2>
           </div>
@@ -24,15 +24,15 @@ const Title = ({ heading, link = "/shop" }) => {
               text-xs xs:text-sm
               uppercase
               tracking-widest
-              text-black
+              text-[#1E2220]
               transition
               focus:outline-none
               focus-visible:ring-2
-              focus-visible:ring-black/30
+              focus-visible:ring-[#1E2220]/30
             "
           >
             View All
-            <span className="block h-px bg-black scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 mt-1" />
+            <span className="block h-px bg-[#1E2220] scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 mt-1" />
           </Link>
 
         </div>

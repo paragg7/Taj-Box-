@@ -17,7 +17,7 @@ const ProductsSection = ({ products, title, link, sectionRef  }) => {
       {/* Pass link to Title */}
       <Title heading={title} link={link} />
 
-      <div className="mt-2 px-4 xs:px-5 md:px-8">
+      <div className="py-10 px-4 xs:px-5 md:px-8">
         <div className="relative max-w-[1800px] mx-auto">
           <Carousel
             opts={{

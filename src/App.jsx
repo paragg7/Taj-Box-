@@ -45,7 +45,7 @@ const App = () => {
 
     
 
-    <div className="">
+    <div className="bg-[#FAF9F6]">
 
      <StickyBanner/>
       <Navbar/>

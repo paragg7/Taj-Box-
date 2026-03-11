@@ -53,7 +53,7 @@ const Hero = () => {
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-6 py-6 sm:py-8 lg:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* LEFT PANEL: only desktop */}
-          <div className="hidden lg:block relative overflow-hidden bg-white border border-black/10">
+          <div className="hidden lg:block relative overflow-hidden bg-[#F7F6F1] border border-black/10">
             <div className="relative h-[420px] sm:h-[500px] lg:h-[600px]">
               <img
                 src={left.src}
@@ -67,8 +67,8 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-transparent" />
 
 
-              <div className="absolute left-4 sm:left-8 top-1/3 -translate-y-1/2 max-w-[520px]">
-                <h2 className="text-white leading-[1.05]">
+              <div className="absolute left-4 sm:left-8 bottom-1/7 -translate-y-1/2 max-w-[520px]">
+                <h2 className="text-[#F7F6F1] leading-[1.05]">
                   <span className="block text-[34px] sm:text-5xl lg:text-[56px] font-bold">
                     Packaging That Feels Like Royalty.
 
@@ -77,8 +77,8 @@ const Hero = () => {
               </div>
 
               <div className="absolute left-4 right-4 sm:left-8 sm:right-10 bottom-4 sm:bottom-6">
-                <div className="bg-black/35 border border-white/20 backdrop-blur-[2px] px-4 py-4 sm:px-6 sm:py-5">
-                  <p className="text-white/85 text-[11px] sm:text-xs leading-relaxed">
+                <div className="bg-black/35 border border-[#F7F6F1]/20 backdrop-blur-[2px] px-4 py-4 sm:px-6 sm:py-5">
+                  <p className="text-[#F7F6F1]/85 text-[11px] sm:text-xs leading-relaxed">
 
                     Luxury packaging designed to make every moment unforgettable.
 
@@ -90,7 +90,7 @@ const Hero = () => {
 
           {/* RIGHT PANEL: always visible + taller on mobile/tablet */}
           <div
-            className="relative overflow-hidden bg-white border border-black/10 group"
+            className="relative overflow-hidden bg-[#F7F6F1] border border-black/10 group"
             onMouseEnter={stopAuto}
             onMouseLeave={startAuto}
           >
@@ -133,15 +133,15 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
 
               <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:left-6 sm:translate-x-0 sm:top-6 z-20 w-[92%] max-w-[440px]">
-                <div className="bg-black/35 border border-white/20 backdrop-blur-[2px] p-4 sm:p-6 text-center sm:text-left">
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/70">
+                <div className="bg-black/35 border border-[#F7F6F1]/20 backdrop-blur-[2px] p-4 sm:p-6 text-center sm:text-left">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-[#F7F6F1]/70">
 
                     New Collection
                   </div>
 
                  
 
-                  <p className="mt-3 text-white/85 text-[12px] sm:text-sm leading-relaxed">
+                  <p className="mt-3 text-[#F7F6F1]/85 text-[12px] sm:text-sm leading-relaxed">
                     Elegant invitation boxes designed to impress your guests
                     from the very first moment. Crafted with premium materials
                     and timeless detailing.
@@ -150,7 +150,7 @@ const Hero = () => {
 
                   <Link
                     to="/categories"
-                    className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/80 hover:text-white transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                    className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[#F7F6F1]/80 hover:text-[#F7F6F1] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F7F6F1]/40"
                   >
                     Explore categories <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -160,9 +160,9 @@ const Hero = () => {
               <div className="absolute left-4 right-4 sm:right-6 sm:left-auto bottom-4 sm:bottom-6 z-20">
                 <Link
                   to="/shop"
-                  className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-black/35 border border-white/20 backdrop-blur-[2px]
-                             text-white uppercase tracking-widest text-[11px] sm:text-xs px-5 py-3
-                             hover:bg-white hover:text-black transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                  className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-black/35 border border-[#F7F6F1]/20 backdrop-blur-[2px]
+                             text-[#F7F6F1] uppercase tracking-widest text-[11px] sm:text-xs px-5 py-3
+                             hover:bg-[#F7F6F1] hover:text-black transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F7F6F1]/40"
                 >
                   Shop Now
                   <span className="h-6 w-6 grid place-items-center">

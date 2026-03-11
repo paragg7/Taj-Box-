@@ -1,11 +1,11 @@
 import React from "react";
 
 export default function Loop() {
-  const items = ["MDF", "FILE", "DHOLLU", "HAMPER", "PLATTER", "SWEET", "CAKE"];
+  const items = ["Any box. Any design. Any size — made your way", "Any box. Any design. Any size — made your way."];
 
   return (
-    <section className="w-full bg-black">
-      <div className="relative w-full overflow-hidden py-3 sm:py-4 md:py-5 lg:py-4 border-y border-white/10">
+    <section className="w-full bg-[#161817]">
+      <div className="relative w-full overflow-hidden py-2 sm:py-3 md:py-3 lg:py-3 border-y border-[#EAE8E2]/10">
         {/* luxury overlay */}
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03),transparent_20%,transparent_80%,rgba(255,255,255,0.03))]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_65%)]" />
@@ -22,11 +22,10 @@ export default function Loop() {
                 <span
                   className="
                     uppercase leading-none
-                    text-white/90
+                    text-[#EAE8E2]/90
                     text-[20px] xs:text-[24px] sm:text-[32px] md:text-[42px] lg:text-[54px]
                     font-semibold tracking-[0.08em]
-                    transition-all duration-300
-                    group-hover:text-white
+                    
                   "
                 >
                   {text}
@@ -34,10 +33,10 @@ export default function Loop() {
 
                 <span
                   className="
-                    text-white/35
-                    text-[10px] sm:text-[12px] md:text-[14px]
-                    transition-all duration-300
-                    group-hover:text-white/60
+                    text-[#EAE8E2]/70
+                    text-md sm:text-2xl md:text-4xl
+                    
+                    
                   "
                 >
                   ✦
@@ -59,11 +58,10 @@ export default function Loop() {
                 <span
                   className="
                     uppercase leading-none
-                    text-white/90
+                    text-[#EAE8E2]/90
                     text-[20px] xs:text-[24px] sm:text-[32px] md:text-[42px] lg:text-[54px]
                     font-semibold tracking-[0.08em]
-                    transition-all duration-300
-                    group-hover:text-white
+                   
                   "
                 >
                   {text}
@@ -71,10 +69,9 @@ export default function Loop() {
 
                 <span
                   className="
-                    text-white/35
-                    text-[10px] sm:text-[12px] md:text-[14px]
-                    transition-all duration-300
-                    group-hover:text-white/60
+                    text-[#EAE8E2]/70
+                    text-md sm:text-2xl md:text-4xl
+                    
                   "
                 >
                   ✦

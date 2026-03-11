@@ -47,8 +47,8 @@ const ShopMegaMenu = ({
       className="
         absolute left-1/2 top-full -translate-x-1/2 mt-3
         w-[92vw] max-w-[860px]
-        border border-black/[0.07]
-        bg-white
+        border border-[#1E2220]/[0.07]
+        bg-[#EAE8E2]
         z-[9999]
         shadow-[0_20px_60px_rgba(0,0,0,0.08)]
       "
@@ -58,8 +58,8 @@ const ShopMegaMenu = ({
       aria-label="Shop categories"
     >
       {/* TOP HEADER */}
-      <div className="flex items-center justify-between px-9 py-5 border-b border-black/[0.07]">
-        <h3 className="text-[11px] uppercase tracking-[0.08em] text-black/65">
+      <div className="flex items-center justify-between px-9 py-5 border-b border-[#1E2220]/[0.07]">
+        <h3 className="text-[11px] uppercase tracking-[0.08em] text-[#1E2220]">
           Browse categories
         </h3>
 
@@ -70,9 +70,9 @@ const ShopMegaMenu = ({
             text-[10px]
             uppercase
             tracking-[0.16em]
-            text-black/45
+            text-[#1E2220]/50
             transition-colors duration-200
-            hover:text-black/75
+            hover:text-[#1E2220]/90
           "
         >
           View all
@@ -81,12 +81,12 @@ const ShopMegaMenu = ({
 
       <div className="grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr]">
         {/* LEFT SIDE */}
-        <div className="border-r border-black/[0.07]">
+        <div className="border-r border-[#1E2220]/[0.07]">
           <ul className="grid grid-cols-1">
             {mergedItems.map((c, idx) => (
               <li
                 key={c.slug || c.name}
-                className="border-b border-black/[0.07] last:border-b-0"
+                className="border-b border-[#1E2220]/[0.07] last:border-b-0"
               >
                 <button
                   type="button"
@@ -99,17 +99,17 @@ const ShopMegaMenu = ({
                     focus:outline-none
                     ${
                       hovered === idx
-                        ? "bg-black/[0.025]"
-                        : "hover:bg-black/[0.012]"
+                        ? "bg-[#1E2220]/[0.025]"
+                        : "hover:bg-[#1E2220]/[0.012]"
                     }
                   `}
                 >
                   <div className="flex items-center justify-between gap-5">
-                    <span className="truncate text-[13px] tracking-[0.015em] text-black/90">
+                    <span className="truncate text-[13px] tracking-[0.015em] text-[#1E2220]/90">
                       {c.name}
                     </span>
 
-                    <span className="shrink-0 text-[9px] uppercase tracking-[0.18em] text-black/25">
+                    <span className="shrink-0 text-[9px] uppercase tracking-[0.18em] text-[#1E2220]/50">
                       {c.count} {c.count === 1 ? "product" : "products"}
                     </span>
                   </div>
@@ -120,7 +120,7 @@ const ShopMegaMenu = ({
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="hidden md:flex flex-col justify-center">
+        <div className="hidden md:flex flex-col bg-white justify-center">
           {activeCategory && (
             <div className="px-9 py-6">
               <div className="overflow-hidden">

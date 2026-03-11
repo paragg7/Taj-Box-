@@ -48,13 +48,13 @@ const Category = () => {
                     <div
                       className="
                         group h-[360px] sm:h-[380px]
-                        border border-black/10 bg-white
-                        hover:border-black/25
+                        border border-[#1E2220]/10 bg-[#EAE8E2]/30
+                        hover:border-[#1E2220]/25
                         transition-colors duration-300
                         flex flex-col
                       "
                     >
-                      <div className="relative h-[65%] overflow-hidden border-b border-black/10">
+                      <div className="relative h-[65%] overflow-hidden border-b border-[#1E2220]/10">
                         <img
                           src={item.image}
                           alt={item.name}
@@ -65,16 +65,16 @@ const Category = () => {
 
                       <div className="flex flex-col justify-between flex-1 px-5 py-5">
                         <div>
-                          <span className="text-[10px] uppercase tracking-[0.22em] text-black/40">
+                          <span className="text-[10px] uppercase tracking-[0.22em] text-[#1E2220]/40">
                             Category
                           </span>
 
-                          <h3 className="mt-1 text-sm sm:text-[15px] font-semibold text-black leading-snug">
+                          <h3 className="mt-1 text-sm sm:text-[15px] font-semibold text-[#1E2220] leading-snug">
                             {item.name}
                           </h3>
                         </div>
 
-                        <span className="text-[10px] uppercase tracking-[0.22em] text-black/50">
+                        <span className="text-[10px] uppercase tracking-[0.22em] text-[#1E2220]/50">
                           Explore collection →
                         </span>
                       </div>
