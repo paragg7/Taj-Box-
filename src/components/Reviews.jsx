@@ -199,19 +199,19 @@ const Reviews = () => {
   };
 
   return (
-    <section className="bg-white pt-8 pb-8 px-4 sm:px-6 sm:pt-10 lg:px-8">
+    <section className="bg-[#1E2220] pt-8 pb-8 px-4 sm:px-6 sm:pt-10 lg:px-8">
       <div className="mx-auto max-w-8xl">
         <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-[0.9fr_1.1fr] sm:gap-6 md:gap-8 lg:grid-cols-2 lg:gap-12">
           <div className="max-w-[420px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#1E2220]/45">
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#EAE8E2]/90">
               Testimonials
             </p>
 
-            <h2 className="mt-3 text-[28px] font-semibold leading-[1.04] text-[#1E2220] sm:text-[30px] md:text-[30px] lg:text-[38px]">
+            <h2 className="mt-3 text-[28px] font-semibold leading-[1.04] text-[#EAE8E2] sm:text-[30px] md:text-[30px] lg:text-[38px]">
               What Our Clients Are Saying
             </h2>
 
-            <p className="mt-4 max-w-md text-sm leading-7 text-[#1E2220]/62 sm:text-[14px] md:text-[14px] md:leading-7 lg:text-[15px]">
+            <p className="mt-4 max-w-md text-sm leading-7 text-[#EAE8E2]/80 sm:text-[14px] md:text-[14px] md:leading-7 lg:text-[15px]">
               We take pride in delivering refined craftsmanship, elegant
               presentation, and memorable gifting experiences for every
               celebration.
@@ -221,13 +221,13 @@ const Reviews = () => {
           </div>
 
           <div className="min-w-0">
-            <div className="flex min-h-[320px] flex-col border border-[#1E2220]/10 p-4 sm:min-h-[340px] sm:p-5 md:min-h-[330px] md:p-5 lg:min-h-[390px] lg:p-6">
+            <div className="flex min-h-[320px] flex-col border bg-[#EAE8E2] p-4 sm:min-h-[340px] sm:p-5 md:min-h-[330px] md:p-5 lg:min-h-[390px] lg:p-6">
               <div className="flex items-center justify-between gap-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center border border-[#1E2220]/10">
-                    <Quote className="h-4 w-4 text-[#1E2220]/55" />
+                  <div className="flex h-8 w-8 items-center justify-center border bg-[#1E2220] ">
+                    <Quote className="h-4 w-4 text-[#EAE8E2]" />
                   </div>
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-[#1E2220]/45">
+                  <div className="text-[10px] uppercase tracking7-[0.22em] text-[#1E2220]/70">
                     Client words
                   </div>
                 </div>
@@ -244,7 +244,7 @@ const Reviews = () => {
                           "h-2 w-2 shrink-0 border transition",
                           isActive
                             ? "border-[#1E2220] bg-[#1E2220]"
-                            : "border-[#1E2220]/20 bg[#EAE8E2]/30 hover:border-[#1E2220]/55",
+                            : "border-[#1E2220]/20 bg[#1E2220]/30 hover:border-[#1E2220]/60",
                         )}
                         aria-label={`Go to review ${index + 1}`}
                       />
@@ -266,7 +266,7 @@ const Reviews = () => {
                   <p className="truncate text-sm font-medium text-[#1E2220]">
                     {active?.name}
                   </p>
-                  <p className="mt-1 truncate text-[12px] uppercase tracking-[0.12em] text-[#1E2220]/45">
+                  <p className="mt-1 truncate text-[12px] uppercase tracking-[0.12em] text-[#1E2220]/70">
                     {active?.city}
                   </p>
                 </div>
@@ -300,24 +300,22 @@ const Reviews = () => {
             </div>
           </div>
         </div>
-
-        <div className="mt-8 border border-[#1E2220]/10 p-5 sm:mt-10 sm:p-6">
+{/* exper  bottom */}
+        <div className="mt-8 bg-[#EAE8E2] p-5 sm:mt-10 sm:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="max-w-2xl">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-[#1E2220]/45">
-                Share your experience
-              </p>
+              
 
-              <h3 className="mt-2 text-lg font-semibold text-[#1E2220] sm:text-[21px]">
-                Submit a Review
+              <h3 className="mt-2 text-xl uppercase font-semibold text-[#1E2220] sm:text-[21px]">
+                Share your experience
               </h3>
 
-              <p className="mt-2 text-sm leading-7 text-[#1E2220]/62">
+              <p className="mt-2 text-sm leading-7 text-[#1E2220]/60">
                 Your feedback helps others understand the quality, detailing,
                 and craftsmanship of Taj Boxes.
               </p>
 
-              <p className="mt-3 text-[12px] text-[#1E2220]/52">
+              {/* <p className="mt-3 text-[12px] text-[#1E2220]/60">
                 {remaining > 0 ? (
                   <>
                     <span className="font-medium text-[#1E2220]">{remaining}</span>{" "}
@@ -326,7 +324,7 @@ const Reviews = () => {
                 ) : (
                   <>You&apos;ve reached the limit (2 reviews/week).</>
                 )}
-              </p>
+              </p> */}
 
               {!uid && (
                 <p className="mt-2 text-[12px] text-[#1E2220]/45">
@@ -345,7 +343,7 @@ const Reviews = () => {
           <form onSubmit={onSubmit} className="mt-5 grid grid-cols-1 gap-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.22em] text-[#1E2220]/50">
+                <label className="mb-2 block text-xs font-medium uppercase tracking-[0.22em] text-[#1E2220]/80">
                   Name
                 </label>
                 <input
@@ -355,12 +353,12 @@ const Reviews = () => {
                     setForm((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder="Your name"
-                  className="h-11 w-full border border-[#1E2220]/12 bg[#EAE8E2]/30 px-4 text-sm text-[#1E2220] outline-none transition placeholder:text-[#1E2220]/35 focus:border-[#1E2220]"
+                  className="h-11 w-full border border-[#1E2220]/20 bg-[#1E2220]/10 px-4 text-sm text-[#1E2220] outline-none transition placeholder:text-[#1E2220]/40 focus:border-[#1E2220]"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.22em] text-[#1E2220]/50">
+                <label className="mb-2 block text-xs font-medium uppercase tracking-[0.22em] text-[#1E2220]/80">
                   City
                 </label>
                 <input
@@ -370,14 +368,14 @@ const Reviews = () => {
                     setForm((prev) => ({ ...prev, city: e.target.value }))
                   }
                   placeholder="Your city"
-                  className="h-11 w-full border border-[#1E2220]/12 bg[#EAE8E2]/30 px-4 text-sm text-[#1E2220] outline-none transition placeholder:text-[#1E2220]/35 focus:border-[#1E2220]"
+                  className="h-11 w-full border border-[#1E2220]/20 bg-[#1E2220]/10 px-4 text-sm text-[#1E2220] outline-none transition placeholder:text-[#1E2220]/40 focus:border-[#1E2220]"
                 />
               </div>
             </div>
 
             <div>
               <div className="mb-2 flex items-end justify-between">
-                <label className="block text-[10px] font-medium uppercase tracking-[0.22em] text-[#1E2220]/50">
+                <label className="block text-xs font-medium uppercase tracking-[0.22em] text-[#1E2220]/80">
                   Message
                 </label>
                 <div className="text-[10px] text-[#1E2220]/45">
@@ -393,25 +391,25 @@ const Reviews = () => {
                 maxLength={maxChars}
                 placeholder="Write your review..."
                 rows={5}
-                className="w-full resize-none border border-[#1E2220]/12 bg[#EAE8E2]/30 px-4 py-3 text-sm text-[#1E2220] outline-none transition placeholder:text-[#1E2220]/35 focus:border-[#1E2220]"
+                className="w-full resize-none border border-[#1E2220]/20 bg-[#1E2220]/10 px-4 py-3 text-sm text-[#1E2220] outline-none transition placeholder:text-[#1E2220]/40 focus:border-[#1E2220]"
               />
             </div>
 
             <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-[12px] text-[#1E2220]/45">
+              <p className="text-[12px] text-[#1E2220]/50">
                 Please keep it respectful and genuine.
               </p>
 
               <div className="flex flex-col items-start gap-2 sm:items-end">
                 {errorMsg && (
-                  <p className="text-[12px] text-red-600">{errorMsg}</p>
+                  <p className="text-xs text-red-600">{errorMsg}</p>
                 )}
 
                 <Button
                   type="submit"
                   variant="outline"
                   className={cn(
-                    "h-11 rounded-none border-[#1E2220]/12 px-5 text-[10px] uppercase tracking-[0.22em] shadow-none transition hover:bg-[#1E2220]/[0.02]",
+                    "h-11 rounded-none cursor-pointer border-[#1E2220]/20 px-5 text-[10px] uppercase tracking-[0.22em] shadow-none transition hover:bg-[#1E2220]/10",
                   )}
                   disabled={
                     !uid ||
