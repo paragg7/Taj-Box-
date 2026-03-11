@@ -89,48 +89,48 @@ const Shipping = () => {
   const [openId, setOpenId] = useState(nav[0]?.id || "");
 
   return (
-    <main className="min-h-screen py-12 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <main className="min-h-screen py-12 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <header className="text-center mb-10 sm:mb-12">
-          <p className="text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase text-black/50 mb-3">
+          <p className="text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase text-[#1E2220]/50 mb-3">
             OUR COMMITMENT TO
           </p>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-black leading-[1.05]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#1E2220] leading-[1.05]">
             Shipping Policy
           </h1>
 
-          <p className="mt-5 text-sm sm:text-base text-black/70 max-w-3xl mx-auto leading-relaxed">
+          <p className="mt-5 text-sm sm:text-base text-[#1E2220]/70 max-w-3xl mx-auto leading-relaxed">
             This Shipping Policy outlines delivery timelines, shipping options,
             and responsibilities related to orders placed on our website.
           </p>
         </header>
 
         {/* Quick facts row (premium UX) */}
-        <div className="border border-black/10">
+        <div className="border border-[#1E2220]/10">
           <div className="grid grid-cols-1 sm:grid-cols-3">
-            <div className="p-5 sm:p-6 border-b sm:border-b-0 sm:border-r border-black/10">
-              <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
+            <div className="p-5 sm:p-6 border-b sm:border-b-0 sm:border-r border-[#1E2220]/10">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-[#1E2220]/50">
                 Processing
               </div>
-              <div className="mt-2 text-sm sm:text-base text-black">
+              <div className="mt-2 text-sm sm:text-base text-[#1E2220]">
                 1–3 business days
               </div>
             </div>
-            <div className="p-5 sm:p-6 border-b sm:border-b-0 sm:border-r border-black/10">
-              <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
+            <div className="p-5 sm:p-6 border-b sm:border-b-0 sm:border-r border-[#1E2220]/10">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-[#1E2220]/50">
                 Delivery (India)
               </div>
-              <div className="mt-2 text-sm sm:text-base text-black">
+              <div className="mt-2 text-sm sm:text-base text-[#1E2220]">
                 1–5 business days
               </div>
             </div>
             <div className="p-5 sm:p-6">
-              <div className="text-[11px] uppercase tracking-[0.22em] text-black/50">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-[#1E2220]/50">
                 Free Shipping
               </div>
-              <div className="mt-2 text-sm sm:text-base text-black">
+              <div className="mt-2 text-sm sm:text-base text-[#1E2220]">
                 Orders above ₹999
               </div>
             </div>
@@ -141,8 +141,8 @@ const Shipping = () => {
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 lg:gap-14">
           {/* Desktop sticky nav */}
           <aside className="hidden lg:block">
-            <div className="sticky top-24 border border-black/10 p-5">
-              <div className="text-[11px] uppercase tracking-[0.22em] text-black/50 mb-4">
+            <div className="sticky top-24 border border-[#1E2220]/10 p-5">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-[#1E2220]/50 mb-4">
                 On this page
               </div>
 
@@ -151,7 +151,7 @@ const Shipping = () => {
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="block text-sm text-black/70 hover:text-black transition"
+                    className="block text-sm text-[#1E2220]/70 hover:text-[#1E2220] transition"
                   >
                     {item.title}
                   </a>
@@ -163,12 +163,12 @@ const Shipping = () => {
           {/* Content */}
           <section className="min-w-0">
             {/* Intro */}
-            <div className="border border-black/10 p-6 sm:p-7">
-              <h2 className="text-lg sm:text-xl font-semibold text-black mb-4">
+            <div className="border border-[#1E2220]/10 p-6 sm:p-7">
+              <h2 className="text-lg sm:text-xl font-semibold text-[#1E2220] mb-4">
                 Please review our shipping details below
               </h2>
 
-              <p className="text-sm sm:text-base leading-relaxed text-black/70 max-w-3xl">
+              <p className="text-sm sm:text-base leading-relaxed text-[#1E2220]/70 max-w-3xl">
                 We aim to make your experience seamless from order placement to
                 delivery. Our shipping partners are selected for reliability and
                 care. Review the policy below for timelines, tracking, and
@@ -186,41 +186,41 @@ const Shipping = () => {
                     onClick={() =>
                       setOpenId((prev) => (prev === section.id ? "" : section.id))
                     }
-                    className="lg:hidden w-full flex items-center justify-between border border-black/10 px-5 py-4 text-left"
+                    className="lg:hidden w-full flex items-center justify-between border border-[#1E2220]/10 px-5 py-4 text-left"
                   >
-                    <span className="text-sm font-semibold text-black">
+                    <span className="text-sm font-semibold text-[#1E2220]">
                       {section.title}
                     </span>
                     {openId === section.id ? (
-                      <ChevronUp className="w-4 h-4 text-black/60" />
+                      <ChevronUp className="w-4 h-4 text-[#1E2220]/60" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-black/60" />
+                      <ChevronDown className="w-4 h-4 text-[#1E2220]/60" />
                     )}
                   </button>
 
                   {/* Content wrapper */}
                   <div
-                    className={`border border-black/10 lg:border-0 ${
+                    className={`border border-[#1E2220]/10 lg:border-0 ${
                       openId === section.id ? "block" : "hidden"
                     } lg:block`}
                   >
                     <div className="px-5 py-5 lg:px-0 lg:py-0">
                       {/* Desktop heading */}
-                      <h3 className="hidden lg:block text-lg sm:text-xl font-semibold text-black mb-3">
+                      <h3 className="hidden lg:block text-lg sm:text-xl font-semibold text-[#1E2220] mb-3">
                         {section.title}
                       </h3>
 
                       {section.content && (
-                        <p className="text-sm sm:text-base leading-relaxed text-black/70">
+                        <p className="text-sm sm:text-base leading-relaxed text-[#1E2220]/70">
                           {section.content}
                         </p>
                       )}
 
                       {section.points && (
-                        <ul className="mt-4 space-y-2 text-sm sm:text-base text-black/70">
+                        <ul className="mt-4 space-y-2 text-sm sm:text-base text-[#1E2220]/70">
                           {section.points.map((point, idx) => (
                             <li key={idx} className="flex gap-3">
-                              <span className="mt-[9px] h-[3px] w-[3px] bg-black/60 flex-shrink-0" />
+                              <span className="mt-[9px] h-[3px] w-[3px] bg-[#1E2220]/60 flex-shrink-0" />
                               <span>{point}</span>
                             </li>
                           ))}
@@ -230,18 +230,18 @@ const Shipping = () => {
                   </div>
 
                   {/* Desktop divider */}
-                  <div className="hidden lg:block h-px bg-black/10 my-8" />
+                  <div className="hidden lg:block h-px bg-[#1E2220]/10 my-8" />
                 </div>
               ))}
             </div>
 
             {/* Contact */}
-            <div className="mt-10 border border-black/10 p-6 sm:p-7">
-              <h3 className="text-lg sm:text-xl font-semibold text-black mb-3">
+            <div className="mt-10 border border-[#1E2220]/10 p-6 sm:p-7">
+              <h3 className="text-lg sm:text-xl font-semibold text-[#1E2220] mb-3">
                 Questions about shipping?
               </h3>
 
-              <p className="text-sm sm:text-base text-black/70 mb-5 max-w-3xl leading-relaxed">
+              <p className="text-sm sm:text-base text-[#1E2220]/70 mb-5 max-w-3xl leading-relaxed">
                 If you need help with shipping, delivery, or tracking, contact
                 us and we’ll assist you.
               </p>
@@ -249,30 +249,30 @@ const Shipping = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <a
                   href="mailto:support@example.com"
-                  className="inline-flex items-center gap-3 px-4 py-3 border border-black/10 hover:border-black/25 transition"
+                  className="inline-flex items-center gap-3 px-4 py-3 border border-[#1E2220]/10 hover:border-[#1E2220]/25 transition"
                 >
-                  <Mail className="w-5 h-5 text-black/70" />
-                  <span className="text-sm text-black break-all">
+                  <Mail className="w-5 h-5 text-[#1E2220]/70" />
+                  <span className="text-sm text-[#1E2220] break-all">
                     support@example.com
                   </span>
                 </a>
 
                 <a
                   href="tel:+911234567890"
-                  className="inline-flex items-center gap-3 px-4 py-3 border border-black/10 hover:border-black/25 transition"
+                  className="inline-flex items-center gap-3 px-4 py-3 border border-[#1E2220]/10 hover:border-[#1E2220]/25 transition"
                 >
-                  <Phone className="w-5 h-5 text-black/70" />
-                  <span className="text-sm text-black">+91 1234567890</span>
+                  <Phone className="w-5 h-5 text-[#1E2220]/70" />
+                  <span className="text-sm text-[#1E2220]">+91 1234567890</span>
                 </a>
               </div>
 
-              <div className="mt-4 text-sm text-black/60 leading-relaxed">
+              <div className="mt-4 text-sm text-[#1E2220]/60 leading-relaxed">
                 Hours: Monday–Friday, 9:00 AM – 6:00 PM IST
               </div>
             </div>
 
             {/* Last Updated */}
-            <div className="mt-6 text-sm text-black/60 border-t border-black/10 pt-6">
+            <div className="mt-6 text-sm text-[#1E2220]/60 border-t border-[#1E2220]/10 pt-6">
               Last updated: February 10, 2026
             </div>
           </section>

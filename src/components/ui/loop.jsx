@@ -4,11 +4,11 @@ export default function Loop() {
   const items = ["Any box. Any design. Any size — made your way", "Any box. Any design. Any size — made your way."];
 
   return (
-    <section className="w-full bg-[#161817]">
-      <div className="relative w-full overflow-hidden py-2 sm:py-3 md:py-3 lg:py-3 border-y border-[#EAE8E2]/10">
+    <section className="w-full bg-[#1E2220]">
+      <div className="relative w-full overflow-hidden py-2 sm:py-3 md:py-3 lg:py-3 ">
         {/* luxury overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03),transparent_20%,transparent_80%,rgba(255,255,255,0.03))]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_65%)]" />
+        <div className="pointer-events-none absolute inset-0 " />
+        <div className="pointer-events-none absolute inset-0 " />
 
         {/* Track */}
         <div className="flex w-max marquee [will-change:transform] select-none">
