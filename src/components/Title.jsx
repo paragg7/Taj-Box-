@@ -10,7 +10,7 @@ const Title = ({ heading, link = "/shop" }) => {
           {/* Left Title */}
           <div>
             <div className=" w-10  mb-3" />
-            <h2 className="text-xl text-[#1E2220] xs:text-2xl md:text-3xl lg:text-4xl uppercase font-semibold tracking-wide">
+            <h2 className="text-xl text-[#1E2220] tracking-[0.1em]  xs:text-2xl md:text-3xl lg:text-4xl uppercase font-semibold ">
               {heading}
             </h2>
           </div>

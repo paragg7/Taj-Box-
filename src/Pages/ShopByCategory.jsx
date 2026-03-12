@@ -42,13 +42,13 @@ const ShopByCategory = () => {
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6 flex justify-between items-center">
-        <h1 className="text-xl sm:text-2xl font-semibold uppercase text-gray-900">
+        <h1 className="text-xl sm:text-2xl font-semibold uppercase text-[#1E2220]">
           {title}
         </h1>
 
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-[#1E2220]/80">
           Showing{" "}
-          <span className="font-medium text-gray-900">{filtered.length}</span>{" "}
+          <span className="font-medium text-[#1E2220]">{filtered.length}</span>{" "}
           products
         </div>
       </div>
@@ -72,7 +72,7 @@ const ShopByCategory = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 text-gray-500">
+        <div className="text-center py-20 text-[#1E2220]/60">
           No products found in "{title}".
         </div>
       )}

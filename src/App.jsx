@@ -14,9 +14,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ShopByCategory from "./Pages/ShopByCategory";
 import AllCategoriesPage from "./Pages/AllCategoriesPage";
 import { StickyBanner } from "./components/ui/sticky-banner";
-
-
-
+import CtaLetter from "./components/CtaLetter";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -27,9 +25,6 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
-
-  
   useEffect(() => {
     const checkScreen = () => {
       setIsDesktop(window.innerWidth >= 1024);
@@ -42,20 +37,13 @@ const App = () => {
   }, []);
 
   return (
-
-    
-
     <div className="bg-[#FAF9F6]">
-
-     <StickyBanner/>
-      <Navbar/>
-      
-      
+      <StickyBanner />
+      <Navbar />
 
       {loading && <Preloader onFinish={() => setLoading(false)} />}
 
       {isDesktop && <Oneko />}
-      
 
       <div className={loading ? "pointer-events-none" : ""}>
         <ScrollToTop />
@@ -68,16 +56,12 @@ const App = () => {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/terms" element={<Term />} />
           <Route path="/shipping" element={<Shipping />} />
-          <Route path="/categories" element={<AllCategoriesPage />} /> 
+          <Route path="/categories" element={<AllCategoriesPage />} />
         </Routes>
-
+        <CtaLetter />
         <Footer />
       </div>
-
-    
-
     </div>
-
   );
 };
 

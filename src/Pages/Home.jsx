@@ -5,6 +5,7 @@ import ProductsSection from "@/components/ProductsSection";
 import { products } from "@/products/Item";
 import Reviews from "@/components/Reviews";
 import Loop from "@/components/ui/loop";
+import OurStory from "@/components/OurStory";
 
 const Home = () => {
   const filterByCategory = (category) =>
@@ -17,6 +18,7 @@ const Home = () => {
         <div className="space-y-8 md:space-y-12 lg:space-y-14">
           <Hero />
           <Category />
+          <OurStory />
 
           <ProductsSection
             title="MDF Boxes"

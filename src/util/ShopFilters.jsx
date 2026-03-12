@@ -1,4 +1,3 @@
-// ShopFilters.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { products } from "../products/Item";
@@ -51,17 +50,17 @@ const ShopFilters = ({ onFilterChange, value }) => {
   const totalFiltersCount = (selectedFilters.categories || []).length;
 
   return (
-    <aside className="w-full text-black">
+    <aside className="w-full bg-[#FAF9F6] text-[#1E2220]">
       {/* Header */}
-      <div className="mb-10 flex items-baseline justify-between">
-        <h2 className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] text-black">
+      <div className="mb-10 flex items-baseline justify-between border-b border-[#EAE8E2] pb-4">
+        <h2 className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.18em] text-[#1E2220]">
           Filters
         </h2>
 
         {totalFiltersCount > 0 && (
           <button
             onClick={clearAllFilters}
-            className="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-black/40 transition-colors duration-200 hover:text-black"
+            className="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[#1E2220]/60 transition-colors duration-200 hover:text-[#1E2220]"
           >
             Clear
           </button>
@@ -70,17 +69,19 @@ const ShopFilters = ({ onFilterChange, value }) => {
 
       {/* Section Heading */}
       <div className="mb-5 flex items-center justify-between">
-        <h3 className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.22em] text-black/45">
+        <h3 className="text-[13px] sm:text-[15px] font-medium uppercase tracking-[0.22em] text-[#1E2220]">
           Categories
         </h3>
 
         {totalFiltersCount > 0 && (
-          <span className="text-[10px] text-black/28">{totalFiltersCount}</span>
+          <span className="text-[11px] text-[#1E2220]/40">
+            {totalFiltersCount}
+          </span>
         )}
       </div>
 
       {/* Category List */}
-      <div className="space-y-1">
+      <div>
         {categories.map((category) => {
           const checked = selectedFilters.categories.includes(category.name);
 
@@ -89,34 +90,38 @@ const ShopFilters = ({ onFilterChange, value }) => {
               key={category.name}
               type="button"
               onClick={() => handleFilterSelect(category.name)}
-              className="group w-full flex items-center justify-between py-[11px] text-left"
+              className="group w-full flex items-center justify-between py-[11px] border-b border-[#EAE8E2] text-left transition-colors duration-200"
             >
               <div className="flex items-center gap-3 min-w-0">
+                {/* Checkbox */}
+                {/* Checkbox */}
                 <span
-                  className={`relative block h-[13px] w-[13px] border transition-all duration-200 ${
+                  className={`relative flex h-[16px] w-[16px] items-center justify-center border transition-all duration-200 ${
                     checked
-                      ? "border-black"
-                      : "border-black/15 group-hover:border-black/35"
+                      ? "border-[#1E2220]"
+                      : "border-[#1E2220]/30 group-hover:border-[#1E2220]"
                   }`}
                 >
                   <span
-                    className={`absolute left-1/2 top-1/2 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 transition-all duration-200 ${
-                      checked ? "bg-black scale-100" : "bg-black scale-0"
+                    className={`absolute inset-0 transition-all duration-200 ${
+                      checked ? "bg-[#1E2220] scale-100" : "scale-0"
                     }`}
                   />
                 </span>
 
+                {/* Category Name */}
                 <span
                   className={`truncate text-[12px] sm:text-[13px] uppercase tracking-[0.09em] transition-all duration-200 ${
                     checked
-                      ? "text-black"
-                      : "text-black/60 group-hover:text-black/82"
+                      ? "text-[#1E2220]"
+                      : "text-[#1E2220]/60 group-hover:text-[#1E2220]"
                   }`}
                 >
                   {category.name}
                 </span>
               </div>
 
+              {/* Remove Icon */}
               <span
                 className={`ml-4 shrink-0 transition-all duration-200 ${
                   checked
@@ -124,7 +129,7 @@ const ShopFilters = ({ onFilterChange, value }) => {
                     : "opacity-0 translate-x-1"
                 }`}
               >
-                <X className="h-[12px] w-[12px] text-black/55" />
+                <X className="h-[18px] w-[18px] text-[#1E2220]/50" />
               </span>
             </button>
           );

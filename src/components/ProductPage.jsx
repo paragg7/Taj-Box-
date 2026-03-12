@@ -155,7 +155,7 @@ Product Page: ${window.location.href}`;
         {/* LEFT – IMAGES */}
         <section className="self-start lg:sticky lg:top-24">
           {/* Title line for UX */}
-          <div className="flex items-center justify-between border-b border-black/10 pb-3">
+          <div className="flex items-center justify-between border-b border-[#1E2220]/10 pb-3">
             <p className="text-xs uppercase tracking-wider text-gray-500">
               Product Images
             </p>
@@ -179,9 +179,9 @@ Product Page: ${window.location.href}`;
                     className={[
                       "w-24 h-24 overflow-hidden border transition",
                       active
-                        ? "border-black"
-                        : "border-black/15 hover:border-black/40",
-                      "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+                        ? "border-[#1E2220]"
+                        : "border-[#1E2220]/15 hover:border-[#1E2220]/40",
+                      "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2",
                     ].join(" ")}
                     aria-label={`View image ${i + 1}`}
                     aria-pressed={active}
@@ -199,7 +199,7 @@ Product Page: ${window.location.href}`;
             </div>
 
             {/* Main stage */}
-            <div className="border border-black/10 bg-gray-50">
+            <div className="border border-[#1E2220]/10 bg-gray-50">
               <div
                 ref={stageRef}
                 onMouseMove={onMove}
@@ -241,9 +241,9 @@ Product Page: ${window.location.href}`;
                         className={[
                           "shrink-0 w-25 h-28 overflow-hidden border transition",
                           active
-                            ? "border-black"
-                            : "border-black/15 hover:border-black/40",
-                          "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+                            ? "border-[#1E2220]"
+                            : "border-[#1E2220]/15 hover:border-[#1E2220]/40",
+                          "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2",
                         ].join(" ")}
                         aria-label={`View image ${i + 1}`}
                         aria-pressed={active}
@@ -280,8 +280,8 @@ Product Page: ${window.location.href}`;
           </header>
 
           {/* Pricing / Pack box (kept structure, upgraded container) */}
-          <div className="border border-black/10 bg-white">
-            <div className="px-5 py-5 border-b border-black/10">
+          <div className="border border-[#1E2220]/10 bg-white">
+            <div className="px-5 py-5 border-b border-[#1E2220]/10">
               <p className="text-xs uppercase tracking-wider text-gray-500">
                 Price
               </p>
@@ -293,7 +293,7 @@ Product Page: ${window.location.href}`;
               </p>
             </div>
 
-            <div className="px-5 py-5 border-b border-black/10">
+            <div className="px-5 py-5 border-b border-[#1E2220]/10">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-gray-900">
                   Select Pack
@@ -319,9 +319,9 @@ Product Page: ${window.location.href}`;
                       className={[
                         "h-12 text-sm font-semibold transition border",
                         active
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-gray-900 border-black/10 hover:border-black/25 hover:bg-gray-50",
-                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+                          ? "bg-[#1E2220] text-white border-[#1E2220]"
+                          : "bg-white text-gray-900 border-[#1E2220]/10 hover:border-[#1E2220]/25 hover:bg-gray-50",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2",
                       ].join(" ")}
                       aria-pressed={active}
                     >
@@ -356,7 +356,7 @@ Product Page: ${window.location.href}`;
                   rel="noopener noreferrer"
                   className="block"
                 >
-                  <button className="w-full bg-black text-white py-3.5 sm:py-4 font-semibold hover:bg-black/90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                  <button className="w-full bg-[#1E2220] text-white py-3.5 sm:py-4 font-semibold hover:bg-[#1E2220]/90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
                     Order On Whatsapp
                   </button>
                 </a>
@@ -365,7 +365,7 @@ Product Page: ${window.location.href}`;
 
                 <div
                   id="bulk-order"
-                  className="mt-5  border border-black/10  p-4 sm:p-5 "
+                  className="mt-5  border border-[#1E2220]/10  p-4 sm:p-5 "
                 >
                   {/* Header */}
                   <div className="flex items-start gap-3">
@@ -389,9 +389,9 @@ Product Page: ${window.location.href}`;
                       className="group"
                       aria-label="Contact on WhatsApp for bulk order"
                     >
-                      <button className="w-full border border-black/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-black/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                      <button className="w-full border border-[#1E2220]/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-[#1E2220]/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
                         <span className="flex items-center justify-center gap-2">
-                          <MessageCircle className="h-4 w-4 text-black/70 group-hover:text-black" />
+                          <MessageCircle className="h-4 w-4 text-[#1E2220]/70 group-hover:text-[#1E2220]" />
                           WhatsApp
                         </span>
                       </button>
@@ -402,9 +402,9 @@ Product Page: ${window.location.href}`;
                       className="group"
                       aria-label="Call now for bulk order"
                     >
-                      <button className="w-full border border-black/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-black/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                      <button className="w-full border border-[#1E2220]/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-[#1E2220]/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
                         <span className="flex items-center justify-center gap-2">
-                          <Phone className="h-4 w-4 text-black/70 group-hover:text-black" />
+                          <Phone className="h-4 w-4 text-[#1E2220]/70 group-hover:text-[#1E2220]" />
                           Call Now
                         </span>
                       </button>
@@ -421,10 +421,10 @@ Product Page: ${window.location.href}`;
           </div>
 
           {/* Accordions (clean, premium, no rounding) */}
-          <div className="border border-black/10 bg-white">
+          <div className="border border-[#1E2220]/10 bg-white">
             <button
               onClick={() => setIsDescriptionOpen((v) => !v)}
-              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2"
               aria-expanded={isDescriptionOpen}
             >
               <h3 className="font-semibold text-gray-900">
@@ -434,7 +434,7 @@ Product Page: ${window.location.href}`;
             </button>
 
             <div
-              className={`overflow-hidden transition-all duration-300 ease-out border-t border-black/10 ${
+              className={`overflow-hidden transition-all duration-300 ease-out border-t border-[#1E2220]/10 ${
                 isDescriptionOpen
                   ? "max-h-[900px] opacity-100"
                   : "max-h-0 opacity-0"
@@ -455,10 +455,10 @@ Product Page: ${window.location.href}`;
             </div>
           </div>
 
-          <div className="border border-black/10 bg-white">
+          <div className="border border-[#1E2220]/10 bg-white">
             <button
               onClick={() => setIsShippingOpen((v) => !v)}
-              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+              className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2"
               aria-expanded={isShippingOpen}
             >
               <h3 className="font-semibold text-gray-900">Shipping</h3>
@@ -466,7 +466,7 @@ Product Page: ${window.location.href}`;
             </button>
 
             <div
-              className={`overflow-hidden transition-all duration-300 ease-out border-t border-black/10 ${
+              className={`overflow-hidden transition-all duration-300 ease-out border-t border-[#1E2220]/10 ${
                 isShippingOpen ? "max-h-56 opacity-100" : "max-h-0 opacity-0"
               }`}
             >

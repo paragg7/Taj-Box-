@@ -188,13 +188,13 @@ const Term = () => {
                   </div>
 
                   {/* Desktop divider */}
-                  <div className="hidden lg:block h-px bg-[#1E2220]/10 my-8" />
+                  
                 </div>
               ))}
             </div>
 
             {/* Last Updated */}
-            <div className="mt-8 border-t border-[#1E2220]/10 pt-6 text-sm text-[#1E2220]/60">
+            <div className="mt-13 border-t border-[#1E2220]/10 pt-6 text-sm text-[#1E2220]/60">
               Last updated: February 10, 2026
             </div>
           </section>

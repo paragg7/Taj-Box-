@@ -55,7 +55,7 @@ const ShopAll = () => {
         <div className="px-1 sm:px-1">
           <button
             onClick={() => setIsMobileFilterOpen(true)}
-            className="w-full h-12 border border-gray-300 bg-white px-4 flex items-center justify-between"
+            className="w-full h-12 border border-[#1e2220] bg-[#EAE8E2] px-4 flex items-center justify-between"
             aria-label="Open filters"
           >
             <span className="text-sm uppercase tracking-widest text-gray-900">
@@ -84,28 +84,28 @@ const ShopAll = () => {
         <section>
          
           <div className="flex items-end justify-between mb-5">
-            <div className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.12em] text-black">
+            <div className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.12em] text-[#1E2220]">
               All Products
             </div>
 
-            <div className="text-[11px] uppercase tracking-[0.18em] text-black/60">
+            <div className="text-[11px] uppercase tracking-[0.18em] text-[#1E2220]/60">
               Showing{" "}
-              <span className="text-black font-medium">
+              <span className="text-[#1E2220] font-medium">
                 {filteredProducts.length}
               </span>{" "}
-              of <span className="text-black font-medium">{totalCount}</span>{" "}
+              of <span className="text-[#1E2220] font-medium">{totalCount}</span>{" "}
               products
             </div>
           </div>
 
           {/* Products Grid */}
-          {filteredProducts.length > 0 ? (
+          
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
               {filteredProducts.map((product) => (
                 <Link
                   key={product.id}
                   to={`/product/${product.id}`}
-                  className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+                  className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
                 >
                   <Products
                     image1={product.image1}
@@ -120,16 +120,7 @@ const ShopAll = () => {
                 </Link>
               ))}
             </div>
-          ) : (
-            <div className="border border-gray-200 bg-white p-10 text-center">
-              <div className="text-base font-semibold text-gray-900">
-                No products found
-              </div>
-              <p className="mt-2 text-sm text-gray-600">
-                Try removing some filters to see more results.
-              </p>
-            </div>
-          )}
+          
         </section>
       </div>
 
@@ -138,7 +129,7 @@ const ShopAll = () => {
         <div className="lg:hidden fixed inset-0 z-50">
           {/* Backdrop */}
           <button
-            className="absolute inset-0 bg-black/30"
+            className="absolute inset-0 bg-[#1E2220]/30"
             onClick={() => setIsMobileFilterOpen(false)}
             aria-label="Close filters backdrop"
           />

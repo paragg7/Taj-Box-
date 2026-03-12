@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Badge = ({ children }) => {
   return (
-    <span className="inline-flex items-center px-2.5 py-1 text-[10px] xs:text-[11px] font-semibold uppercase tracking-wider rounded-sm border bg-[#EAE8E2]/30 text-black border-black/10">
+    <span className="inline-flex items-center px-2.5 py-1 text-[10px] xs:text-[11px] font-semibold uppercase tracking-wider rounded-sm border bg-[#EAE8E2]/30 text-[#1E2220] border-[#1E2220]/10">
       {children}
     </span>
   );
@@ -32,7 +32,7 @@ const Products = ({
           "relative overflow-hidden",
           "aspect-[3/4]",
           
-          "border border-black/10",
+          "border border-[#1E2220]/10",
           "mb-3",
         ].join(" ")}
       >
@@ -44,7 +44,7 @@ const Products = ({
 
         {/* Subtle View Label */}
         <div className="absolute bottom-3 left-3 z-10 opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-          <span className="bg-[#EAE8E2]/30 text-black text-[11px] font-semibold tracking-wide px-3 py-1.5 border border-black/10 rounded-sm">
+          <span className="bg-[#EAE8E2]/30 text-[#1E2220] text-[11px] font-semibold tracking-wide px-3 py-1.5 border border-[#1E2220]/10 rounded-sm">
             View
           </span>
         </div>
@@ -72,12 +72,12 @@ const Products = ({
       {/* Product Info */}
       <div className="space-y-2">
         <div className="flex justify-between items-start gap-3">
-          <h3 className="text-xs xs:text-sm font-normal uppercase text-black flex-1 leading-snug line-clamp-2">
+          <h3 className="text-xs xs:text-sm font-normal uppercase text-[#1E2220] flex-1 leading-snug line-clamp-2">
             {name}
           </h3>
 
           <div className="text-right whitespace-nowrap">
-            <span className="text-xs xs:text-sm font-bold text-black">
+            <span className="text-xs xs:text-sm font-bold text-[#1E2220]">
               <p>From ₹{price}</p>
             </span>
 
@@ -91,7 +91,7 @@ const Products = ({
               <button
                 key={index}
                 type="button"
-                className="w-4 h-4 rounded-full border border-black/10 hover:border-black/30 transition-colors"
+                className="w-4 h-4 rounded-full border border-[#1E2220]/10 hover:border-[#1E2220]/30 transition-colors"
                 style={{ backgroundColor: color }}
                 aria-label={`Color option ${index + 1}`}
               />
