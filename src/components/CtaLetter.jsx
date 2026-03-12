@@ -6,8 +6,8 @@ const CtaLetter = () => {
   );
 
   return (
-    <section className="w-full py-12 md:py-16 lg:py-20">
-      <div className="relative w-full h-[260px] sm:h-[320px] md:h-[420px] lg:h-[480px] overflow-hidden border border-[#EAE8E2]">
+    <section className="w-full py-6 sm:py-10 lg:py-16">
+      <div className="relative w-full min-h-[300px] sm:min-h-[380px] md:min-h-[440px] lg:min-h-[520px] overflow-hidden ">
 
         {/* Background Image */}
         <img
@@ -17,19 +17,21 @@ const CtaLetter = () => {
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-[#1E2220]/60" />
+        <div className="absolute inset-0 bg-[#1E2220]/65" />
 
         {/* Content */}
-        <div className="relative z-10 flex h-full w-full items-center justify-center px-4">
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-6 sm:px-8">
           <div className="max-w-[760px] text-center">
 
             {/* Heading */}
             <h2
-              className="text-[#FAF9F6] font-light tracking-[-0.025em] leading-[1.15]
-              text-[22px]
-              sm:text-[28px]
-              md:text-[36px]
-              lg:text-[44px]"
+              className="
+              text-[#FAF9F6] font-light tracking-[-0.02em] leading-tight
+              text-[24px]
+              sm:text-[30px]
+              md:text-[38px]
+              lg:text-[46px]
+            "
             >
               Planning A Bulk Order For
               <br />
@@ -38,30 +40,43 @@ const CtaLetter = () => {
 
             {/* Description */}
             <p
-              className="mt-3 text-[#FAF9F6]/85
-              text-[13px]
-              sm:text-[14px]
-              md:text-[15px]"
+              className="
+              mt-4 text-[#FAF9F6]/85
+              text-[14px]
+              sm:text-[15px]
+              md:text-[16px]
+              max-w-[520px]
+              mx-auto
+            "
             >
               Talk directly with us to discuss custom designs and bulk pricing.
             </p>
 
             {/* Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-
+            <div
+              className="
+              mt-8
+              flex flex-col sm:flex-row
+              items-center justify-center
+              gap-4 sm:gap-6
+            "
+            >
               {/* Call */}
               <a
                 href="tel:+919468480991"
-                className="inline-flex items-center justify-center
+                className="
+                w-full sm:w-auto
+                inline-flex items-center justify-center
                 border border-[#FAF9F6]
                 px-8 py-3
-                min-w-[150px]
+                min-w-[160px]
                 text-[13px]
                 uppercase tracking-[0.18em]
                 text-[#1E2220]
                 bg-[#FAF9F6]
-                transition-colors duration-300
-                hover:bg-transparent hover:text-[#FAF9F6]"
+                transition-all duration-300
+                hover:bg-transparent hover:text-[#FAF9F6]
+                "
               >
                 Call
               </a>
@@ -71,20 +86,23 @@ const CtaLetter = () => {
                 href={`https://wa.me/919468480991?text=${bulkMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center
+                className="
+                w-full sm:w-auto
+                inline-flex items-center justify-center
                 border border-[#FAF9F6]
                 px-8 py-3
-                min-w-[150px]
+                min-w-[160px]
                 text-[13px]
                 uppercase tracking-[0.18em]
                 text-[#FAF9F6]
-                transition-colors duration-300
-                hover:bg-[#FAF9F6] hover:text-[#1E2220]"
+                transition-all duration-300
+                hover:bg-[#FAF9F6] hover:text-[#1E2220]
+                "
               >
                 WhatsApp
               </a>
-
             </div>
+
           </div>
         </div>
 
