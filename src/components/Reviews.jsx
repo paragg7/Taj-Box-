@@ -207,7 +207,7 @@ const Reviews = () => {
               Testimonials
             </p>
 
-            <h2 className="mt-3 text-[28px] font-semibold leading-[1.04] text-[#EAE8E2] sm:text-[30px] md:text-[30px] lg:text-[38px]">
+            <h2 className="mt-3 text-[28px] font-semibold leading-[1.04] font-playfair text-[#EAE8E2] sm:text-[30px] md:text-[30px] lg:text-[38px]">
               What Our Clients Are Saying
             </h2>
 

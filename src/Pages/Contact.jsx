@@ -57,7 +57,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen  py-10 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-30 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10 sm:mb-12">

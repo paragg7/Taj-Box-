@@ -13,8 +13,9 @@ import Shipping from "./Pages/Shipping";
 import ScrollToTop from "./components/ScrollToTop";
 import ShopByCategory from "./Pages/ShopByCategory";
 import AllCategoriesPage from "./Pages/AllCategoriesPage";
-import { StickyBanner } from "./components/ui/sticky-banner";
+
 import CtaLetter from "./components/CtaLetter";
+
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ const App = () => {
 
   return (
     <div className="bg-[#FAF9F6]">
-      <StickyBanner />
+      
       <Navbar />
 
       {loading && <Preloader onFinish={() => setLoading(false)} />}

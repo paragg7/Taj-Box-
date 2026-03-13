@@ -149,18 +149,18 @@ Product Page: ${window.location.href}`;
   const formatINR = (v) => `Rs.${Number(v || 0).toLocaleString("en-IN")}.00`;
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30">
       {/* Premium, simple layout: clear columns + strong borders (no shadows, no rounded) */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_520px] gap-10 lg:gap-16 items-start">
         {/* LEFT – IMAGES */}
         <section className="self-start lg:sticky lg:top-24">
           {/* Title line for UX */}
           <div className="flex items-center justify-between border-b border-[#1E2220]/10 pb-3">
-            <p className="text-xs uppercase tracking-wider text-gray-500">
+            <p className="text-xs uppercase tracking-wider text-[#1E2220]/50">
               Product Images
             </p>
             {images.length > 1 && (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-[#1E2220]/50">
                 {activeIndex + 1} / {images.length}
               </p>
             )}
@@ -199,7 +199,7 @@ Product Page: ${window.location.href}`;
             </div>
 
             {/* Main stage */}
-            <div className="border border-[#1E2220]/10 bg-gray-50">
+            <div className="border border-[#1E2220]/10 bg-[#1E2220]/10">
               <div
                 ref={stageRef}
                 onMouseMove={onMove}
@@ -270,11 +270,11 @@ Product Page: ${window.location.href}`;
         <section className="flex flex-col gap-6">
           {/* Header block */}
           <header className="">
-            <p className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider">
+            <p className="text-xs sm:text-sm text-[#1E2220]/50 uppercase tracking-wider">
               {product.category}
             </p>
 
-            <h1 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+            <h1 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E2220]/90 leading-tight">
               {product.name}
             </h1>
           </header>
@@ -282,26 +282,26 @@ Product Page: ${window.location.href}`;
           {/* Pricing / Pack box (kept structure, upgraded container) */}
           <div className="border border-[#1E2220]/10 bg-white">
             <div className="px-5 py-5 border-b border-[#1E2220]/10">
-              <p className="text-xs uppercase tracking-wider text-gray-500">
+              <p className="text-xs uppercase tracking-wider text-[#1E2220]/50">
                 Price
               </p>
-              <p className="mt-1 text-3xl font-bold tracking-tight text-gray-900">
+              <p className="mt-1 text-3xl font-bold tracking-tight text-[#1E2220]/90">
                 From ₹{product.price}
               </p>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm text-[#1E2220]/60">
                 Select a pack to see accurate pricing instantly.
               </p>
             </div>
 
             <div className="px-5 py-5 border-b border-[#1E2220]/10">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-gray-900">
+                <p className="text-sm font-semibold text-[#1E2220]/90">
                   Select Pack
                 </p>
 
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-[#1E2220]/60">
                   Unit:{" "}
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-[#1E2220]/90">
                     {formatINR(unitPrice)}
                   </span>
                 </p>
@@ -319,8 +319,8 @@ Product Page: ${window.location.href}`;
                       className={[
                         "h-12 text-sm font-semibold transition border",
                         active
-                          ? "bg-[#1E2220] text-white border-[#1E2220]"
-                          : "bg-white text-gray-900 border-[#1E2220]/10 hover:border-[#1E2220]/25 hover:bg-gray-50",
+                          ? "bg-[#2F4F46] text-white border-[#2F4F46]"
+                          : "bg-white text-[#1E2220]/90 border-[#1E2220]/10 hover:border-[#1E2220]/25 hover:bg-[#1E2220]/10",
                         "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2",
                       ].join(" ")}
                       aria-pressed={active}
@@ -336,15 +336,15 @@ Product Page: ${window.location.href}`;
             <div className="px-5 py-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-gray-500">
+                  <p className="text-xs uppercase tracking-wider text-[#1E2220]/50">
                     Total
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-[#1E2220]/60 mt-1">
                     {selectedPack} boxes
                   </p>
                 </div>
 
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-[#1E2220]/90">
                   {formatINR(totalPrice)}
                 </p>
               </div>
@@ -356,9 +356,12 @@ Product Page: ${window.location.href}`;
                   rel="noopener noreferrer"
                   className="block"
                 >
-                  <button className="w-full bg-[#1E2220] text-white py-3.5 sm:py-4 font-semibold hover:bg-[#1E2220]/90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
+                  
+                  <button className="w-full bg-[#2F4F46] text-white py-3.5 sm:py-4 font-semibold hover:bg-[#2F4F46]/90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
                     Order On Whatsapp
                   </button>
+                  
+                  
                 </a>
 
                 {/* ✅ YOUR EXACT BLOCK (unchanged) */}
@@ -370,10 +373,10 @@ Product Page: ${window.location.href}`;
                   {/* Header */}
                   <div className="flex items-start gap-3">
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-[#1E2220]/90">
                         Bulk Order
                       </p>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="mt-1 text-sm text-[#1E2220]/60">
                         Need custom quantity or pricing? Contact us and we’ll
                         respond fast.
                       </p>
@@ -389,7 +392,7 @@ Product Page: ${window.location.href}`;
                       className="group"
                       aria-label="Contact on WhatsApp for bulk order"
                     >
-                      <button className="w-full border border-[#1E2220]/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-[#1E2220]/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
+                      <button className="w-full border border-[#1E2220]/15 bg-white px-4 py-3 text-sm font-semibold text-[#1E2220]/90 transition hover:border-[#1E2220]/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
                         <span className="flex items-center justify-center gap-2">
                           <MessageCircle className="h-4 w-4 text-[#1E2220]/70 group-hover:text-[#1E2220]" />
                           WhatsApp
@@ -402,7 +405,7 @@ Product Page: ${window.location.href}`;
                       className="group"
                       aria-label="Call now for bulk order"
                     >
-                      <button className="w-full border border-[#1E2220]/15 bg-white px-4 py-3 text-sm font-semibold text-gray-900 transition hover:border-[#1E2220]/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
+                      <button className="w-full border border-[#1E2220]/15 bg-white px-4 py-3 text-sm font-semibold text-[#1E2220]/90 transition hover:border-[#1E2220]/35 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2">
                         <span className="flex items-center justify-center gap-2">
                           <Phone className="h-4 w-4 text-[#1E2220]/70 group-hover:text-[#1E2220]" />
                           Call Now
@@ -412,7 +415,7 @@ Product Page: ${window.location.href}`;
                   </div>
 
                   {/* Trust microcopy */}
-                  <p className="mt-3 text-xs text-gray-500">
+                  <p className="mt-3 text-xs text-[#1E2220]/50">
                     Available 10am–7pm • Typical reply within 15–30 mins
                   </p>
                 </div>
@@ -427,7 +430,7 @@ Product Page: ${window.location.href}`;
               className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2"
               aria-expanded={isDescriptionOpen}
             >
-              <h3 className="font-semibold text-gray-900">
+              <h3 className="font-semibold text-[#1E2220]/90">
                 Description &amp; Fit
               </h3>
               {isDescriptionOpen ? <ChevronUp /> : <ChevronDown />}
@@ -440,7 +443,7 @@ Product Page: ${window.location.href}`;
                   : "max-h-0 opacity-0"
               }`}
             >
-              <div className="px-5 py-5 space-y-4 text-sm text-gray-700 leading-relaxed">
+              <div className="px-5 py-5 space-y-4 text-sm text-[#1E2220]/80 leading-relaxed">
                 <p>{product.description || "Description coming soon."}</p>
 
                 {Array.isArray(product.features) &&
@@ -461,7 +464,7 @@ Product Page: ${window.location.href}`;
               className="w-full px-5 py-4 flex justify-between items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220] focus-visible:ring-offset-2"
               aria-expanded={isShippingOpen}
             >
-              <h3 className="font-semibold text-gray-900">Shipping</h3>
+              <h3 className="font-semibold text-[#1E2220]/90">Shipping</h3>
               {isShippingOpen ? <ChevronUp /> : <ChevronDown />}
             </button>
 
@@ -472,12 +475,12 @@ Product Page: ${window.location.href}`;
             >
               <div className="px-5 py-5 grid grid-cols-1 xs:grid-cols-2 gap-4 text-sm">
                 <div className="flex gap-3 items-center">
-                  <Package className="w-5 h-5 text-gray-700" />
-                  <span className="text-gray-800">Premium Packaging</span>
+                  <Package className="w-5 h-5 text-[#1E2220]/80" />
+                  <span className="text-[#1E2220]/90">Premium Packaging</span>
                 </div>
                 <div className="flex gap-3 items-center">
-                  <Truck className="w-5 h-5 text-gray-700" />
-                  <span className="text-gray-800">3–4 Working Days</span>
+                  <Truck className="w-5 h-5 text-[#1E2220]/80" />
+                  <span className="text-[#1E2220]/90">3–4 Working Days</span>
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ import { products } from "@/products/Item";
 import Reviews from "@/components/Reviews";
 import Loop from "@/components/ui/loop";
 import OurStory from "@/components/OurStory";
+import OurClients from "@/components/OurClients";
 
 const Home = () => {
   const filterByCategory = (category) =>
@@ -14,8 +15,8 @@ const Home = () => {
     );
   return (
     <div className="w-full">
-      <div className="w-full">
-        <div className="space-y-8 md:space-y-12 lg:space-y-14">
+      <div className="w-full pt-20">
+        <div className="space-y-12 md:space-y-16 lg:space-y-20">
           <Hero />
           <Category />
           <OurStory />
@@ -55,7 +56,7 @@ const Home = () => {
             products={filterByCategory("sweets box")}
             link="/shop/sweets-box"
           />
-
+          <OurClients />
           <div className="space-y-0">
             <Reviews />
             <Loop />

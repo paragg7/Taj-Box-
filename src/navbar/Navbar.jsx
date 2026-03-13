@@ -64,8 +64,8 @@ const Navbar = () => {
 
   const linkClass = ({ isActive }) =>
     `relative transition-colors ${
-      isActive ? "text-[#EAE8E2]" : "text-[#EAE8E2]/80  hover:text-[#EAE8E2] "
-    } after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#EAE8E2] after:transition-all after:duration-300 hover:after:w-full ${
+      isActive ? "text-[#1E2220]" : "text-[#1E2220]/80  hover:text-[#1E2220] "
+    } after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#1E2220] after:transition-all after:duration-300 hover:after:w-full ${
       isActive ? "after:w-full" : ""
     }`;
 
@@ -75,17 +75,17 @@ const Navbar = () => {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#1E2220]/10 bg-[#1E2220]">
+    <nav className="fixed w-full top-0 z-50  bg-[#FAF9F6]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-4">
           <Link
             to="/"
-            className="text-lg xs:text-xl md:text-2xl font-bold uppercase font-playfair text-[#EAE8E2] tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
+            className="text-lg xs:text-xl md:text-2xl font-bold uppercase font-playfair text-[#1E2220] tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220]/30"
           >
             Taj Boxes
           </Link>
 
-          <ul className="hidden  md:flex absolute left-1/2 -translate-x-1/2 items-center font-semibold gap-8 text-xs lg:text-sm uppercase">
+          <ul className="hidden  md:flex absolute left-1/2 -translate-x-1/2 items-center font-semibold gap-8 text-xs lg:text-[14px] uppercase">
             <li>
               <NavLink to="/" className={linkClass} end>
                 Home
@@ -136,7 +136,7 @@ const Navbar = () => {
               aria-label="Open search"
               aria-expanded={searchOpen}
             >
-              <Search className="w-5 h-5 text-[#EAE8E2]" />
+              <Search className="w-5 h-5 text-[#1E2220]" />
             </button>
           </div>
 
@@ -144,7 +144,7 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="md:hidden inline-flex items-center justify-center h-11 w-11 border border-[#EAE8E2]/10 text-[#EAE8E2] hover:bg-[#EAE8E2/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EAE8E2/30"
+            className="md:hidden inline-flex items-center justify-center h-11 w-11 border border-[#1E2220]/10 text-[#1E2220] hover:bg-[#1E2220/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E2220/30"
             aria-label="Open menu"
             aria-expanded={open}
           >
@@ -163,7 +163,7 @@ const Navbar = () => {
             onClick={() => setOpen(false)}
           />
 
-          <div className="absolute inset-x-0 top-0 bg-[#EAE8E2] border-b border-[#1E2220]/10">
+          <div className="absolute inset-x-0 top-0 bg-[#FAF9F6] border-b border-[#1E2220]/10">
             <div className="px-4 sm:px-6 h-16 flex items-center justify-between">
               <span className="text-sm uppercase tracking-widest text-[#1E2220]/60">
                 Menu
@@ -219,7 +219,7 @@ const Navbar = () => {
             onClick={() => setSearchOpen(false)}
           />
 
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[520px] max-w-[90%] bg-[#EAE8E2] border border-[#1E2220]/10">
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[520px] max-w-[90%] bg-[#1E2220] border border-[#1E2220]/10">
             <div className="flex items-center justify-between px-4 h-14 border-b border-[#1E2220]/10">
               <span className="text-xs uppercase tracking-[0.22em] text-[#1E2220]/60">
                 Search

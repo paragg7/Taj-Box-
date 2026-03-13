@@ -4,7 +4,7 @@ import categories from "@/products/cate";
 
 const AllCategoriesPage = () => {
   return (
-    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="mx-auto px-4 sm:px-6 lg:px-8 pt-30">
       <div className="mb-6 flex justify-between items-center">
         <h1 className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.22em] text-[#1E2220]">
           All Categories

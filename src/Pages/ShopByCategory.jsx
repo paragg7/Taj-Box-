@@ -40,7 +40,7 @@ const ShopByCategory = () => {
           ?.replace(/\b\w/g, (c) => c.toUpperCase());
 
   return (
-    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-30">
       <div className="mb-6 flex justify-between items-center">
         <h1 className="text-xl sm:text-2xl font-semibold uppercase text-[#1E2220]">
           {title}

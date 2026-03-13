@@ -37,14 +37,14 @@ const Preloader = ({ onFinish }) => {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#FAF9F6]"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#EAE8E2]"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}          // ✅ fade only
           transition={{ duration: 0.6 }} // smooth fade
         >
           <motion.div
             key={words[index]}
-            className="text-4xl font-playfair font-bold tracking-wide text-black"
+            className="text-4xl font-playfair font-bold tracking-wide text-[#1E2220]"
           >
             {words[index]}
           </motion.div>

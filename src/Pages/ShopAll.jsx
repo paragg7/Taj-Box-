@@ -49,7 +49,7 @@ const ShopAll = () => {
   }, [isMobileFilterOpen]);
 
   return (
-    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-30">
       {/* Mobile Filters Bar */}
       <div className="mb-6 lg:hidden">
         <div className="px-1 sm:px-1">
