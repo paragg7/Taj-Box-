@@ -94,7 +94,7 @@ const Contact = () => {
                     name="name"
                     required
                     placeholder="Your name"
-                    className="w-full h-12 px-4 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition rounded-sm"
+                    className="w-full h-12 px-4 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition "
                   />
                 </div>
 
@@ -108,7 +108,7 @@ const Contact = () => {
                     name="email"
                     required
                     placeholder="Enter your email"
-                    className="w-full h-12 px-4 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition rounded-sm"
+                    className="w-full h-12 px-4 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition "
                   />
                 </div>
 
@@ -123,7 +123,7 @@ const Contact = () => {
                     required
                     placeholder="+91 94684 80991"
                     inputMode="tel"
-                    className="w-full h-12 px-4 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition rounded-sm"
+                    className="w-full h-12 px-4 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition "
                   />
                 </div>
               </div>
@@ -261,7 +261,7 @@ const MessageField = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Tell us about your requirement..."
-        className="w-full px-4 py-3 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition rounded-sm resize-none"
+        className="w-full px-4 py-3 border border-[#1E2220]/20 bg-[#1E2220]/5 outline-none focus:border-[#1E2220] transition  resize-none"
       />
     </div>
   );

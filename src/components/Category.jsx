@@ -13,9 +13,9 @@ import categories from "@/products/cate";
 const Category = () => {
   return (
     <section>
-      <Title heading="Browse by categories" link="/categories" />
+      <Title heading="categories" link="/categories" />
 
-      <div className="mt-3 px-4 sm:px-6 lg:px-8">
+      <div className="mt-3  px-4 sm:px-6 lg:px-8">
         <div className="relative max-w-[1800px] mx-auto">
           <Carousel
             opts={{
@@ -42,14 +42,14 @@ const Category = () => {
                 >
                   <Link
                     to={item.link}
-                    className="block outline-none"
+                    className="block outline-none "
                     aria-label={`Go to ${item.name}`}
                   >
                     <div
                       className="
                         group h-[360px] sm:h-[380px]
                         border border-[#1E2220]/10 bg-[#EAE8E2]/30
-                        hover:border-[#1E2220]/25
+                        hover:border-[#1E2220]/25 rounded-xs
                         transition-colors duration-300
                         flex flex-col
                       "

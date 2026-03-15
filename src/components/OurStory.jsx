@@ -25,7 +25,7 @@ const storyImages = [
 
 const OurStory = () => {
   return (
-    <section className="w-full px-3 sm:px-4 md:px-6 lg:px-8 ">
+    <section className="w-full  px-3 sm:px-4 md:px-6 lg:px-8 ">
       <div className="w-full ">
         {/* Top content */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-14 lg:gap-20 bg-[#EAE8E2] px-4 sm:px-6 md:px-10 lg:px-14 py-8 sm:py-10 md:py-14 lg:py-16">

@@ -52,7 +52,7 @@ const ShopFilters = ({ onFilterChange, value }) => {
   return (
     <aside className="w-full bg-[#FAF9F6] text-[#1E2220]">
       {/* Header */}
-      <div className="mb-10 flex items-baseline justify-between border-b border-[#EAE8E2] pb-4">
+      <div className=" flex items-baseline justify-between border-b border-[#EAE8E2] pb-4">
         <h2 className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.18em] text-[#1E2220]">
           Filters
         </h2>
@@ -67,7 +67,7 @@ const ShopFilters = ({ onFilterChange, value }) => {
         )}
       </div>
 
-      {/* Section Heading */}
+      {/* Section Heading
       <div className="mb-5 flex items-center justify-between">
         <h3 className="text-[13px] sm:text-[15px] font-medium uppercase tracking-[0.22em] text-[#1E2220]">
           Categories
@@ -78,7 +78,7 @@ const ShopFilters = ({ onFilterChange, value }) => {
             {totalFiltersCount}
           </span>
         )}
-      </div>
+      </div> */}
 
       {/* Category List */}
       <div>

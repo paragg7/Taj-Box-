@@ -129,7 +129,7 @@ const Hero = () => {
             </motion.div>
 
             {/* overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1E2220]/42 via-[#1E2220]/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/42 via-black/10 to-transparent" />
 
             {/* top labels */}
             <div className="absolute left-4 right-4 top-4 z-20 flex items-start justify-between sm:left-6 sm:right-6 sm:top-6">
